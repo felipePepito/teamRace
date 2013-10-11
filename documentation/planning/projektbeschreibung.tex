@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{ngerman}
+\usepackage{amssymb} 
+
+\title{Projektbeschreibung im Rahmen des
+Praktikums zur planmäßigen Entwicklung eines größeren Softwaresystems\bigskip\\
+\large Projekt Teamrace}
+
+\author{Philipp Strobl\\Matrikelnummer 2554775}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Zielsetzung}
+
+Ziel des Projekts ist das Erstellen eines Softwaresystems, das im schulischen Kontext eingesetzt wird, um Teamwork zu fördern und fächerübergreifend neue Unterrichtselemente zu unterstützen.
+
+Der Name „Teamrace“ ist aus dem sportlichen entlehnt, er bezeichnet ursprünglich eine Team-orientierte Variante der Segelregatta. 
+\cite{teamrace} Die Grundidee des „Teamrace“ liegt im Bilden von Schüler-Teams, welche über einen längeren Zeitraum unterschiedliche Aufgaben bearbeiten und an Wettbewerben in verschiedenen Fächern teilnehmen sollen.
+
+Die Software soll dafür zum einen die zentralen Datenverwaltung des Teamrace leisten, zum anderen auch einzelne Wettbewerbe funktionell unterstützen.
+Über einen Webserver soll eine Schnittstelle geschaffen werden, die es den Beteiligten in ihren unterschiedlichen Rollen ermöglicht, auf die Daten des Teamrace zuzugreifen, Details zu den Wettbewerben und den einzelnen Teams einzusehen sowie sich über die Wettbewerbe auszutauschen. Den Schülern soll hier auch die Möglichkeit gegeben werden, ihr Team in geeigneter Form online zu präsentieren.
+
+\section{Datenverwaltung}
+
+Im Rahmen des Teamrace fallen eine große Menge unterschiedlicher Daten an. Diese umfassen unter anderem Details zur Zusammensetzung der Teams und der Lehrer, den einzelnen Rollen der Schüler und Lehrer in den verschiedenen Wettbewerben, die Struktur und Zusammensetzung der einzelnen Wettbewerbe, den in den Wettbewerben erbrachten Leistungen sowie zur Gesamtbewertung.
+
+Hierfür sollen geeignete Datenstrukturen gefunden werden, die zudem eine nachträgliche Erweiterung z.B. im Hinblick auf weitere Wettbewerbe ermöglichen.
+\\\\
+Der Zugriff auf die Daten soll über einen Webserver erfolgen. Hier haben die Beteiligten die Möglichkeit, in einem passwortgeschützten Bereich auf die für sie relevanten Daten zuzugreifen und, entsprechend ihrer Rollen, zu verändern.
+
+\section{Konkrete Einzelziele}
+
+Primäres Ziel des Praktikums soll das Erstellen einer Internetplattform sein, die als zentrale Schnittstelle für das Teamrace fungiert. Die Schüler sollen die Möglichkeit besitzen, ein eigenes Profil für ihr Team zu erstellen, Details zu bereits erbrachten Leistungen sowie zu kommenden Wettbewerben abzurufen und sich über die Plattform auszutauschen. 
+
+Lehrer bzw. betreuende Personen können über die Plattform Wettbewerbe zum Teamrace hinzufügen, Teams für die Wettbewerbe erstellen und Ergebnisse zu den Wettbewerben eintragen.
+
+Es sollen Vorlagen für unterschiedliche Wettbewerbe erstellt werden, die dann von den Betreuern des Teamrace ausgewählt und spezifisch angepasst werden können.
+Ein zentraler Aspekt ist die nachträgliche Erweiterbarkeit der Plattform um neue Wettbewerbs-Vorlagen, Nutzerrollen oder Schnittstellen zu Softwaremodulen, die einzelne Wettbewerbe direkt umsetzen (wie z.B. ein Fakten-/Vokabeltest).
+\\\\
+Wichtige Eckpunkte in der Entwicklung sind das Finden einer intuitiv zu bedienenden Benutzerschnittstelle für die unterschiedlichen Benutzerrollen sowie eines Entwicklungsentwurfs, der eine möglichst modulare Zusammensetzung der einzelnen Wettbewerbe sowie eine weitläufige Erweiterbarkeit ermöglicht. Hierfür sollen nach Möglichkeit Entwurfsmuster verwendet werden, wie z.B. in 
+\cite{entwurfsmuster}
+beschrieben. Des weiteren sollen Lösungen zur geeigneten Kommunikation zwischen den am Wettbewerb beteiligten Personen in Form von privaten Nachrichten, Blogs, Kommentaren oder eines Forums gefunden werden.
+
+\section{Details zur Entwicklung}
+
+Grundsätzlich soll sich die Entwicklung der Software am Vorgehensmodell des Prototyping orientieren, da im Rahmen des Praktikums einzelne grundlegende Module des Softwaresystems entwickelt werden, um diese dann anschließend um weitere Module zu erweitern.
+
+Primäres Ziel ist das Erstellen einer PHP-basierten Internetplattform auf der Basis des „symfony“ Frameworks. \cite{symfony} Das Framework ermöglicht eine objektorientierte Implementierung der Plattform nach dem Model-View-Control Entwurfsmuster. 
+Als Datenbanksoftware soll MySQL zum Einsatz kommen. Zum Zugriff auf die Daten wird im symfony-Framework die „Doctrine“ Bibliothek \cite{doctrine} für ein Object-Relational-Mapping verwendet.
+
+Die Plattform soll auf Grundlage einer Objektorientierten Analyse und objektorientiertem Design (auch mit Hilfe von UML-Diagrammen) erstellt werden. Schließlich sollen auch Modultests zur Überprüfung der Softwarequalität verwendet werden.
+
+\begin{thebibliography}{9}
+
+\bibitem{teamrace}
+http://en.wikipedia.org/wiki/Team\_racing
+  
+\bibitem{entwurfsmuster}
+Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides (1995).
+\emph{Design Patterns: Elements of Reusable Object-Oriented Software}.
+Addison-Wesley
+  
+\bibitem{symfony}
+http://www.symfony.com
+
+\bibitem{doctrine}
+http://www.doctrine-project.org/
+
+\end{thebibliography}
+\end{document}
