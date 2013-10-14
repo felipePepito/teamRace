@@ -1,0 +1,11 @@
+All mockups are made with "Pencil" application:
+http://pencil.evolus.vn/
+
+mockupsExternal.ep :
+Mockups for the external (i.e. not logged in) pages.
+
+mockupsAllUsers.ep : 
+Mockups for the pages, which appear identical to all users.
+
+mockupsTeamraceAdmin.ep :
+Mockups for the pages of a teamRace, where the user is teamRace-admin.
