@@ -4,3 +4,5 @@
 /symfony/app/logs/*
 /symfony/vendor/
 /symfony/app/config/parameters.yml
+
+/documentation/planning/database/*.bak
