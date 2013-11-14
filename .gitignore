@@ -6,5 +6,5 @@
 /symfony/app/config/parameters.yml
 
 /documentation/planning/database/*.bak
-
+/documentation/planning/*.swp
 *~

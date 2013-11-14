@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{ngerman}
+\usepackage{amssymb} 
+
+\title{Dokumentation des Projekts 
+\\\emph{teamRace}\bigskip\\
+\large Praktikum zur planmäßigen Entwicklung eines größeren Softwaresystems\bigskip\\
+\textbf{Documentation of project}
+\\\emph{teamRace}}
+
+\author{Philipp Strobl\\Matrikelnummer 2554775}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Name and intention of teamRace}
+Refer to \cite{teamrace}, explain the idea of sweeping borders between classes and subjects in school (and instead building new borders between teams *g).
+
+Building entities and borders equally exists in the way the software supporting \emph{teamRace} is designed.
+\section{General concepts and ideas of the software design}
+	\begin{itemize}
+	\item Documentation
+		\begin{itemize}
+		\item Standards
+		\item (Class-/ Layer-/ Application) Interface description 
+		\item Description of properties and functions
+		\end{itemize}
+	\item 3(/n)-Tier Concept
+		\begin{enumerate}
+		\item Layout / Illustration layer
+		\item Controller (Interface of \textbf{1} [central unit] : \textbf{n}  [devices])
+		\item Model (Persistent data)
+			\begin{itemize}
+			\item Relational database (SQL or alternatives?)
+			\item Object relational mapping
+			\item Different views according to security layers
+				\begin{itemize}
+				\item Public Access (only read, write only at statistical tables)
+				\item User, Teamleader, Tutor, initiator (read and add data only where user is related to)
+				\item Admin (read and add at all tables)
+				\item SuperUser (modify existing data)
+				\end{itemize}
+			\end{itemize}
+		\item[*] Discussion (MVC?)
+		\end{enumerate}
+	\item Persistent user actions
+		\begin{itemize}
+		\item Wrap actions of user into objects and save/retrieve them \cite{entwurfsmuster}
+		\item Facilitate Undo
+		\end{itemize}
+	\item Protocol used for Connection to Devices (HTTP, SSL)
+	\item Identification of User
+	\item Programming languages, Markup languages
+		\begin{itemize}
+		\item Motivation of the choice
+		\item Coding Standards
+		\item Documentation
+		\end{itemize}
+	\item Libraries
+	\item Exception handling
+		\begin{itemize}
+		\item Which exceptions should be caught?
+		\item How to log errors
+		\end{itemize}
+	\item Security
+		\begin{itemize}
+		\item Application layer, graduated API (different Protocols)
+		\item Hierarchy:
+			\begin{enumerate}
+			\item Public Access (HTTP, only GET)
+			\\HTTP Server has only reading access to data
+			\item User, Teamleader, Tutor, initiator (HTTPS, GET and POST)
+			\item Admin, SuperUser (SSH, different userrights)
+			\end{enumerate}
+		\end{itemize}
+	\item Concurrency, Multi-threading
+	\item License
+	\end{itemize}
+
+
+
+\begin{thebibliography}{9}
+
+\bibitem{teamrace}
+http://en.wikipedia.org/wiki/Team\_racing
+  
+\bibitem{entwurfsmuster}
+Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides (1995).
+\emph{Design Patterns: Elements of Reusable Object-Oriented Software}.
+Addison-Wesley
+  
+\bibitem{symfony}
+http://www.symfony.com
+
+\bibitem{doctrine}
+http://www.doctrine-project.org/
+
+\end{thebibliography}
+\end{document}
