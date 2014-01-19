@@ -36,7 +36,7 @@ Building entities and borders equally exists in the way the software supporting 
 		\item Controller (Interface of \textbf{1} [central unit] : \textbf{n}  [devices])
 		\item Model (Persistent data)
 			\begin{itemize}
-			\item Relational database (SQL or alternatives?)
+			\item Relational database (SQL or NOSQL?)
 			\item Object relational mapping
 			\item Different views according to security layers
 				\begin{itemize}
@@ -46,7 +46,7 @@ Building entities and borders equally exists in the way the software supporting 
 				\item SuperUser (modify existing data)
 				\end{itemize}
 			\end{itemize}
-		\item[*] Discussion (MVC?)
+		\item[(+)] Discussion (MVC?)
 		\end{enumerate}
 	\item Persistent user actions
 		\begin{itemize}
@@ -54,7 +54,7 @@ Building entities and borders equally exists in the way the software supporting 
 		\item Facilitate Undo
 		\end{itemize}
 	\item Protocol used for Connection to Devices (HTTP, SSL)
-	\item Identification of User
+	\item Identification of User, Session Management
 	\item Programming languages, Markup languages
 		\begin{itemize}
 		\item Motivation of the choice
@@ -62,11 +62,20 @@ Building entities and borders equally exists in the way the software supporting 
 		\item Documentation
 		\end{itemize}
 	\item Libraries
+		\begin{itemize}
+		\item Motivation of the choice
+			\begin{itemize}
+			\item Encapsulating the generation of HTML-Code (JSF, GWT, Wt)
+			\item 'Embedding' dynamic content (php, jsp)
+			\end{itemize}
+		\item Action based or Component based Frameworks?
+		\end{itemize}
 	\item Exception handling
 		\begin{itemize}
 		\item Which exceptions should be caught?
 		\item How to log errors
 		\end{itemize}
+	\item Validation
 	\item Security
 		\begin{itemize}
 		\item Application layer, graduated API (different Protocols)
@@ -79,6 +88,7 @@ Building entities and borders equally exists in the way the software supporting 
 			\end{enumerate}
 		\end{itemize}
 	\item Concurrency, Multi-threading
+	\item Testing
 	\item License
 	\end{itemize}
 
