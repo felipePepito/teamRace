@@ -8,3 +8,4 @@
 /documentation/planning/database/*.bak
 /documentation/planning/*.swp
 *~
+*.pdf
