@@ -1,0 +1,4 @@
+team_race_external:
+    resource: "@TeamRaceExternalBundle/Resources/config/routing.xml"
+    prefix:   /
+
