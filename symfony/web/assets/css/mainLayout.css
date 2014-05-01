@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+body, a, p { font-size: 12px; font-family: sans-serif; }
+
+div#navigation { top: 15px; margin: auto; width: 800px; padding: 10px; border-bottom: 1px solid#e7e7e7; }
+div#content { top: 15px; margin: auto; width: 800px; background: #fcfcfb; padding: 10px; }
+
+p { color: #444; }
+
+a { text-decoration: none; color: navy; font-weight: bold;}
+a#navigationHome { font-size: 14px; color: #335; }
+a.navigationItem { }
+
+span.navigationSpacer { display: inline-block; width: 15px; }
