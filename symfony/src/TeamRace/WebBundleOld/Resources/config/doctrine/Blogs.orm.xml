@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="TeamRace\WebBundle\Entity\Blogs" table="blogs">
+    <indexes>
+      <index name="fk_blogs_1_idx" columns="id_teamrace"/>
+    </indexes>
+    <id name="idBlog" type="integer" column="id_blog">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="headline" type="string" column="headline" length="100" nullable="false"/>
+    <field name="text" type="string" column="text" length="1000" nullable="false"/>
+    <many-to-one field="idTeamrace" target-entity="Teamraces">
+      <join-columns>
+        <join-column name="id_teamrace" referenced-column-name="id_teamrace"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
