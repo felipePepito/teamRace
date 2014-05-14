@@ -3,11 +3,12 @@
 namespace TeamRace\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
  */
-class User
+class User implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var string
@@ -377,4 +378,115 @@ class User
     {
         return $this->idTeamrace;
     }
+    
+    
+
+
+    // *******************************************************
+    // ***** Implementation of the AdvancedUserInterface *****
+    // *******************************************************
+    
+    
+    /**
+     * @inheritDoc
+     */
+    public function isAccountNonExpired()
+    {
+    	return true;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function isAccountNonLocked()
+    {
+    	return true;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function isCredentialsNonExpired()
+    {
+    	return true;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function isEnabled()
+    {
+    	return $this->getActive();
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+    	return $this->email;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+    	return "";
+    	//return $this->pwSalt;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getPassword()
+    {
+    	return $this->pw;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+    	return array('ROLE_USER');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+    }
+    
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+    	return serialize(array(
+    			$this->idUser,
+    			$this->email,
+    			$this->pw,
+    			$this->active,
+    			// see section on salt below
+    			// $this->salt,
+    	));
+    }
+    
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+    	list (
+    			$this->idUser,
+    			$this->email,
+    			$this->pw,
+    			$this->active,
+    			// see section on salt below
+    			// $this->salt
+    	) = unserialize($serialized);
+    }
+    
 }

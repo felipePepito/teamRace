@@ -1,4 +1,4 @@
-{% extends 'TeamRaceWebBundle::layout.html.twig' %}
+{% extends 'TeamRaceWebBundle:External:_layout.html.twig' %}
 
 {% block content %}
 	
@@ -6,7 +6,7 @@
 	    <div>{{ error.message }}</div>
 	{% endif %}
 	<br>
-	<form action="{{ path('TeamRaceExternalLoginCheck') }}" method="post">
+	<form action="{{ path('loginCheck') }}" method="post">
 	<table cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td><label for="username">E-mail address:</label>&nbsp;</td>

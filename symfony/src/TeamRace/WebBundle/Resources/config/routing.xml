@@ -1,20 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<routes xmlns="http://symfony.com/schema/routing"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
-    <route id="TeamRaceExternalIndex" pattern="/">
-    	<default key="_controller">TeamRaceWebBundle:External:index</default>
-    </route>
-    <route id="TeamRaceExternalAbout" pattern="/about">
-    	<default key="_controller">TeamRaceWebBundle:External:about</default>
-    </route>
-    <route id="TeamRaceExternalLogin" pattern="/login">
-    	<default key="_controller">TeamRaceWebBundle:External:login</default>
-    </route>
-    <route id="TeamRaceExternalRegister" pattern="/register">
-    	<default key="_controller">TeamRaceWebBundle:External:register</default>
-    </route>
-    <route id="TeamRaceExternalLoginCheck" pattern="/login_check">
-    </route>
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+  
+  <!-- External, not logged in -->
+  
+  <route id="index" pattern="/">
+    <default key="_controller">TeamRaceWebBundle:External:index</default>
+  </route>
+  
+  <route id="externalIndex" pattern="/{_locale}/">
+    <default key="_controller">TeamRaceWebBundle:External:index</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="externalAbout" pattern="/{_locale}/about">
+    <default key="_controller">TeamRaceWebBundle:External:about</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="externalRegister" pattern="/{_locale}/register">
+    <default key="_controller">TeamRaceWebBundle:External:register</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  
+  <!-- Authentication -->
+  
+  <route id="login" pattern="/{_locale}/login">
+    <default key="_controller">TeamRaceWebBundle:External:login</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="loginCheck" pattern="/login_check">
+  </route>
+  
+  <route id="logout" pattern="/logout">
+  </route>
+  
+  
+  <!-- User -->
+  
+  <route id="userHome" pattern="/{_locale}/home">
+    <default key="_controller">TeamRaceWebBundle:User:home</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
 </routes>

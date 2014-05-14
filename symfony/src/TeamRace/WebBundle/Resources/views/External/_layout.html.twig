@@ -1,0 +1,21 @@
+{% extends '::TeamRace.html.twig' %}
+
+{% block navigation %}
+
+<a id="navigationHome" href="{{ url('externalIndex') }}">teamRace</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('externalAbout') }}">about</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('login') }}">login</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('externalRegister') }}">register</a><span class="navigationSpacer"></span>
+
+<span class="navigationSpacer"></span>
+<span class="navigationSpacer"></span>
+<span class="navigationSpacer"></span>
+
+<span id="navigationLocale">
+	{{ "Choose language:"|trans }}
+	&nbsp;
+	<a class="navigationLocaleSwitch" id="de">de</a>
+	<a class="navigationLocaleSwitch" id="en">en</a>
+</span>
+
+{% endblock %}

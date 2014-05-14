@@ -1,4 +1,4 @@
-{% extends 'TeamRaceWebBundle::layout.html.twig' %}
+{% extends 'TeamRaceWebBundle:External:_layout.html.twig' %}
 
 {% block content %}
 <p>
@@ -7,11 +7,13 @@
 
 <p>
 {{ 'This software is designed as a service for teamRaces.'|trans }}<br>
-<span style="color:black">{{ 'What is a teamRace?.'|trans }}</span><br>
+<span style="color:black">{{ 'What is a teamRace?'|trans }}</span><br>
 {{ 'It is thought to be a great, interdisciplinary competition, consisting of several challenges and teams. '|trans }}
 </p>
 
-<p>Check out the 
-<a href="{{ url('TeamRaceExternalAbout') }}">about</a> page
-</p>
+{% set about %}
+<a href="{{ url('externalAbout') }}">about</a> 
+{% endset %}
+
+<p>{{ 'Check out the ' + about + 'page'|trans }}</p>
 {% endblock %}
