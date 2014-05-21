@@ -1,0 +1,117 @@
+Zusammenfassung ORM
+
+Quelle:
+Doctrine Documentation [Version x]
+http://docs.doctrine-project.org/en/2.0.x/reference
+
+(2) Architektur
+
+Entities als Objekte in PHP, die über einen 
+Entity-Manager mit äquivalenten Tabelleneinträgen in der Datenbank verknüpft sind.
+Dazu besitzen Entities einen der vier Zustände 
+
+NEW - keine persistente Identität, nicht mit dem Entity-Manager (EM) verknüpft 
+MANAGED - persistenz wird vom EM verwaltet
+DETACHED - persistente Identität, jedoch nicht (mehr) mit EM verknüpft
+REMOVED - persistente Identität, bei der nächsten Transaktion vom EM zu entfernen
+
+*doctrine 	benutzt Collections (PHP Objekte ~ Java Utils, in PHP noch nicht in den sprachstandard integriert)
+*doctrine 	'Serializing entities can be problematic and is not really recommended'
+			dementsprechend darf bei symfony2 das user-objekt nicht selbst-referenzierend sein, da es sonst zu 
+			problemen kommt. (Symfony2 benutzt die serialisation von user-objekten für das management der persistenten sessions)
+			-> siehe 'User entity with one-to-one relation and serialization' - https://groups.google.com/forum/#!msg/symfony2/iL8C2hSMAfI/7a5aUooTpTsJ
+			[ __sleep and __wakeup sind php-fkt. die vor - bzw. nach der serialisierung aufgerufen werden, 
+			  in dem fall (user sf2) werden id, email, pw, salt gezieltausgegeben]
+_____
+
+UnitOfWork (UOW) ist ein Object, welches das 'unit of work pattern' implementiert 
+-> siehe http://martinfowler.com/eaaCatalog/unitOfWork.html
+
+eine UOW wird vom EM generiert, 
+um eine geeignete Transaktions-Strategie für die persistierung der Daten zu erarbeiten, und diese durchzuführen.
+_____
+
+Transactional write-behind
+
+Konzept, nach dem einzelne Änderungen an Objekten zu Transaktionen zusammengefasst und zu einem 
+speziell definierten Zeitpunkt durchgeführt werden (Aufruf der Methode flush() des EM) 
+_____
+
+(3) configuration
+
+Lazy Loading, Proxy Objects
+
+Proxy Objekte werden benutzt, um Referenzen zu Objekten herzustellen, deren Identifier bekannt ist, 
+bzw. um Entitäten aus der Datenbank laden zu können, ohne gleichzeitig alle referenzierten Objekte laden zu müssen
+(lazy loading)
+
+http://docs.doctrine-project.org/en/2.0.x/reference/configuration.html
+_____
+
+(4) basic mapping
+
+Mapping Metadata
+
+Um Metadaten für das Mapping bereitzustellen bietet 
+*doctrine mehrere Möglichkeiten:
+- Annotationen für eine direkte Einbindung der Metadaten in die Klassendefinition der Entities
+- Auslagerung der Metadaten in xml oder yml Konfigurationsdateien
+
+Anmerkung: 
+Annotationen sind als sprachliches Konstrukt noch nicht in PHP 5.x integriert, 
+insofern bedient sich Doctrine einer erweiterten Implementierung des 'DocBlock' Parsers
+ 
+https://wiki.php.net/rfc/annotations-in-docblock
+https://wiki.php.net/ideas/php6 
+http://www.phpdoc.org
+_____
+
+Doctrine Mapping Basistypen
+
+*doctrine unterstützt das Mapping von PHP- zu SQL basis-Typen wie
+string, int, float, boolean, datetime, etc.
+sowie die Verwendung verschiedener Eigenschaften (length, ..) und Constraints (nullable, ..).
+
+Als 'Identifier Generation Strategies' stellt *doctrine die Optionen
+SEQUENCE -
+IDENTITY -
+AUTO - verwendet die bevorzugte Strategie der SQL-Implementierung 
+_____
+ 
+(5) Association mapping
+
+Uni-directional vs. Bi-directional
+Eine bidirektionale Verknüpfung ist dadurch gekennzeichnet, 
+dass beide Seiten der Verknüpfung von der jeweils anderen 'wissen', also eine Referenz auf das 
+andere Objekt besitzen.
+Demgegenüber besitzt bei einer unidirektionalen Verknüfung nur eine Seite der Assoziation 
+eine Referenz auf die verknüpfte Entität.
+
+Owning side & inverse side
+
+Um Assoziationen zwischen Entities auf Datenbanken abzubilden, wird technisch das Konzept von
+owning und inverting sides realisiert. [...]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 

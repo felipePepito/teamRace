@@ -1,0 +1,43 @@
+Alternative PHP-Cache (APC)
+
+(?)Symfony benutzt den APC.
+
+Um das zeitaufwendige Kompilieren von PHP-Skripten bei wiederkehrender Verwendung zu ersparen, werden
+die bereits kompilierten Quelltexte zwischengespeichert. 
+Außerdem bietet der APC einen 'User-Cache', der das Zwischenspeichern von Objekten 
+im Shared-Memory des Webservers ermöglicht.
+
+Dadurch kann die Serverlast sowie die Antwortzeit des Servers
+bei häufig wiederkehrenden gleichen Anfragen deutlich verringert werden.
+
+Quellen:
+http://php.net/manual/en/book.apc.php
+http://de.wikipedia.org/wiki/Alternative_PHP_Cache
+_____
+
+Class-Loader
+
+Um die Einbindung und Kompilierung von bereits übersetzten Klassen zu umgehen, 
+bietet das Sf2 framework eine Komponente (The PSR-0 Class Loader), die automatisch
+(die Benutzung bestimmter Naming Conventions vorausgesetzt) nach Klassen sucht und
+sie einbindet, sobald sie mittels 'use' deklariert wurden.
+
+*doctrine wird ducht SF2 SE so konfiguriert, 
+[ AnnotationRegistry::registerLoader(array($loader, 'loadClass')) ]
+dass der gleiche Classloader auch für Doctrine verwendet wird
+
+http://symfony.com/doc/current/components/class_loader/index.html
+http://php.net/manual/en/language.oop5.autoload.php
+
+_____
+
+Symfony2 Runlevels
+
+Symfony bietet (wie auch Doctrine) verschiedene Modi (developmental, productive, test) 
+mit unterschiedlicher Konfigurationsparametern, 
+um caching zu (de-)aktivieren und damit den Entwickler von der Notwendigkeit, den Applikations-Cache
+nach einer Veränderung sensibler Teile der Applikation (wie der Datenbankanbindung) zu löschen und damit
+Laufzeitfehler zu vermeiden.
+
+http://symfony.com/doc/current/cookbook/configuration/environments.html
+http://docs.doctrine-project.org/en/2.0.x/reference/configuration.html
