@@ -37,4 +37,5 @@ security:
         - { path: ^/(en|de)/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(en|de)/about$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(en|de)/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/languageSwitch/(en|de), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }

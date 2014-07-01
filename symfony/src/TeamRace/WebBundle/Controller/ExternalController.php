@@ -44,5 +44,19 @@ class ExternalController extends Controller {
 		$content = $this->renderView('TeamRaceWebBundle:External:register.html.twig');
 		return new Response($content);
 	}
+	
+	public function languageSwitchAction($locale) {
+		
+		
+		$request = $this->getRequest();
+		$referer = $request->headers->get('referer'); 
+		$languages = array("/\/de\//", "/\/en\//");
+		
+		$redirect = preg_replace($languages, "/".$locale."/", $referer);
+		
+		return $this->redirect($redirect);
+		
+	}
+	
 
 }

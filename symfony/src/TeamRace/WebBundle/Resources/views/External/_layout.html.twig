@@ -14,8 +14,8 @@
 <span id="navigationLocale">
 	{{ "Choose language:"|trans }}
 	&nbsp;
-	<a class="navigationLocaleSwitch" id="de">de</a>
-	<a class="navigationLocaleSwitch" id="en">en</a>
+	<a class="navigationLocaleSwitch" id="de" href="{{ url('languageSwitch', {'locale': 'de'}) }}">de</a>
+	<a class="navigationLocaleSwitch" id="en" href="{{ url('languageSwitch', {'locale': 'en'}) }}">en</a>
 </span>
 
 {% endblock %}
