@@ -7,15 +7,14 @@
     <id name="idTeamrace" type="integer" column="id_teamrace">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="name" type="string" column="name" length="45" nullable="false"/>
-    <field name="description" type="string" column="description" length="200" nullable="true"/>
+    <field name="name" type="string" column="name" length="255" nullable="false"/>
+    <field name="description" type="text" column="description" nullable="true"/>
     <field name="datecreated" type="datetime" column="dateCreated" nullable="false"/>
-    <field name="image" type="string" column="image" length="45" nullable="true"/>
+    <field name="image" type="string" column="image" length="255" nullable="true"/>
     <many-to-one field="idCreator" target-entity="User">
       <join-columns>
         <join-column name="id_creator" referenced-column-name="id_user"/>
       </join-columns>
     </many-to-one>
-    <many-to-many field="idUser" target-entity="User" mapped-by="idTeamrace"/>
   </entity>
 </doctrine-mapping>

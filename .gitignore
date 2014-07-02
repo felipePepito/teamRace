@@ -9,3 +9,8 @@
 /documentation/planning/*.swp
 *~
 *.pdf
+
+.buildpath
+.project
+.settings/
+

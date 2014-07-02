@@ -5,9 +5,9 @@ namespace TeamRace\WebBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * UserTeam
+ * UserTeamrace
  */
-class UserTeam
+class UserTeamrace
 {
     /**
      * @var integer
@@ -17,12 +17,12 @@ class UserTeam
     /**
      * @var integer
      */
-    private $idUserTeam;
+    private $idUserTeamrace;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Teams
+     * @var \TeamRace\WebBundle\Entity\Teamraces
      */
-    private $idTeam;
+    private $idTeamrace;
 
     /**
      * @var \TeamRace\WebBundle\Entity\User
@@ -34,7 +34,7 @@ class UserTeam
      * Set role
      *
      * @param integer $role
-     * @return UserTeam
+     * @return UserTeamrace
      */
     public function setRole($role)
     {
@@ -54,43 +54,43 @@ class UserTeam
     }
 
     /**
-     * Get idUserTeam
+     * Get idUserTeamrace
      *
      * @return integer 
      */
-    public function getIdUserTeam()
+    public function getIdUserTeamrace()
     {
-        return $this->idUserTeam;
+        return $this->idUserTeamrace;
     }
 
     /**
-     * Set idTeam
+     * Set idTeamrace
      *
-     * @param \TeamRace\WebBundle\Entity\Teams $idTeam
-     * @return UserTeam
+     * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
+     * @return UserTeamrace
      */
-    public function setIdTeam(\TeamRace\WebBundle\Entity\Teams $idTeam = null)
+    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamraces $idTeamrace = null)
     {
-        $this->idTeam = $idTeam;
+        $this->idTeamrace = $idTeamrace;
 
         return $this;
     }
 
     /**
-     * Get idTeam
+     * Get idTeamrace
      *
-     * @return \TeamRace\WebBundle\Entity\Teams 
+     * @return \TeamRace\WebBundle\Entity\Teamraces 
      */
-    public function getIdTeam()
+    public function getIdTeamrace()
     {
-        return $this->idTeam;
+        return $this->idTeamrace;
     }
 
     /**
      * Set idUser
      *
      * @param \TeamRace\WebBundle\Entity\User $idUser
-     * @return UserTeam
+     * @return UserTeamrace
      */
     public function setIdUser(\TeamRace\WebBundle\Entity\User $idUser = null)
     {

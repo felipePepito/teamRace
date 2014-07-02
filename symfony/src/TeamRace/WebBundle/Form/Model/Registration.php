@@ -7,7 +7,16 @@ use TeamRace\WebBundle\Entity\User;
 
 class Registration 
 {
+	/**
+	 * @Assert\Type(type="TeamRace\WebBundle\Entity\User")
+	 * @Assert\Valid()
+	 */
 	protected $user;
+	
+	/**
+	 * @Assert\NotBlank()
+	 * @Assert\True()
+	 */
 	protected $termsAccepted;
 	
 	public function setUser(User $user)
@@ -19,6 +28,7 @@ class Registration
 	{
 		return $this->user;
 	}
+	
 	
 	public function getTermsAccepted()
 	{

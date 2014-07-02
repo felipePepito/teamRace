@@ -7,26 +7,16 @@
     <id name="idUser" type="integer" column="id_user">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="email" type="string" column="email" length="45" nullable="false"/>
-    <field name="firstName" type="string" column="first_name" length="45" nullable="false"/>
-    <field name="lastName" type="string" column="last_name" length="45" nullable="false"/>
-    <field name="pw" type="string" column="pw" length="64" nullable="false"/>
-    <field name="pwSalt" type="blob" column="pw_salt" nullable="false"/>
+    <field name="email" type="string" column="email" length="255" nullable="false"/>
+    <field name="firstName" type="string" column="first_name" length="255" nullable="false"/>
+    <field name="lastName" type="string" column="last_name" length="255" nullable="false"/>
+    <field name="password" type="string" column="password" length="255" nullable="false"/>
     <field name="active" type="integer" column="active" nullable="false"/>
     <field name="accountCreated" type="datetime" column="account_created" nullable="false"/>
-    <field name="firstLogin" type="datetime" column="first_login" nullable="true"/>
+    <field name="passwordRequestedAt" type="datetime" column="password_requested_at" nullable="true"/>
+    <field name="confirmationToken" type="string" column="confirmation_token" length="255" nullable="true"/>
     <field name="lastLogin" type="datetime" column="last_login" nullable="true"/>
-    <field name="image" type="string" column="image" length="45" nullable="true"/>
-    <field name="description" type="string" column="description" length="200" nullable="true"/>
-    <many-to-many field="idTeamrace" target-entity="Teamraces" inversed-by="idUser">
-      <join-table name="user_teamrace">
-        <join-columns>
-          <join-column name="id_user" referenced-column-name="id_user"/>
-        </join-columns>
-        <inverse-join-columns>
-          <join-column name="id_teamrace" referenced-column-name="id_teamrace"/>
-        </inverse-join-columns>
-      </join-table>
-    </many-to-many>
+    <field name="image" type="string" column="image" length="255" nullable="true"/>
+    <field name="description" type="text" column="description" nullable="true"/>
   </entity>
 </doctrine-mapping>

@@ -8,7 +8,7 @@
     <id name="idMessage" type="integer" column="id_message">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="text" type="string" column="text" length="45" nullable="false"/>
+    <field name="text" type="text" column="text" nullable="false"/>
     <field name="date" type="datetime" column="date" nullable="false"/>
     <many-to-one field="idRecipient" target-entity="User">
       <join-columns>

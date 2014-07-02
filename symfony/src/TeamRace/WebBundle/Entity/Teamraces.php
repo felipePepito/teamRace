@@ -39,18 +39,6 @@ class Teamraces
      */
     private $idCreator;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $idUser;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->idUser = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Set name
@@ -175,38 +163,5 @@ class Teamraces
     public function getIdCreator()
     {
         return $this->idCreator;
-    }
-
-    /**
-     * Add idUser
-     *
-     * @param \TeamRace\WebBundle\Entity\User $idUser
-     * @return Teamraces
-     */
-    public function addIdUser(\TeamRace\WebBundle\Entity\User $idUser)
-    {
-        $this->idUser[] = $idUser;
-
-        return $this;
-    }
-
-    /**
-     * Remove idUser
-     *
-     * @param \TeamRace\WebBundle\Entity\User $idUser
-     */
-    public function removeIdUser(\TeamRace\WebBundle\Entity\User $idUser)
-    {
-        $this->idUser->removeElement($idUser);
-    }
-
-    /**
-     * Get idUser
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getIdUser()
-    {
-        return $this->idUser;
     }
 }

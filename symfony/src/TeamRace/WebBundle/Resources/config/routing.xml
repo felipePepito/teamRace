@@ -22,12 +22,10 @@
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="test" pattern="/test">
-    <default key="_controller">TeamRaceWebBundle:External:test</default>
+  <route id="createAccount" pattern="/{_locale}/register/create">
+    <default key="_controller">TeamRaceWebBundle:External:createAccount</default>
+    <requirement key="_locale">en|de</requirement>
   </route>
-  
-  
-  
   <!-- Authentication -->
   
   <route id="login" pattern="/{_locale}/login">
@@ -49,6 +47,25 @@
     <requirement key="_locale">en|de</requirement>
   </route>
   
+  <route id="userProfile" pattern="/{_locale}/profile">
+    <default key="_controller">TeamRaceWebBundle:User:profile</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="userTeamRaces" pattern="/{_locale}/teamRaces">
+    <default key="_controller">TeamRaceWebBundle:User:teamRaces</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="userCreateTeamRace" pattern="/{_locale}/createTeamRace">
+    <default key="_controller">TeamRaceWebBundle:User:createTeamRace</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="userAbout" pattern="/{_locale}/userAbout">
+    <default key="_controller">TeamRaceWebBundle:User:about</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
   
   <route id="languageSwitch" pattern="/languageSwitch/{locale}">
     <default key="_controller">TeamRaceWebBundle:External:languageSwitch</default>

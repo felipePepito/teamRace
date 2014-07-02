@@ -11,7 +11,7 @@
     </id>
     <field name="date" type="datetime" column="date" nullable="true"/>
     <field name="maxPoints" type="float" column="max_points" precision="10" scale="0" nullable="true"/>
-    <field name="description" type="string" column="description" length="200" nullable="true"/>
+    <field name="description" type="text" column="description" nullable="true"/>
     <many-to-one field="idTutor" target-entity="User">
       <join-columns>
         <join-column name="id_tutor" referenced-column-name="id_user"/>

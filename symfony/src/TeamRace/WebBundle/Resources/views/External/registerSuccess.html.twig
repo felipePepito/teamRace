@@ -1,13 +1,14 @@
 {% extends 'TeamRaceWebBundle:External:_layout.html.twig' %}
 
 {% block content %}
-{{ trans 'Congratulations, you just registered successfully' }}
+{{ 'Congratulations, you just registered successfully' | trans }}
 
-{% $login = 'log in'|trans %}
-{% $loginTag = ['<a href=\"', url('login'), '\">', $login, '</a>'] %}
+{#}
+{% login = 'log in'|trans %}
+{% loginTag = ['<a href=\"', url('login'), '\">', $login, '</a>'] %}
 
 {% trans %}
 Please {{ $loginTag }} to continue
 {% endtrans %}
-
+#}
 {% endblock %}
