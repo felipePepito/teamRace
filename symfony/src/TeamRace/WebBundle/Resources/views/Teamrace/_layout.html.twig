@@ -24,7 +24,7 @@
 {% block navigationTeamrace %}
 
 <a class="navigationTeamraceItem" href="{{ url('teamraceHome', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ teamrace.name }}</a><span class="navigationSpacer"></span>
-<a class="navigationTeamraceItem" href="{{ url('userProfile') }}">challenges</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('teamraceChallenges', parameters={'idTeamrace': teamrace.idTeamrace}) }}">challenges</a><span class="navigationSpacer"></span>
 <a class="navigationTeamraceItem" href="{{ url('userTeamRaces') }}">teams</a><span class="navigationSpacer"></span>
 <a class="navigationTeamraceItem" href="{{ url('logout') }}">members</a><span class="navigationSpacer"></span>
 <a class="navigationTeamraceItem" href="{{ url('logout') }}">standings</a><span class="navigationSpacer"></span>

@@ -5,5 +5,20 @@
     <default key="_controller">TeamRaceWebBundle:Teamrace:home</default>
     <requirement key="_locale">en|de</requirement>
   </route>
+  
+  <route id="teamraceChallenges" pattern="/{_locale}/teamrace/{idTeamrace}/challenges">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:challenges</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="teamraceCreateChallenge" pattern="/{_locale}/teamrace/{idTeamrace}/challenges/create">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:createChallenge</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="teamraceDoCreateChallenge" pattern="/{_locale}/teamrace/{idTeamrace}/challenges/docreate">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:doCreateChallenge</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
     
 </routes>

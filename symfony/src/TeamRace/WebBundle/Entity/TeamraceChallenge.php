@@ -35,12 +35,12 @@ class TeamraceChallenge
     private $idTutor;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Challenges
+     * @var \TeamRace\WebBundle\Entity\Challenge
      */
     private $idChallenge;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Teamraces
+     * @var \TeamRace\WebBundle\Entity\Teamrace
      */
     private $idTeamrace;
 
@@ -153,7 +153,7 @@ class TeamraceChallenge
      * @param \TeamRace\WebBundle\Entity\Challenges $idChallenge
      * @return TeamraceChallenge
      */
-    public function setIdChallenge(\TeamRace\WebBundle\Entity\Challenges $idChallenge = null)
+    public function setIdChallenge(\TeamRace\WebBundle\Entity\Challenge $idChallenge = null)
     {
         $this->idChallenge = $idChallenge;
 
@@ -176,7 +176,7 @@ class TeamraceChallenge
      * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
      * @return TeamraceChallenge
      */
-    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamraces $idTeamrace = null)
+    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamrace $idTeamrace = null)
     {
         $this->idTeamrace = $idTeamrace;
 

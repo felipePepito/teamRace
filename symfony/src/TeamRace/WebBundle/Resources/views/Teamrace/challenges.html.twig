@@ -1,0 +1,8 @@
+{% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
+
+{% block content %}
+<p>{{ "Teamrace" | trans }} 
+{{ teamrace.name }}</p>
+<a href="{{ url('teamraceCreateChallenge', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ "Create a new challenge" | trans }}</a>
+
+{% endblock %}
