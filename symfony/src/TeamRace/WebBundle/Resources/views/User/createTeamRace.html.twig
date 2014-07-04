@@ -1,6 +1,5 @@
 {% extends "TeamRaceWebBundle:User:_layout.html.twig" %}
 
 {% block content %}
-<p>{{ "You are now logged in!" | trans }} </p>
-<p><a href="{{ url('userCreateTeamRace') }}">{{ "Create a new teamRace" | trans }}</a>
+{{ form(form) }}
 {% endblock %}

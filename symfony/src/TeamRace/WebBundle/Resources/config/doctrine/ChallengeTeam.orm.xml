@@ -9,12 +9,12 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="points" type="float" column="points" precision="10" scale="0" nullable="true"/>
-    <many-to-one field="idTeam" target-entity="Teams">
+    <many-to-one field="idTeam" target-entity="Team">
       <join-columns>
         <join-column name="id_team" referenced-column-name="id_team"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="idChallenge" target-entity="Challenges">
+    <many-to-one field="idChallenge" target-entity="Challenge">
       <join-columns>
         <join-column name="id_challenge" referenced-column-name="id_challenge"/>
       </join-columns>

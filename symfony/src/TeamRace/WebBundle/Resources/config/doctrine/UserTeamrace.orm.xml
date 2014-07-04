@@ -9,7 +9,7 @@
       <generator strategy="IDENTITY"/>
     </id>
     <field name="role" type="integer" column="role" nullable="false"/>
-    <many-to-one field="idTeamrace" target-entity="Teamraces">
+    <many-to-one field="idTeamrace" target-entity="Teamrace">
       <join-columns>
         <join-column name="id_teamrace" referenced-column-name="id_teamrace"/>
       </join-columns>

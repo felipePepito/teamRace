@@ -17,12 +17,12 @@
         <join-column name="id_tutor" referenced-column-name="id_user"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="idChallenge" target-entity="Challenges">
+    <many-to-one field="idChallenge" target-entity="Challenge">
       <join-columns>
         <join-column name="id_challenge" referenced-column-name="id_challenge"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="idTeamrace" target-entity="Teamraces">
+    <many-to-one field="idTeamrace" target-entity="Teamrace">
       <join-columns>
         <join-column name="id_teamrace" referenced-column-name="id_teamrace"/>
       </join-columns>

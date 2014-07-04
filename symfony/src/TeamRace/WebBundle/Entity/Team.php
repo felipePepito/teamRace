@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Teams
  */
-class Teams
+class Team
 {
     /**
      * @var string

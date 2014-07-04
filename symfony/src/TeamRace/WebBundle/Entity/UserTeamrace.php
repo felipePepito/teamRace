@@ -11,6 +11,10 @@ class UserTeamrace
 {
     /**
      * @var integer
+     * Values:
+     * 1 => Admin
+     * 2 => Tutor
+     * 3 => User
      */
     private $role;
 
@@ -69,7 +73,7 @@ class UserTeamrace
      * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
      * @return UserTeamrace
      */
-    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamraces $idTeamrace = null)
+    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamrace $idTeamrace = null)
     {
         $this->idTeamrace = $idTeamrace;
 

@@ -3,132 +3,93 @@
 namespace TeamRace\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
- *
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="email_UNIQUE", columns={"email"})})
- * @ORM\Entity
+ * @UniqueEntity(fields="email", message="Email already taken")
  */
 class User implements UserInterface
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idUser;
-
-    /**
      * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="first_name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $lastName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $password;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="salt", type="string", length=255, nullable=true)
-     */
-    private $salt;
-
-    /**
      * @var integer
-     *
-     * @ORM\Column(name="active", type="integer", nullable=false)
      */
     private $active;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="account_created", type="datetime", nullable=false)
      */
     private $accountCreated;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
      */
     private $passwordRequestedAt;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="confirmation_token", type="string", length=255, nullable=true)
      */
     private $confirmationToken;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Teamraces", inversedBy="idUser")
-     * @ORM\JoinTable(name="user_teamrace",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="id_teamrace", referencedColumnName="id_teamrace")
-     *   }
-     * )
+     * @var integer
      */
-    private $idTeamrace;
+    private $idUser;
 
-    /**
-     * Constructor
-     */
+    
     public function __construct()
     {
-        $this->idTeamrace = new \Doctrine\Common\Collections\ArrayCollection();
+    	$this->active = 1;
+    	$this->accountCreated = new \DateTime();
+    	// may not be needed, see section on salt below
+    	// $this->salt = md5(uniqid(null, true));
     }
-
 
     /**
      * Set email
@@ -207,7 +168,7 @@ class User implements UserInterface
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 13));
 
         return $this;
     }
@@ -220,29 +181,6 @@ class User implements UserInterface
     public function getPassword()
     {
         return $this->password;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-
-        return $this;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string 
-     */
-    public function getSalt()
-    {
-        return null;//$this->salt;
     }
 
     /**
@@ -415,39 +353,12 @@ class User implements UserInterface
     {
         return $this->idUser;
     }
-
-    /**
-     * Add idTeamrace
-     *
-     * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
-     * @return User
-     */
-    public function addIdTeamrace(\TeamRace\WebBundle\Entity\Teamraces $idTeamrace)
-    {
-        $this->idTeamrace[] = $idTeamrace;
-
-        return $this;
-    }
-
-    /**
-     * Remove idTeamrace
-     *
-     * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
-     */
-    public function removeIdTeamrace(\TeamRace\WebBundle\Entity\Teamraces $idTeamrace)
-    {
-        $this->idTeamrace->removeElement($idTeamrace);
-    }
-
-    /**
-     * Get idTeamrace
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getIdTeamrace()
-    {
-        return $this->idTeamrace;
-    }
+    
+    
+    
+    
+    /** USERINTERFACE **/
+    
     
     /**
      * @inheritDoc
@@ -456,7 +367,16 @@ class User implements UserInterface
     {
     	return $this->email;
     }
-    
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+    	// you *may* need a real salt depending on your encoder
+    	// see section on salt below
+    	return null;
+    }
     
     /**
      * @inheritDoc

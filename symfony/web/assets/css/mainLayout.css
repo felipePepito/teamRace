@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
 
-body, a, p { font-size: 12px; font-family: sans-serif; }
+body, a, p { font-size: 12px; font-family: sans-serif; color: #444;}
 
 div#navigation { 
 	top: 25px; 
@@ -16,6 +16,14 @@ div#navigation {
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 	background: #fbfaff;
+}
+
+div#navigationTeamrace { 
+	margin: auto auto;
+	padding: 0 10px; 
+	width: 800px; 
+	border-left: 0.5px solid #eee;
+	border-right: 0.5px solid #eee;
 }
 
 div#content { 
@@ -43,8 +51,14 @@ span#navigationLocale {
 p { color: #444; }
 
 a { text-decoration: none; color: navy; font-weight: bold;}
+a:HOVER { color: #000; }
 a#navigationHome { font-size: 14px; color: #335; }
 a.navigationItem { }
+
+a.navigationTeamraceItem {
+	font-weight: normal;
+}
+
 a.navigationLocaleSwitch { 
 	border: 0.5px solid #dfdfdf;
 	-webkit-border-radius: 3px;

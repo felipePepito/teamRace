@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Blogs
  */
-class Blogs
+class Blog
 {
     /**
      * @var string

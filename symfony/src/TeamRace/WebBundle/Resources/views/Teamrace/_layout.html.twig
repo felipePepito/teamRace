@@ -1,0 +1,32 @@
+{% extends '::TeamRace.html.twig' %}
+
+{% block navigation %}
+
+<a id="navigationHome" href="{{ url('userHome') }}">home</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userAbout') }}">about</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userProfile') }}">profile</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userTeamRaces') }}">teamRaces</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('logout') }}">logout</a><span class="navigationSpacer"></span>
+
+<span class="navigationSpacer"></span>
+<span class="navigationSpacer"></span>
+<span class="navigationSpacer"></span>
+
+<span id="navigationLocale">
+	{{ "Choose language:"|trans }}
+	&nbsp;
+	<a class="navigationLocaleSwitch" id="de" href="{{ url('languageSwitch', {'locale': 'de'}) }}">de</a>
+	<a class="navigationLocaleSwitch" id="en" href="{{ url('languageSwitch', {'locale': 'en'}) }}">en</a>
+</span>
+
+{% endblock %}
+
+{% block navigationTeamrace %}
+
+<a class="navigationTeamraceItem" href="{{ url('teamraceHome', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ teamrace.name }}</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('userProfile') }}">challenges</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('userTeamRaces') }}">teams</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('logout') }}">members</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('logout') }}">standings</a><span class="navigationSpacer"></span>
+
+{% endblock %}

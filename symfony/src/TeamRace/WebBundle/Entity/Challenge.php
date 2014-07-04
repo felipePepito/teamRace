@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Challenges
  */
-class Challenges
+class Challenge
 {
     /**
      * @var integer

@@ -62,6 +62,11 @@
     <requirement key="_locale">en|de</requirement>
   </route>
   
+  <route id="userDoCreateTeamRace" pattern="/{_locale}/doCreateTeamRace">
+    <default key="_controller">TeamRaceWebBundle:User:doCreateTeamRace</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
   <route id="userAbout" pattern="/{_locale}/userAbout">
     <default key="_controller">TeamRaceWebBundle:User:about</default>
     <requirement key="_locale">en|de</requirement>

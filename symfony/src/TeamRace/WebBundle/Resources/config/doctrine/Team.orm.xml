@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="TeamRace\WebBundle\Entity\Teamraces" table="teamraces">
+  <entity name="TeamRace\WebBundle\Entity\Team" table="team">
     <indexes>
-      <index name="fk_teamrace_1_idx" columns="id_creator"/>
+      <index name="fk_teams_1_idx" columns="id_teamrace"/>
     </indexes>
-    <id name="idTeamrace" type="integer" column="id_teamrace">
+    <id name="idTeam" type="integer" column="id_team">
       <generator strategy="IDENTITY"/>
     </id>
     <field name="name" type="string" column="name" length="255" nullable="false"/>
-    <field name="description" type="text" column="description" nullable="true"/>
-    <field name="datecreated" type="datetime" column="dateCreated" nullable="false"/>
     <field name="image" type="string" column="image" length="255" nullable="true"/>
-    <many-to-one field="idCreator" target-entity="User">
+    <field name="slogan" type="string" column="slogan" length="2048" nullable="true"/>
+    <many-to-one field="idTeamrace" target-entity="Teamrace">
       <join-columns>
-        <join-column name="id_creator" referenced-column-name="id_user"/>
+        <join-column name="id_teamrace" referenced-column-name="id_teamrace"/>
       </join-columns>
     </many-to-one>
   </entity>

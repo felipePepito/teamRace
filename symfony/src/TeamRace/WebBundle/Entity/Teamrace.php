@@ -3,19 +3,23 @@
 namespace TeamRace\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Teamraces
  */
-class Teamraces
+class Teamrace
 {
     /**
      * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $name;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -40,6 +44,11 @@ class Teamraces
     private $idCreator;
 
 
+    public function __construct(\TeamRace\WebBundle\Entity\User $user) {
+    	$this->idCreator = $user;
+    	$this->datecreated = new \DateTime();
+    }
+    
     /**
      * Set name
      *
