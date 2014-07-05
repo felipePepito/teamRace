@@ -10,41 +10,66 @@ use TeamRace\WebBundle\Form\Type\TeamraceChallengeType;
 
 class TeamraceController extends Controller
 {
-    public function homeAction($idTeamrace)
+	
+	/**
+	 * Teamrace object from DB
+	 * @var \TeamRace\WebBundle\Entity\Teamrace
+	 */
+	private $teamrace;
+	
+	/**
+	 * Role of user in teamrace
+	 * 1 => Admin
+	 * 2 => Tutor (not in v 1.0)
+	 * 3 => Player
+	 * @var unknown
+	 */
+	private $role;
+	
+	/**
+	 * User object
+	 * @var \TeamRace\WebBundle\Entity\User
+	 */
+	private $user;
+	
+	/**
+	 * 
+	 */
+	private function initialize($idTeamrace) {
+		
+		$this->user = $this->get('security.context')->getToken()->getUser();
+		
+		$this->teamrace = $this->getDoctrine()
+			->getRepository('TeamRaceWebBundle:Teamrace')
+			->find($idTeamrace);
+		$this->role = $this->getDoctrine()
+			->getRepository('TeamRaceWebBundle:UserTeamrace')
+			->findOneBy(array('teamrace' => $idTeamrace, 'user' => $this->user->getIdUser()));
+	} 
+	
+	
+	public function homeAction($idTeamrace)
     {
-    	
-    	$user = $this->get('security.context')->getToken()->getUser();
-    	
-    	// Retrieve Teamraces that user takes part of
-    	$teamrace = $this->getDoctrine()
-    		->getRepository('TeamRaceWebBundle:Teamrace')
-    		->find($idTeamrace);
+    	$this->initialize($idTeamrace);
     	
     	$content = $this->renderView('TeamRaceWebBundle:Teamrace:home.html.twig',
-			array('teamrace' => $teamrace));
+			array('teamrace' => $this->teamrace));
     	
     	return new Response($content);
     }
     
     public function challengesAction($idTeamrace)
     {
-    	
-    	// Retrieve Teamraces that user takes part of
-    	$teamrace = $this->getDoctrine()
-    	->getRepository('TeamRaceWebBundle:Teamrace')
-    	->find($idTeamrace);
+    	$this->initialize($idTeamrace);
     	
     	$content = $this->renderView('TeamRaceWebBundle:Teamrace:challenges.html.twig',
-			array('teamrace' => $teamrace));
+			array('teamrace' => $this->teamrace));
     	return new Response($content);
     }
     
     public function createChallengeAction($idTeamrace)
     {
-    	// Retrieve Teamraces that user takes part of
-    	$teamrace = $this->getDoctrine()
-    	->getRepository('TeamRaceWebBundle:Teamrace')
-    	->find($idTeamrace);
+    	$this->initialize($idTeamrace);
     	
     	$form = $this->createForm(new TeamraceChallengeType(), new TeamraceChallenge(), array(
     			'action' => $this->generateUrl('teamraceDoCreateChallenge', array('idTeamrace' => $idTeamrace)),
@@ -53,17 +78,14 @@ class TeamraceController extends Controller
     	return $this->render(
     			'TeamRaceWebBundle:Teamrace:createChallenge.html.twig',
     			array(	'form' => $form->createView(),
-    					'teamrace' => $teamrace)
+    					'teamrace' => $this->teamrace)
     	);
     	 
     }
     
     public function doCreateChallengeAction(Request $request, $idTeamrace) {
     
-    	// Retrieve Teamraces that user takes part of
-    	$teamrace = $this->getDoctrine()
-    		->getRepository('TeamRaceWebBundle:Teamrace')
-    		->find($idTeamrace);
+    	$this->initialize($idTeamrace);
     	
     	$form = $this->createForm(new TeamraceChallengeType(), new TeamraceChallenge());
     	 
@@ -82,7 +104,7 @@ class TeamraceController extends Controller
     		$teamraceChallenge = $form->getData();
     		
     		$teamraceChallenge->setTutor($user);
-    		$teamraceChallenge->setTeamrace($teamrace);
+    		$teamraceChallenge->setTeamrace($this->teamrace);
     		$teamraceChallenge->setChallenge($challenge);
     		 
     		$em = $this->getDoctrine()->getManager();
