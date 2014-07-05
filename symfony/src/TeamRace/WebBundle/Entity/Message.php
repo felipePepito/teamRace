@@ -5,41 +5,73 @@ namespace TeamRace\WebBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Messages
+ * Message
+ *
+ * @ORM\Table(name="message", indexes={@ORM\Index(name="sender", columns={"sender"}), @ORM\Index(name="recipient", columns={"recipient"})})
+ * @ORM\Entity
  */
 class Message
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_message", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idMessage;
+
+    /**
      * @var string
+     *
+     * @ORM\Column(name="text", type="text", nullable=false)
      */
     private $text;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
     private $date;
 
     /**
-     * @var integer
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sender", referencedColumnName="id_user")
+     * })
      */
-    private $idMessage;
+    private $sender;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\User
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="recipient", referencedColumnName="id_user")
+     * })
      */
-    private $idRecipient;
+    private $recipient;
+
+
 
     /**
-     * @var \TeamRace\WebBundle\Entity\User
+     * Get idMessage
+     *
+     * @return integer 
      */
-    private $idSender;
-
+    public function getIdMessage()
+    {
+        return $this->idMessage;
+    }
 
     /**
      * Set text
      *
      * @param string $text
-     * @return Messages
+     * @return Message
      */
     public function setText($text)
     {
@@ -62,7 +94,7 @@ class Message
      * Set date
      *
      * @param \DateTime $date
-     * @return Messages
+     * @return Message
      */
     public function setDate($date)
     {
@@ -82,58 +114,48 @@ class Message
     }
 
     /**
-     * Get idMessage
+     * Set sender
      *
-     * @return integer 
+     * @param \TeamRace\WebBundle\Entity\User $sender
+     * @return Message
      */
-    public function getIdMessage()
+    public function setSender(\TeamRace\WebBundle\Entity\User $sender = null)
     {
-        return $this->idMessage;
-    }
-
-    /**
-     * Set idRecipient
-     *
-     * @param \TeamRace\WebBundle\Entity\User $idRecipient
-     * @return Messages
-     */
-    public function setIdRecipient(\TeamRace\WebBundle\Entity\User $idRecipient = null)
-    {
-        $this->idRecipient = $idRecipient;
+        $this->sender = $sender;
 
         return $this;
     }
 
     /**
-     * Get idRecipient
+     * Get sender
      *
      * @return \TeamRace\WebBundle\Entity\User 
      */
-    public function getIdRecipient()
+    public function getSender()
     {
-        return $this->idRecipient;
+        return $this->sender;
     }
 
     /**
-     * Set idSender
+     * Set recipient
      *
-     * @param \TeamRace\WebBundle\Entity\User $idSender
-     * @return Messages
+     * @param \TeamRace\WebBundle\Entity\User $recipient
+     * @return Message
      */
-    public function setIdSender(\TeamRace\WebBundle\Entity\User $idSender = null)
+    public function setRecipient(\TeamRace\WebBundle\Entity\User $recipient = null)
     {
-        $this->idSender = $idSender;
+        $this->recipient = $recipient;
 
         return $this;
     }
 
     /**
-     * Get idSender
+     * Get recipient
      *
      * @return \TeamRace\WebBundle\Entity\User 
      */
-    public function getIdSender()
+    public function getRecipient()
     {
-        return $this->idSender;
+        return $this->recipient;
     }
 }

@@ -5,36 +5,63 @@ namespace TeamRace\WebBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Blogs
+ * Blog
+ *
+ * @ORM\Table(name="blog", indexes={@ORM\Index(name="teamrace", columns={"teamrace"})})
+ * @ORM\Entity
  */
 class Blog
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_blog", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idBlog;
+
+    /**
      * @var string
+     *
+     * @ORM\Column(name="headline", type="string", length=255, nullable=false)
      */
     private $headline;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="text", type="text", nullable=false)
      */
     private $text;
 
     /**
-     * @var integer
+     * @var \Teamrace
+     *
+     * @ORM\ManyToOne(targetEntity="Teamrace")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="teamrace", referencedColumnName="id_teamrace")
+     * })
      */
-    private $idBlog;
+    private $teamrace;
+
+
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Teamraces
+     * Get idBlog
+     *
+     * @return integer 
      */
-    private $idTeamrace;
-
+    public function getIdBlog()
+    {
+        return $this->idBlog;
+    }
 
     /**
      * Set headline
      *
      * @param string $headline
-     * @return Blogs
+     * @return Blog
      */
     public function setHeadline($headline)
     {
@@ -57,7 +84,7 @@ class Blog
      * Set text
      *
      * @param string $text
-     * @return Blogs
+     * @return Blog
      */
     public function setText($text)
     {
@@ -77,35 +104,25 @@ class Blog
     }
 
     /**
-     * Get idBlog
+     * Set teamrace
      *
-     * @return integer 
+     * @param \TeamRace\WebBundle\Entity\Teamrace $teamrace
+     * @return Blog
      */
-    public function getIdBlog()
+    public function setTeamrace(\TeamRace\WebBundle\Entity\Teamrace $teamrace = null)
     {
-        return $this->idBlog;
-    }
-
-    /**
-     * Set idTeamrace
-     *
-     * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
-     * @return Blogs
-     */
-    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamraces $idTeamrace = null)
-    {
-        $this->idTeamrace = $idTeamrace;
+        $this->teamrace = $teamrace;
 
         return $this;
     }
 
     /**
-     * Get idTeamrace
+     * Get teamrace
      *
-     * @return \TeamRace\WebBundle\Entity\Teamraces 
+     * @return \TeamRace\WebBundle\Entity\Teamrace 
      */
-    public function getIdTeamrace()
+    public function getTeamrace()
     {
-        return $this->idTeamrace;
+        return $this->teamrace;
     }
 }

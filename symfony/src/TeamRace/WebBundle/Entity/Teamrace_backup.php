@@ -3,68 +3,41 @@
 namespace TeamRace\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Teamrace
- *
- * @ORM\Table(name="teamrace", indexes={@ORM\Index(name="creator", columns={"creator"})})
- * @ORM\Entity
+ * Teamrace_backup
  */
-class Teamrace
+class Teamrace_backup
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id_teamrace", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idTeamrace;
 
     /**
      * @var string
-     * 
-     * @Assert\NotBlank()
-     * @Assert\Length(max = 255)
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
-     * 
-     * @Assert\NotBlank()
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="dateCreated", type="datetime", nullable=false)
      */
     private $datecreated;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="creator", referencedColumnName="id_user")
-     * })
+     * @var \TeamRace\WebBundle\Entity\User
      */
     private $creator;
-
 
 
     /**
@@ -81,7 +54,7 @@ class Teamrace
      * Set name
      *
      * @param string $name
-     * @return Teamrace
+     * @return Teamrace_backup
      */
     public function setName($name)
     {
@@ -104,7 +77,7 @@ class Teamrace
      * Set description
      *
      * @param string $description
-     * @return Teamrace
+     * @return Teamrace_backup
      */
     public function setDescription($description)
     {
@@ -127,7 +100,7 @@ class Teamrace
      * Set datecreated
      *
      * @param \DateTime $datecreated
-     * @return Teamrace
+     * @return Teamrace_backup
      */
     public function setDatecreated($datecreated)
     {
@@ -150,7 +123,7 @@ class Teamrace
      * Set image
      *
      * @param string $image
-     * @return Teamrace
+     * @return Teamrace_backup
      */
     public function setImage($image)
     {
@@ -173,7 +146,7 @@ class Teamrace
      * Set creator
      *
      * @param \TeamRace\WebBundle\Entity\User $creator
-     * @return Teamrace
+     * @return Teamrace_backup
      */
     public function setCreator(\TeamRace\WebBundle\Entity\User $creator = null)
     {

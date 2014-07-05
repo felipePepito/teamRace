@@ -6,33 +6,59 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * UserTeamrace
+ *
+ * @ORM\Table(name="user_teamrace", indexes={@ORM\Index(name="teamrace", columns={"teamrace"}), @ORM\Index(name="user", columns={"user"})})
+ * @ORM\Entity
  */
 class UserTeamrace
 {
     /**
      * @var integer
-     * Values:
-     * 1 => Admin
-     * 2 => Tutor
-     * 3 => User
-     */
-    private $role;
-
-    /**
-     * @var integer
+     *
+     * @ORM\Column(name="id_user_teamrace", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idUserTeamrace;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Teamraces
+     * @var integer
+     *
+     * @ORM\Column(name="role", type="integer", nullable=false)
      */
-    private $idTeamrace;
+    private $role;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\User
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id_user")
+     * })
      */
-    private $idUser;
+    private $user;
 
+    /**
+     * @var \Teamrace
+     *
+     * @ORM\ManyToOne(targetEntity="Teamrace")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="teamrace", referencedColumnName="id_teamrace")
+     * })
+     */
+    private $teamrace;
+
+
+
+    /**
+     * Get idUserTeamrace
+     *
+     * @return integer 
+     */
+    public function getIdUserTeamrace()
+    {
+        return $this->idUserTeamrace;
+    }
 
     /**
      * Set role
@@ -58,58 +84,48 @@ class UserTeamrace
     }
 
     /**
-     * Get idUserTeamrace
+     * Set user
      *
-     * @return integer 
-     */
-    public function getIdUserTeamrace()
-    {
-        return $this->idUserTeamrace;
-    }
-
-    /**
-     * Set idTeamrace
-     *
-     * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
+     * @param \TeamRace\WebBundle\Entity\User $user
      * @return UserTeamrace
      */
-    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamrace $idTeamrace = null)
+    public function setUser(\TeamRace\WebBundle\Entity\User $user = null)
     {
-        $this->idTeamrace = $idTeamrace;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get idTeamrace
-     *
-     * @return \TeamRace\WebBundle\Entity\Teamraces 
-     */
-    public function getIdTeamrace()
-    {
-        return $this->idTeamrace;
-    }
-
-    /**
-     * Set idUser
-     *
-     * @param \TeamRace\WebBundle\Entity\User $idUser
-     * @return UserTeamrace
-     */
-    public function setIdUser(\TeamRace\WebBundle\Entity\User $idUser = null)
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
-    /**
-     * Get idUser
+     * Get user
      *
      * @return \TeamRace\WebBundle\Entity\User 
      */
-    public function getIdUser()
+    public function getUser()
     {
-        return $this->idUser;
+        return $this->user;
+    }
+
+    /**
+     * Set teamrace
+     *
+     * @param \TeamRace\WebBundle\Entity\Teamrace $teamrace
+     * @return UserTeamrace
+     */
+    public function setTeamrace(\TeamRace\WebBundle\Entity\Teamrace $teamrace = null)
+    {
+        $this->teamrace = $teamrace;
+
+        return $this;
+    }
+
+    /**
+     * Get teamrace
+     *
+     * @return \TeamRace\WebBundle\Entity\Teamrace 
+     */
+    public function getTeamrace()
+    {
+        return $this->teamrace;
     }
 }

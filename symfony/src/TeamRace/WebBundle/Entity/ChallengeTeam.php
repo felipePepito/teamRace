@@ -6,29 +6,59 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ChallengeTeam
+ *
+ * @ORM\Table(name="challenge_team", indexes={@ORM\Index(name="team", columns={"team"}), @ORM\Index(name="challenge", columns={"challenge"})})
+ * @ORM\Entity
  */
 class ChallengeTeam
 {
     /**
-     * @var float
-     */
-    private $points;
-
-    /**
      * @var integer
+     *
+     * @ORM\Column(name="id_challenge_team", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idChallengeTeam;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Teams
+     * @var float
+     *
+     * @ORM\Column(name="points", type="float", precision=10, scale=0, nullable=true)
      */
-    private $idTeam;
+    private $points;
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Challenges
+     * @var \TeamraceChallenge
+     *
+     * @ORM\ManyToOne(targetEntity="TeamraceChallenge")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="challenge", referencedColumnName="id_teamrace_challenge")
+     * })
      */
-    private $idChallenge;
+    private $challenge;
 
+    /**
+     * @var \Team
+     *
+     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="team", referencedColumnName="id_team")
+     * })
+     */
+    private $team;
+
+
+
+    /**
+     * Get idChallengeTeam
+     *
+     * @return integer 
+     */
+    public function getIdChallengeTeam()
+    {
+        return $this->idChallengeTeam;
+    }
 
     /**
      * Set points
@@ -54,58 +84,48 @@ class ChallengeTeam
     }
 
     /**
-     * Get idChallengeTeam
+     * Set challenge
      *
-     * @return integer 
-     */
-    public function getIdChallengeTeam()
-    {
-        return $this->idChallengeTeam;
-    }
-
-    /**
-     * Set idTeam
-     *
-     * @param \TeamRace\WebBundle\Entity\Teams $idTeam
+     * @param \TeamRace\WebBundle\Entity\TeamraceChallenge $challenge
      * @return ChallengeTeam
      */
-    public function setIdTeam(\TeamRace\WebBundle\Entity\Teams $idTeam = null)
+    public function setChallenge(\TeamRace\WebBundle\Entity\TeamraceChallenge $challenge = null)
     {
-        $this->idTeam = $idTeam;
+        $this->challenge = $challenge;
 
         return $this;
     }
 
     /**
-     * Get idTeam
+     * Get challenge
      *
-     * @return \TeamRace\WebBundle\Entity\Teams 
+     * @return \TeamRace\WebBundle\Entity\TeamraceChallenge 
      */
-    public function getIdTeam()
+    public function getChallenge()
     {
-        return $this->idTeam;
+        return $this->challenge;
     }
 
     /**
-     * Set idChallenge
+     * Set team
      *
-     * @param \TeamRace\WebBundle\Entity\Challenges $idChallenge
+     * @param \TeamRace\WebBundle\Entity\Team $team
      * @return ChallengeTeam
      */
-    public function setIdChallenge(\TeamRace\WebBundle\Entity\Challenges $idChallenge = null)
+    public function setTeam(\TeamRace\WebBundle\Entity\Team $team = null)
     {
-        $this->idChallenge = $idChallenge;
+        $this->team = $team;
 
         return $this;
     }
 
     /**
-     * Get idChallenge
+     * Get team
      *
-     * @return \TeamRace\WebBundle\Entity\Challenges 
+     * @return \TeamRace\WebBundle\Entity\Team 
      */
-    public function getIdChallenge()
+    public function getTeam()
     {
-        return $this->idChallenge;
+        return $this->team;
     }
 }

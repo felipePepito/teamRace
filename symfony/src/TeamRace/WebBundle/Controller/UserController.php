@@ -19,7 +19,7 @@ class UserController extends Controller
     	// Retrieve Teamraces that user takes part of
     	$userTeamraces = $this->getDoctrine()
     		->getRepository('TeamRaceWebBundle:UserTeamrace')
-    		->findByIdUser($user);
+    		->findByUser($user);
     	
     	$content = $this->renderView('TeamRaceWebBundle:User:home.html.twig',
 			array('userTeamraces' => $userTeamraces));
@@ -54,10 +54,8 @@ class UserController extends Controller
     
     public function createTeamRaceAction()
     {
-    	$user = $this->get('security.context')->getToken()->getUser();
-    	$teamRace = new Teamrace($user);
     	
-    	$form = $this->createForm(new CreateTeamRaceType(), $teamRace, array(
+    	$form = $this->createForm(new CreateTeamRaceType(), new Teamrace(), array(
     			'action' => $this->generateUrl('userDoCreateTeamRace'),
     	));
     	
@@ -72,21 +70,24 @@ class UserController extends Controller
 
     	$em = $this->getDoctrine()->getManager();
     	
-    	$user = $this->get('security.context')->getToken()->getUser();
-    	$teamrace = new Teamrace($user);
-    	
-    	$form = $this->createForm(new CreateTeamRaceType(), $teamrace);
+    	$form = $this->createForm(new CreateTeamRaceType(), new Teamrace());
     	
     	$form->handleRequest($request);
     	
     	if ($form->isValid()) {
     		
+    		$user = $this->get('security.context')->getToken()->getUser();
+    		
+    		// Set Creator and DateCreated
     		$teamrace = $form->getData();
+    		$teamrace->setCreator($user);
+    		$teamrace->setDatecreated(new \DateTime());
     		
     		// Create corresponding UserTeamrace Entity
     		$userTeamrace = new UserTeamrace();
-    		$userTeamrace->setIdUser($user);
-    		$userTeamrace->setIdTeamrace($teamrace);
+    		$userTeamrace->setUser($user);
+    		$userTeamrace->setTeamrace($teamrace);
+    		// Role: Teamrace Admin
     		$userTeamrace->setRole(1);
     		
     		$em->persist($teamrace);

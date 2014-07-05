@@ -7,7 +7,7 @@
 {% for userTeamrace in userTeamraces %}
 
 <tr><td>
-<a href="{{ url('teamraceHome', parameters={'idTeamrace': userTeamrace.idTeamrace.idTeamrace}) }}">{{ userTeamrace.idTeamrace.name }}</a></td></tr>
+<a href="{{ url('teamraceHome', parameters={'idTeamrace': userTeamrace.teamrace.idTeamrace}) }}">{{ userTeamrace.teamrace.name }}</a></td></tr>
 
 {% endfor %}
 </table>

@@ -5,41 +5,70 @@ namespace TeamRace\WebBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Teams
+ * Team
+ *
+ * @ORM\Table(name="team", indexes={@ORM\Index(name="teamrace", columns={"teamrace"})})
+ * @ORM\Entity
  */
 class Team
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_team", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idTeam;
+
+    /**
      * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="slogan", type="string", length=2048, nullable=true)
      */
     private $slogan;
 
     /**
-     * @var integer
+     * @var \Teamrace
+     *
+     * @ORM\ManyToOne(targetEntity="Teamrace")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="teamrace", referencedColumnName="id_teamrace")
+     * })
      */
-    private $idTeam;
+    private $teamrace;
+
+
 
     /**
-     * @var \TeamRace\WebBundle\Entity\Teamraces
+     * Get idTeam
+     *
+     * @return integer 
      */
-    private $idTeamrace;
-
+    public function getIdTeam()
+    {
+        return $this->idTeam;
+    }
 
     /**
      * Set name
      *
      * @param string $name
-     * @return Teams
+     * @return Team
      */
     public function setName($name)
     {
@@ -62,7 +91,7 @@ class Team
      * Set image
      *
      * @param string $image
-     * @return Teams
+     * @return Team
      */
     public function setImage($image)
     {
@@ -85,7 +114,7 @@ class Team
      * Set slogan
      *
      * @param string $slogan
-     * @return Teams
+     * @return Team
      */
     public function setSlogan($slogan)
     {
@@ -105,35 +134,25 @@ class Team
     }
 
     /**
-     * Get idTeam
+     * Set teamrace
      *
-     * @return integer 
+     * @param \TeamRace\WebBundle\Entity\Teamrace $teamrace
+     * @return Team
      */
-    public function getIdTeam()
+    public function setTeamrace(\TeamRace\WebBundle\Entity\Teamrace $teamrace = null)
     {
-        return $this->idTeam;
-    }
-
-    /**
-     * Set idTeamrace
-     *
-     * @param \TeamRace\WebBundle\Entity\Teamraces $idTeamrace
-     * @return Teams
-     */
-    public function setIdTeamrace(\TeamRace\WebBundle\Entity\Teamraces $idTeamrace = null)
-    {
-        $this->idTeamrace = $idTeamrace;
+        $this->teamrace = $teamrace;
 
         return $this;
     }
 
     /**
-     * Get idTeamrace
+     * Get teamrace
      *
-     * @return \TeamRace\WebBundle\Entity\Teamraces 
+     * @return \TeamRace\WebBundle\Entity\Teamrace 
      */
-    public function getIdTeamrace()
+    public function getTeamrace()
     {
-        return $this->idTeamrace;
+        return $this->teamrace;
     }
 }

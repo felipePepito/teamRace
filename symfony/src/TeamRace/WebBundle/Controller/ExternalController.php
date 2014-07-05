@@ -58,17 +58,20 @@ class ExternalController extends Controller {
 	}
 	
 	public function createAccountAction(Request $request) {
-			
-	    $em = $this->getDoctrine()->getManager();
-	
+		
 	    $form = $this->createForm(new RegistrationType(), new Registration());
 	
 	    $form->handleRequest($request);
 	
 	    if ($form->isValid()) {
 	        $registration = $form->getData();
-	
-	        $em->persist($registration->getUser());
+	        $user = $registration->getUser();
+	        $user->setActive(1);
+	        $user->setAccountCreated(new \DateTime());
+	        $user->setPassword(password_hash($user->getPassword(), PASSWORD_BCRYPT, array("cost" => 13)));
+	        
+	        $em = $this->getDoctrine()->getManager();
+	        $em->persist($user);
 	        $em->flush();
 	
 	        // TODO successfull redirect flash

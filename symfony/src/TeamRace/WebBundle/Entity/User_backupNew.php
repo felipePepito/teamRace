@@ -9,87 +9,176 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
+ * 
  * @UniqueEntity(fields="email", message="Email already taken")
+ *
+ * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="email_UNIQUE", columns={"email"})})
+ * @ORM\Entity
  */
-class User implements UserInterface
+class User_backupNew implements UserInterface
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_user", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idUser;
+
+    /**
      * @var string
+     * 
      * @Assert\NotBlank()
      * @Assert\Length(max = 255)
      * @Assert\Email()
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     private $email;
 
     /**
      * @var string
+     * 
      * @Assert\NotBlank()
      * @Assert\Length(max = 255)
+     *
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=false)
      */
     private $firstName;
 
     /**
      * @var string
+     * 
      * @Assert\NotBlank()
      * @Assert\Length(max = 255)
+     *
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=false)
      */
     private $lastName;
 
     /**
      * @var string
+     * 
      * @Assert\NotBlank()
      * @Assert\Length(max = 255)
+     *
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private $password;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="active", type="integer", nullable=false)
      */
     private $active;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="account_created", type="datetime", nullable=false)
      */
     private $accountCreated;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="password_requested_at", type="datetime", nullable=true)
      */
     private $passwordRequestedAt;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="confirmation_token", type="string", length=255, nullable=true)
      */
     private $confirmationToken;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var integer
-     */
-    private $idUser;
-
     
-    public function __construct()
+    
+    
+    
+    
+    /** USERINTERFACE **/
+    
+    
+    /**
+     * @inheritDoc
+     */
+    public function getUsername()
     {
-    	$this->active = 1;
-    	$this->accountCreated = new \DateTime();
-    	// may not be needed, see section on salt below
-    	// $this->salt = md5(uniqid(null, true));
+    	return $this->email;
     }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+    	return null;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+    	return array('ROLE_USER');
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+    }
+    
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+    	return serialize(array(
+    			$this->id,
+    			$this->username,
+    			$this->password,
+    	));
+    }
+    
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+    	list (
+    			$this->id,
+    			$this->username,
+    			$this->password,
+    	) = unserialize($serialized);
+    }
+
+
 
     /**
      * Set email
@@ -168,7 +257,7 @@ class User implements UserInterface
      */
     public function setPassword($password)
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 13));
+        $this->password = $password;
 
         return $this;
     }
@@ -352,72 +441,5 @@ class User implements UserInterface
     public function getIdUser()
     {
         return $this->idUser;
-    }
-    
-    
-    
-    
-    /** USERINTERFACE **/
-    
-    
-    /**
-     * @inheritDoc
-     */
-    public function getUsername()
-    {
-    	return $this->email;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSalt()
-    {
-    	// you *may* need a real salt depending on your encoder
-    	// see section on salt below
-    	return null;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function getRoles()
-    {
-    	return array('ROLE_USER');
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function eraseCredentials()
-    {
-    }
-    
-    /**
-     * @see \Serializable::serialize()
-     */
-    public function serialize()
-    {
-    	return serialize(array(
-    			$this->id,
-    			$this->username,
-    			$this->password,
-    			// see section on salt below
-    			// $this->salt,
-    	));
-    }
-    
-    /**
-     * @see \Serializable::unserialize()
-     */
-    public function unserialize($serialized)
-    {
-    	list (
-    			$this->id,
-    			$this->username,
-    			$this->password,
-    			// see section on salt below
-    			// $this->salt
-    	) = unserialize($serialized);
     }
 }

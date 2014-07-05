@@ -62,34 +62,35 @@ class TeamraceController extends Controller
     
     	// Retrieve Teamraces that user takes part of
     	$teamrace = $this->getDoctrine()
-    	->getRepository('TeamRaceWebBundle:Teamrace')
-    	->find($idTeamrace);
+    		->getRepository('TeamRaceWebBundle:Teamrace')
+    		->find($idTeamrace);
     	
-    	$em = $this->getDoctrine()->getManager();
-    	 
-    	$user = $this->get('security.context')->getToken()->getUser();
-    	$teamrace = new Teamrace($user);
-    	 
-    	$form = $this->createForm(new CreateTeamRaceType(), $teamrace);
+    	$form = $this->createForm(new TeamraceChallengeType(), new TeamraceChallenge());
     	 
     	$form->handleRequest($request);
     	 
     	if ($form->isValid()) {
+    		
+    		// Type of Challenge
+    		// v 1.0 -> always type 1
+    		$challenge = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:Challenge')
+    		->find("1");
+    		 
+    		$user = $this->get('security.context')->getToken()->getUser();
     
-    		$teamrace = $form->getData();
-    
-    		// Create corresponding UserTeamrace Entity
-    		$userTeamrace = new UserTeamrace();
-    		$userTeamrace->setIdUser($user);
-    		$userTeamrace->setIdTeamrace($teamrace);
-    		$userTeamrace->setRole(1);
-    
-    		$em->persist($teamrace);
-    		$em->persist($userTeamrace);
+    		$teamraceChallenge = $form->getData();
+    		
+    		$teamraceChallenge->setTutor($user);
+    		$teamraceChallenge->setTeamrace($teamrace);
+    		$teamraceChallenge->setChallenge($challenge);
+    		 
+    		$em = $this->getDoctrine()->getManager();
+    		$em->persist($teamraceChallenge);
     		$em->flush();
     		 
     		// TODO successfull redirect flash
-    		$redirectUrl = $this->get('router')->generate('userHome');
+    		$redirectUrl = $this->get('router')->generate('teamraceChallenges', array('idTeamrace' => $idTeamrace));
     		return $this->redirect($redirectUrl);
     	}
     	 

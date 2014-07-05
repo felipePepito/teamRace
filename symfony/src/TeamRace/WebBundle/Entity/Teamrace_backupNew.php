@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="teamrace", indexes={@ORM\Index(name="creator", columns={"creator"})})
  * @ORM\Entity
  */
-class Teamrace
+class Teamrace_backup
 {
     /**
      * @var integer
@@ -66,16 +66,11 @@ class Teamrace
     private $creator;
 
 
-
     /**
-     * Get idTeamrace
-     *
-     * @return integer 
+     * @var \TeamRace\WebBundle\Entity\User
      */
-    public function getIdTeamrace()
-    {
-        return $this->idTeamrace;
-    }
+    private $idCreator;
+
 
     /**
      * Set name
@@ -170,25 +165,35 @@ class Teamrace
     }
 
     /**
-     * Set creator
+     * Get idTeamrace
      *
-     * @param \TeamRace\WebBundle\Entity\User $creator
+     * @return integer 
+     */
+    public function getIdTeamrace()
+    {
+        return $this->idTeamrace;
+    }
+
+    /**
+     * Set idCreator
+     *
+     * @param \TeamRace\WebBundle\Entity\User $idCreator
      * @return Teamrace
      */
-    public function setCreator(\TeamRace\WebBundle\Entity\User $creator = null)
+    public function setIdCreator(\TeamRace\WebBundle\Entity\User $idCreator = null)
     {
-        $this->creator = $creator;
+        $this->idCreator = $idCreator;
 
         return $this;
     }
 
     /**
-     * Get creator
+     * Get idCreator
      *
      * @return \TeamRace\WebBundle\Entity\User 
      */
-    public function getCreator()
+    public function getIdCreator()
     {
-        return $this->creator;
+        return $this->idCreator;
     }
 }
