@@ -1,0 +1,49 @@
+{% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
+
+{% block content %}
+
+<style>
+
+table {
+	width: 700px;
+}
+
+td.player {
+	border-top: 1px solid #e8edff;
+}
+</style>
+<p>
+<a href="{{ url('teamraceAddMember', parameters={'idTeamrace': teamrace.idTeamrace}) }}">
+<span style="background:#ccc">+</span> {{ "Add member" | trans }}</a>
+</p>
+
+<h3>{{ 'List of participating members' | trans }}</h3>
+
+<table>
+{% for member in members if member.role == 1%}
+
+	<tr>
+		<td width="100px">{{ 'Admin' | trans }}</td>
+		<td colspan="2">{{ member.user.firstName ~ " " ~ member.user.lastName }}</td>
+	</tr>
+	
+{% endfor %}
+
+{% for member in members if member.role != 1%}
+
+	<tr>
+		<td class="player">{{ 'Player' | trans }}</td>
+		<td class="player">{{ member.user.firstName ~ " " ~ member.user.lastName }}</td>
+		<td class="player" width="200px">
+		<a href="{{ url('teamraceRemoveMember', parameters={'idTeamrace': teamrace.idTeamrace, 'idUser': member.user.idUser}) }}">
+			{{ "Remove user from Teamrace" | trans}}
+		</a>
+		</td>
+	</tr>
+	
+{% endfor %}
+
+</table>
+{% endblock %}
+
+

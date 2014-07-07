@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use TeamRace\WebBundle\Entity\TeamraceChallenge;
 use TeamRace\WebBundle\Form\Type\TeamraceChallengeType;
+use TeamRace\WebBundle\Entity\UserTeamrace;
+use TeamRace\WebBundle\Form\Model\AddMember;
+use TeamRace\WebBundle\Form\Type\AddMemberType;
 
 class TeamraceController extends Controller
 {
@@ -125,6 +128,99 @@ class TeamraceController extends Controller
     			'TeamRaceWebBundle:User:createTeamRace.html.twig',
     			array('form' => $form->createView())
     	);
+    }
+    
+    public function membersAction($idTeamrace)
+    {
+    	$this->initialize($idTeamrace);
+    	 
+    	$members = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:UserTeamrace')
+    	->findBy(array('teamrace' => $idTeamrace));
+    	 
+    	$content = $this->renderView('TeamRaceWebBundle:Teamrace:members.html.twig',
+    			array(	'teamrace' => $this->teamrace,
+    					'members' => $members));
+    	return new Response($content);
+    }
+    
+    public function addMemberAction($idTeamrace)
+    {
+    	$this->initialize($idTeamrace);
+    	 
+    	$form = $this->createForm(new AddMemberType(), new AddMember(), array(
+    			'action' => $this->generateUrl('teamraceDoAddMember', array('idTeamrace' => $idTeamrace)),
+    	));
+    
+    	return $this->render(
+    			'TeamRaceWebBundle:Teamrace:addMember.html.twig',
+    			array(	'form' => $form->createView(),
+    					'teamrace' => $this->teamrace)
+    	);
+    
+    }
+    
+    public function doAddMemberAction(Request $request, $idTeamrace) {
+    
+    	$this->initialize($idTeamrace);
+    	 
+    	$form = $this->createForm(new AddMemberType(), new AddMember());
+    
+    	$form->handleRequest($request);
+    
+    	if ($form->isValid()) {
+    
+    		$email = $form->getData()->getEmail();
+    		
+    		// Type of Challenge
+    		// v 1.0 -> always type 1
+    		$user = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:User')
+    		->findOneBy(array('email' => $email));
+    		
+    		if (!empty($user)) {
+    			 
+    			$userTeamrace = new UserTeamrace();
+    			$userTeamrace->setUser($user);
+    			$userTeamrace->setTeamrace($this->teamrace);
+    			// Role: Teamrace Player
+    			$userTeamrace->setRole(2);
+    			
+    			$em = $this->getDoctrine()->getManager();
+    			$em->persist($userTeamrace);
+    			$em->flush();
+    			 
+    		}
+    			
+    		// TODO successfull redirect flash
+    		$redirectUrl = $this->get('router')->generate('teamraceMembers', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    	}
+    
+    	return $this->render(
+    			'TeamRaceWebBundle:User:createTeamRace.html.twig',
+    			array('form' => $form->createView())
+    	);
+    }
+    
+    public function removeMemberAction($idTeamrace, $idUser)
+    {
+    	$this->initialize($idTeamrace);
+    
+    	$userTeamrace = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:UserTeamrace')
+    	->findOneBy(array('user' => $idUser));
+    	
+    	if (!empty($userTeamrace)) {
+    		$em = $this->getDoctrine()->getManager();
+    		$em->remove($userTeamrace);
+    		$em->flush();
+    	}
+    
+    	// TODO successfull redirect flash
+    	$redirectUrl = $this->get('router')->generate('teamraceMembers', array('idTeamrace' => $idTeamrace));
+    	return $this->redirect($redirectUrl);
+    	
     }
     
 }
