@@ -33,7 +33,7 @@ class TeamraceController extends Controller
 	private $user;
 	
 	/**
-	 * 
+	 * Initialize the user, teamrace and role members
 	 */
 	private function initialize($idTeamrace) {
 		
@@ -62,8 +62,13 @@ class TeamraceController extends Controller
     {
     	$this->initialize($idTeamrace);
     	
+    	$challenges = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:TeamraceChallenge')
+    	->findBy(array('teamrace' => $idTeamrace), array('date' => 'DESC'));
+    	
     	$content = $this->renderView('TeamRaceWebBundle:Teamrace:challenges.html.twig',
-			array('teamrace' => $this->teamrace));
+			array(	'teamrace' => $this->teamrace,
+    				'challenges' => $challenges));
     	return new Response($content);
     }
     

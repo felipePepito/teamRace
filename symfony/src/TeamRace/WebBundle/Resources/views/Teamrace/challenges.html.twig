@@ -1,8 +1,49 @@
 {% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
 
 {% block content %}
-<p>{{ "Teamrace" | trans }} 
-{{ teamrace.name }}</p>
-<a href="{{ url('teamraceCreateChallenge', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ "Create a new challenge" | trans }}</a>
+
+<style>
+div.challengeBox {
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	margin: 0 0 10px;
+	padding: 2px;
+	width: 600px;
+}
+</style>
+<p>
+<a href="{{ url('teamraceCreateChallenge', parameters={'idTeamrace': teamrace.idTeamrace}) }}">
+<span style="background:#ccc">+</span> {{ "Create a new challenge" | trans }}</a>
+</p>
+
+<h3>{{ 'Upcoming Challenges' | trans }}</h3>
+
+{% for challenge in challenges %}
+{% if challenge.date | date('Y-m-d-G-i') >= "now" | date('Y-m-d-G-i') %}
+
+<div class="challengeBox">
+<div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge' }}</a></div>
+<div>{{ "Date: " | trans }}{{ challenge.date | date("d.m.y G:i") }}</div>
+<div>{{ challenge.description | length > 150 ? challenge.description|slice(0, 150) ~ '...' : challenge.description }}</div>
+</div>
+
+{% endif %}
+{% endfor %}
+
+<h3>{{ 'Past Challenges' | trans }}</h3>
+
+{% for challenge in challenges %}
+{% if challenge.date | date('Y-m-d-G-i') < "now" | date('Y-m-d-G-i') %}
+
+<div class="challengeBox">
+<div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge' }}</a></div>
+<div>{{ "Date: " | trans }}{{ challenge.date | date("d.m.y G:i") }}</div>
+<div>{{ challenge.description | length > 150 ? challenge.description|slice(0, 150) ~ '...' : challenge.description }}</div>
+</div>
+
+{% endif %}
+{% endfor %}
 
 {% endblock %}
+
+
