@@ -6,6 +6,8 @@
     <requirement key="_locale">en|de</requirement>
   </route>
   
+  <!-- CHALLENGES -->
+  
   <route id="teamraceChallenges" pattern="/{_locale}/teamrace/{idTeamrace}/challenges">
     <default key="_controller">TeamRaceWebBundle:Teamrace:challenges</default>
     <requirement key="_locale">en|de</requirement>
@@ -20,6 +22,18 @@
     <default key="_controller">TeamRaceWebBundle:Teamrace:doCreateChallenge</default>
     <requirement key="_locale">en|de</requirement>
   </route>
+  
+  <route id="teamraceChallengeSetResults" pattern="/{_locale}/teamrace/{idTeamrace}/challenge/{idTeamraceChallenge}/setResults">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:challengeSetResults</default>
+    <requirement key="_locale">en|de</requirement>
+  </route> 
+  
+  <route id="teamraceChallengeViewResults" pattern="/{_locale}/teamrace/{idTeamrace}/challenge/{idTeamraceChallenge}/viewResults">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:challengeViewResults</default>
+    <requirement key="_locale">en|de</requirement>
+  </route> 
+  
+  <!-- MEMBERS -->
   
   <route id="teamraceMembers" pattern="/{_locale}/teamrace/{idTeamrace}/members">
     <default key="_controller">TeamRaceWebBundle:Teamrace:members</default>
@@ -40,5 +54,39 @@
     <default key="_controller">TeamRaceWebBundle:Teamrace:removeMember</default>
     <requirement key="_locale">en|de</requirement>
   </route>
+  
+
+  
+  <!-- TEAMS -->
     
+  <route id="teamraceTeams" pattern="/{_locale}/teamrace/{idTeamrace}/teams">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:teams</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="teamraceRemoveTeam" pattern="/{_locale}/teamrace/{idTeamrace}/teams/remove/{idTeam}">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:removeTeam</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="teamraceAddMemberToTeam" pattern="/{_locale}/teamrace/{idTeamrace}/teams/addMember/{idUser}">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:addMemberToTeam</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="teamraceRemoveMemberFromTeam" pattern="/{_locale}/teamrace/{idTeamrace}/members/removeFromTeam/{idUser}/{idTeam}">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:removeMemberFromTeam</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>    
+  
+  
+  
+  <!-- STANDINGS -->
+  
+  <route id="teamraceStandings" pattern="/{_locale}/teamrace/{idTeamrace}/standings">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:standings</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+
 </routes>

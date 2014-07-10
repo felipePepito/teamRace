@@ -1,0 +1,45 @@
+{% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
+
+{% block content %}
+
+<style>
+
+table {
+	width: 700px;
+}
+td {
+	height:20px;
+	border-top: 1px solid #e8edff;
+}
+th {
+	text-align: left;
+}
+</style>
+
+<h3>{{ 'Standings' | trans }}</h3>
+
+<table>
+
+  <tr>
+  	<th>{{ 'Place' | trans }}</th>
+    <th>{{ 'Team' | trans }}</th>
+    <th>{{ 'Points' | trans }}</th>
+  </tr>
+  
+{% set i = 1 %}
+{% for key, result in results %}
+
+	<tr>
+		<td>{{ i ~ '. Place' | trans }}</td>
+		<td width="200px">{{ key }}</td>
+		<td colspan>{{ result }}</td>
+	</tr>
+
+	{% set i = i+1 %}
+{% endfor %}
+
+
+</table>
+{% endblock %}
+
+

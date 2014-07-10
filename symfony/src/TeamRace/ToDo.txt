@@ -1,0 +1,21 @@
+TODO:
+
+- Absicherung:
+
+	- zugriff auf teamrace (initialize())
+	- editierungsmöglichkeiten, seitenaufrufe (addMember, ..)
+	- user nur einmal zu teamrace hinzufügen
+
+- Übersetzungen
+
+- Form Styles
+
+- Add Member in Seite einfügen
+- Do... Seiten entfernen
+
+- Teams: Teammitglieder anzeigen
+
+- Blog implementieren
+
+- Kommentieren
+

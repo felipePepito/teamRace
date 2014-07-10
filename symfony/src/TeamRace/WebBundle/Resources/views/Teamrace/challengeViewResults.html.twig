@@ -1,0 +1,44 @@
+{% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
+
+{% block content %}
+
+<style>
+
+table {
+	width: 700px;
+}
+td {
+	height:20px;
+	border-top: 1px solid #e8edff;
+}
+td.player {
+	
+}
+th {
+	text-align: left;
+}
+</style>
+
+<h3>{{ 'Results of challenge ' | trans }}{{ teamraceChallenge.description }}</h3>
+
+<table>
+
+  <tr>
+    <th>{{ 'Team' | trans }}</th>
+    <th>{{ 'Points' | trans }}</th>
+  </tr>
+
+{% for challengeTeam in challengeTeams%}
+
+	<tr>
+		<td width="200px">{{ challengeTeam.team.name }}</td>
+		<td colspan="3">{{ challengeTeam.points }}</td>
+	</tr>
+	
+{% endfor %}
+
+
+</table>
+{% endblock %}
+
+

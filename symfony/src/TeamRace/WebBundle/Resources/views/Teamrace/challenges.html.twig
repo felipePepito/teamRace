@@ -25,6 +25,7 @@ div.challengeBox {
 <div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge' }}</a></div>
 <div>{{ "Date: " | trans }}{{ challenge.date | date("d.m.y G:i") }}</div>
 <div>{{ challenge.description | length > 150 ? challenge.description|slice(0, 150) ~ '...' : challenge.description }}</div>
+
 </div>
 
 {% endif %}
@@ -39,6 +40,14 @@ div.challengeBox {
 <div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge' }}</a></div>
 <div>{{ "Date: " | trans }}{{ challenge.date | date("d.m.y G:i") }}</div>
 <div>{{ challenge.description | length > 150 ? challenge.description|slice(0, 150) ~ '...' : challenge.description }}</div>
+<div>
+	<a href="{{ url('teamraceChallengeViewResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeamraceChallenge': challenge.idTeamraceChallenge}) }}">
+		{{ 'View Results' | trans }}
+	</a>&nbsp;&nbsp;
+	<a href="{{ url('teamraceChallengeSetResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeamraceChallenge': challenge.idTeamraceChallenge}) }}">
+		{{ 'Set Results' | trans }}
+	</a>
+</div>
 </div>
 
 {% endif %}

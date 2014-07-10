@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ChallengeTeam
  *
  * @ORM\Table(name="challenge_team", indexes={@ORM\Index(name="team", columns={"team"}), @ORM\Index(name="challenge", columns={"challenge"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="TeamRace\WebBundle\Entity\ChallengeTeamRepository")
  */
 class ChallengeTeam
 {

@@ -1,0 +1,38 @@
+{% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
+
+{% block content %}
+
+<style>
+div.listBox {
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	margin: 0 0 10px;
+	padding: 2px;
+	width: 600px;
+}
+</style>
+
+<h3>{{ "Add new Team" | trans }}</h3>
+{{ form(form) }}
+<p>
+
+<h3>{{ 'List of teams' | trans }}</h3>
+
+{% for team in teams %}
+
+<div class="listBox">
+
+<table>
+  <tr>
+    <td width="400">{{ team.name }}</td>
+    <td><a href="{{ url('teamraceRemoveTeam', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeam': team.idTeam}) }}">{{ 'Remove team' | trans }}</a>
+  </tr>
+</table>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}
+
+

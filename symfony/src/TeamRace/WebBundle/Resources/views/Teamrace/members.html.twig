@@ -7,9 +7,15 @@
 table {
 	width: 700px;
 }
-
-td.player {
+td {
+	height:20px;
 	border-top: 1px solid #e8edff;
+}
+td.player {
+	
+}
+th {
+	text-align: left;
 }
 </style>
 <p>
@@ -20,11 +26,19 @@ td.player {
 <h3>{{ 'List of participating members' | trans }}</h3>
 
 <table>
+
+  <tr>
+    <th>{{ 'Member' | trans }}</th>
+    <th>{{ 'Role' | trans }}</th>
+    <th>{{ 'Team' | trans }}</th>
+    <th></th>
+  </tr>
+
 {% for member in members if member.role == 1%}
 
 	<tr>
 		<td width="100px">{{ 'Admin' | trans }}</td>
-		<td colspan="2">{{ member.user.firstName ~ " " ~ member.user.lastName }}</td>
+		<td colspan="3">{{ member.user.firstName ~ " " ~ member.user.lastName }}</td>
 	</tr>
 	
 {% endfor %}
@@ -34,6 +48,18 @@ td.player {
 	<tr>
 		<td class="player">{{ 'Player' | trans }}</td>
 		<td class="player">{{ member.user.firstName ~ " " ~ member.user.lastName }}</td>
+		<td class="player">
+		
+		<form action="{{ url('teamraceAddMemberToTeam', parameters={'idTeamrace': teamrace.idTeamrace, 'idUser': member.user.idUser}) }}" method="POST">
+		    <select name="idTeam">
+		        {% for team in teams %}
+		        <option value="{{ team.idTeam }}">{{ team.name }}</option>
+		        {% endfor %}
+		    </select>
+		    <input type="submit" value="Add">		    
+		</form>
+		
+		</td>
 		<td class="player" width="200px">
 		<a href="{{ url('teamraceRemoveMember', parameters={'idTeamrace': teamrace.idTeamrace, 'idUser': member.user.idUser}) }}">
 			{{ "Remove user from Teamrace" | trans}}

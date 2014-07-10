@@ -10,6 +10,10 @@ use TeamRace\WebBundle\Form\Type\TeamraceChallengeType;
 use TeamRace\WebBundle\Entity\UserTeamrace;
 use TeamRace\WebBundle\Form\Model\AddMember;
 use TeamRace\WebBundle\Form\Type\AddMemberType;
+use TeamRace\WebBundle\Entity\Team;
+use TeamRace\WebBundle\Entity\UserTeam;
+use TeamRace\WebBundle\Entity\ChallengeTeam;
+
 
 class TeamraceController extends Controller
 {
@@ -60,6 +64,11 @@ class TeamraceController extends Controller
     	
     	return new Response($content);
     }
+    
+    
+    
+    /***** CHALLENGES *****/
+    
     
     public function challengesAction($idTeamrace)
     {
@@ -130,17 +139,126 @@ class TeamraceController extends Controller
     	);
     }
     
+    public function challengeSetResultsAction(Request $request, $idTeamrace, $idTeamraceChallenge)
+    {
+    	$this->initialize($idTeamrace);
+    	
+    	$challenge = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:TeamraceChallenge')
+    		->find($idTeamraceChallenge);
+    	 
+    	$teams = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:Team')
+    		->findBy(array('teamrace' => $idTeamrace));
+    		
+		$builder = $this->createFormBuilder(array(
+				'action' => $this->generateUrl('teamraceChallengeSetResults', 
+						array('idTeamrace' => $idTeamrace, 'idTeamraceChallenge' => $idTeamraceChallenge))));
+    		
+    	foreach($teams as $team) {
+    		$builder->add('points_'.$team->getIdTeam(), 'integer', array('label' => $team->getName()));
+    	}
+    	
+    	$builder->add('Set Results', 'submit');
+    	
+    	$form = $builder->getForm();
+    	
+    	$form->handleRequest($request);
+    	 
+    	if($form->isValid()) {
+    		
+    		$em = $this->getDoctrine()->getManager();
+    		
+    		// Delete all Results already set
+    		$challengeTeams = $this->getDoctrine()
+    			->getRepository('TeamRaceWebBundle:ChallengeTeam')
+    			->findBy(array('challenge' => $idTeamraceChallenge));
+
+    		foreach ($challengeTeams as $challengeTeam) {
+    			$em->remove($challengeTeam);
+    		}
+    		
+    		$data = $form->getData();
+    		
+    		foreach($data as $key => $value) {
+    			if($key != "action") {
+    				$idTeam = explode("_", $key)[1];
+    				$team = $this->getDoctrine()
+    					->getRepository('TeamRaceWebBundle:Team')
+    					->find($idTeam);
+    				$challengeTeam = new ChallengeTeam();
+    				$challengeTeam->setTeam($team);
+    				$challengeTeam->setPoints($value);
+    				$challengeTeam->setChallenge($challenge);
+    				
+    				$em->persist($challengeTeam);
+    			}
+    		}
+    		
+    		$em->flush();
+    		$redirectUrl = $this->get('router')->generate('teamraceChallenges', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    		 
+    	}
+    	 
+    	return $this->render(
+    			'TeamRaceWebBundle:Teamrace:challengeSetResults.html.twig',
+    			array(	'form' => $form->createView(),
+    					'teams' => $teams,
+    					'teamrace' => $this->teamrace,
+    					'challenge' => $challenge)
+    	);
+    }
+    
+    public function challengeViewResultsAction($idTeamrace, $idTeamraceChallenge) {
+    	
+    	$this->initialize($idTeamrace);
+    	 
+    	$challengeTeams = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:ChallengeTeam')
+    		->findBy(array('challenge' => $idTeamraceChallenge));
+    	
+    	$challenge = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:TeamraceChallenge')
+    		->find($idTeamraceChallenge);
+    		
+    	return $this->render(
+    			'TeamRaceWebBundle:Teamrace:challengeViewResults.html.twig',
+    			array(	'teamrace' => $this->teamrace,
+    					'challengeTeams' => $challengeTeams,
+    					'teamraceChallenge' => $challenge));
+    }
+    
+    /***** MEMBERS *****/
+    
+    
     public function membersAction($idTeamrace)
     {
     	$this->initialize($idTeamrace);
-    	 
+    	
+    	$teams = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:Team')
+    		->findBy(array('teamrace' => $idTeamrace));
+    	
+    	$formAddToTeam = $this->createFormBuilder(array(
+    			'action' => $this->generateUrl('teamraceTeams', array('idTeamrace' => $idTeamrace))));
+    	$formAddToTeam->add('team', 'entity', array(
+    		'class' => 'TeamRaceWebBundle:Team',
+    		'choices' => $teams,
+    		'property' => 'name'
+    	));
+    	$formAddToTeam->add('Add to team', 'submit');
+    	$formAddToTeam = $formAddToTeam->getForm();
+    	
     	$members = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:UserTeamrace')
     	->findBy(array('teamrace' => $idTeamrace));
     	 
     	$content = $this->renderView('TeamRaceWebBundle:Teamrace:members.html.twig',
     			array(	'teamrace' => $this->teamrace,
-    					'members' => $members));
+    					'members' => $members,
+    					'teams' => $teams,
+    					'formAddToTeam' => $formAddToTeam->createView()));
     	return new Response($content);
     }
     
@@ -223,4 +341,163 @@ class TeamraceController extends Controller
     	
     }
     
+    /***** TEAMS *****/
+
+    
+    public function teamsAction(Request $request, $idTeamrace)
+    {
+    	$this->initialize($idTeamrace);
+    
+    	$userAndTeams = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:UserTeam')
+    		->getUserAndTeams($idTeamrace);
+    	//print("<pre>");print_r($userAndTeams);print "</pre>"; exit;
+    	$teams = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:Team')
+    	->findBy(array('teamrace' => $idTeamrace));
+    	
+    	$form = $this->createFormBuilder(array(
+    			'action' => $this->generateUrl('teamraceTeams', array('idTeamrace' => $idTeamrace))));
+    	$form->add('name', 'text');
+    	$form->add('Create Team', 'submit');
+    	
+    	$form = $form->getForm();
+    	 
+    	$form->handleRequest($request);
+    	
+    	if($form->isValid()) {
+    	
+    		$team = new Team();
+    		$team->setName($form->getData()['name']);
+    		$team->setTeamrace($this->teamrace);
+    	
+    		$em = $this->getDoctrine()->getManager();
+    		$em->persist($team);
+    		$em->flush();
+    	
+    	}
+    	
+    	return $this->render(
+    			'TeamRaceWebBundle:Teamrace:teams.html.twig',
+    			array(	'form' => $form->createView(),
+    					'teams' => $teams,
+    					'teamrace' => $this->teamrace)
+    	);
+    }
+    
+    public function removeTeamAction($idTeamrace, $idTeam)
+    {
+    	$this->initialize($idTeamrace);
+    
+    	$team = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:Team')
+    	->findOneBy(array('idTeam' => $idTeam));
+    	 
+    	if (!empty($team)) {
+    		$em = $this->getDoctrine()->getManager();
+    		$em->remove($team);
+    		$em->flush();
+    	}
+    
+    	// TODO successfull redirect flash
+    	$redirectUrl = $this->get('router')->generate('teamraceTeams', array('idTeamrace' => $idTeamrace));
+    	return $this->redirect($redirectUrl);
+    	 
+    }
+
+    public function addMemberToTeamAction(Request $request, $idTeamrace, $idUser)
+    {
+    	$this->initialize($idTeamrace);
+    	
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$idTeam = $request->get('idTeam');
+    
+    	// Check if user is already member in other team, if so, delete the membership
+    	$userTeamArray = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:UserTeam')
+    	->findUserTeam($idUser, $idTeamrace);
+    	
+    	if(!empty($userTeamArray)) {
+	    	$em->remove($userTeamArray[0]);
+	    } 
+    	
+	    // Create the membership in the team
+    	$user = $this->getDoctrine()
+	    	->getRepository('TeamRaceWebBundle:User')
+	    	->find($idUser);
+    		
+    	$team = $this->getDoctrine()
+	    	->getRepository('TeamRaceWebBundle:Team')
+	    	->find($idTeam);
+    	
+    	if(!empty($user) & !empty($team)) {
+    		$userTeam = new UserTeam();
+    		$userTeam->setRole(3);
+    		$userTeam->setUser($user);
+    		$userTeam->setTeam($team);
+
+    		$em->persist($userTeam);
+    		$em->flush();
+    		 
+    	}
+    	
+    	// TODO successfull redirect flash
+    	$redirectUrl = $this->get('router')->generate('teamraceMembers', array('idTeamrace' => $idTeamrace));
+    	return $this->redirect($redirectUrl);
+    
+    }
+    
+    public function removeMemberFromTeamAction($idTeamrace, $idUser, $idTeam)
+    {
+    	$this->initialize($idTeamrace);
+
+    	$userTeam = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:User')
+    	->findBy(array('user' => $idUser, 'team' => $idTeam));
+    	 
+    	 
+    	if (!empty($userTeam)) {
+    		$em = $this->getDoctrine()->getManager();
+    		$em->remove($userTeam);
+    		$em->flush();
+    	}
+    
+    	// TODO successfull redirect flash
+    	$redirectUrl = $this->get('router')->generate('teamraceTeams', array('idTeamrace' => $idTeamrace));
+    	return $this->redirect($redirectUrl);
+    	 
+    }
+    
+    /***** STANDINGS *****/
+    
+    public function standingsAction($idTeamrace)
+    {
+    	$this->initialize($idTeamrace);
+    
+    	$challengeTeams = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:ChallengeTeam')
+    		->findChallengeTeam($idTeamrace);
+    	
+    	
+    	$results = array();
+    	$i = 0;
+    	foreach($challengeTeams as $challengeTeam) {
+    		if(isset($results[$challengeTeam->getTeam()->getName()])) {
+    			$results[$challengeTeam->getTeam()->getName()] = $results[$challengeTeam->getTeam()->getName()]
+    																+ $challengeTeam->getPoints();
+    		} else {
+    			$results[$challengeTeam->getTeam()->getName()] = $challengeTeam->getPoints();
+    		}								
+    	}
+    	asort($results);
+    	$results = array_reverse($results);
+    	
+    	return $this->render(
+    			'TeamRaceWebBundle:Teamrace:standings.html.twig',
+    			array(	'results' => $results,
+    					'teamrace' => $this->teamrace)
+    	);
+    
+    }
 }
