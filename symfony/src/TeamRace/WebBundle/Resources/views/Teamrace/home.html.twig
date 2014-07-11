@@ -7,7 +7,7 @@ div.listBox {
 	border: 1px solid #ccc;
 	border-radius: 2px;
 	margin: 0 0 10px;
-	padding: 2px;
+	padding: 5px;
 	width: 600px;
 }
 </style>
@@ -19,13 +19,35 @@ create teams and view the standings' | trans }}</p>
 
 <h3>{{ 'Blog' | trans }}</h3>
 
-{{ form(form) }}
+{% if role == 1 %}
 
-{% for blog in blogs %}
+{{ form_start(form) }}
+	{{ form_errors(form) }}
+
+	{{ form_label(form.headline, 'Headline' | trans) }}<br>
+	{{ form_widget(form.headline) }}<br>
+
+	{{ form_label(form.text, 'Text' | trans) }}<br>
+	{{ form_widget(form.text) }}<br>
+	
+	{{ form_widget(form.submit, { 'label': 'Send Blog Post' | trans }) }}
+{{ form_end(form) }}
+
+{% endif %}
+
+<br>
 <div class="listBox">
-<div style="float:left"><h4>{{ blog.headline }}</h4></div><div style="float:right">{{ blog.date }}</div>
-<p>{{ blog.text }}</p>
-</div>
-{% endfor %}
+{% set i = 0 %}
+{% for blog in blogs %}
 
+{% if i > 0 %}
+<hr style="height:1px; border-width:0; color:#ccc; background-color:#ccc">
+{% endif %}
+
+<h4>{{ blog.headline }}
+<span style="float:right; font-weight:normal;">{{ blog.date | date("d.m.y G:i") }}</span></h4>
+<p>{{ blog.text }}</p>
+{% set i = i+1 %}
+{% endfor %}
+</div>
 {% endblock %}

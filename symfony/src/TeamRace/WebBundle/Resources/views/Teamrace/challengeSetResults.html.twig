@@ -2,8 +2,29 @@
 
 {% block content %}
 
-<h3>{{ 'Set Results for Challenge ' | trans }}</h3>
-{{ form(form) }}
+<h3>{{ 'Set Results for Challenge ' ~ teamraceChallenge.description | trans }}</h3>
+
+{{ form_start(form) }}
+<table>
+
+<tr>
+	<td colspan="2">{{ form_errors(form) }}</td>
+</tr>
+
+{% for team in teams %}
+<tr>
+	<td>{{ form_label(attribute(form, 'points_' ~ team.idTeam), team.name | trans) }}</td>
+	<td>{{ form_widget(attribute(form, 'points_' ~ team.idTeam)) }}</td>
+</tr>
+{% endfor %}
+
+<tr>
+	<td colspan="2"><br>{{ form_widget(form.submit, { 'label': 'Save Scores' | trans }) }}</td>
+</tr>
+
+</table>
+
+{{ form_end(form) }}
 
 {% endblock %}
 

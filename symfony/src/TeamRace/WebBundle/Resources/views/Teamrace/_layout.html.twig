@@ -2,11 +2,11 @@
 
 {% block navigation %}
 
-<a id="navigationHome" href="{{ url('userHome') }}">home</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('userAbout') }}">about</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('userProfile') }}">profile</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('userTeamRaces') }}">teamRaces</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('logout') }}">logout</a><span class="navigationSpacer"></span>
+<a id="navigationHome" href="{{ url('userHome') }}">{{ 'home' | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userAbout') }}">{{ 'about' | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userProfile') }}">{{ 'profile' | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userTeamRaces') }}">{{ 'teamRaces' | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('logout') }}">{{ 'logout' | trans }}</a><span class="navigationSpacer"></span>
 
 <span class="navigationSpacer"></span>
 <span class="navigationSpacer"></span>
@@ -23,10 +23,10 @@
 
 {% block navigationTeamrace %}
 
-<a class="navigationTeamraceItem" href="{{ url('teamraceHome', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ teamrace.name }}</a><span class="navigationSpacer"></span>
-<a class="navigationTeamraceItem" href="{{ url('teamraceChallenges', parameters={'idTeamrace': teamrace.idTeamrace}) }}">challenges</a><span class="navigationSpacer"></span>
-<a class="navigationTeamraceItem" href="{{ url('teamraceTeams', parameters={'idTeamrace': teamrace.idTeamrace}) }}">teams</a><span class="navigationSpacer"></span>
-<a class="navigationTeamraceItem" href="{{ url('teamraceMembers', parameters={'idTeamrace': teamrace.idTeamrace}) }}">members</a><span class="navigationSpacer"></span>
-<a class="navigationTeamraceItem" href="{{ url('teamraceStandings', parameters={'idTeamrace': teamrace.idTeamrace}) }}">standings</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('teamraceHome', parameters={'idTeamrace': teamrace.idTeamrace}) }}" style="color:#000;">Teamrace {{ teamrace.name }}</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('teamraceChallenges', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ 'challenges' | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('teamraceTeams', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ 'teams' | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('teamraceMembers', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ 'members' | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationTeamraceItem" href="{{ url('teamraceStandings', parameters={'idTeamrace': teamrace.idTeamrace}) }}">{{ 'standings' | trans }}</a><span class="navigationSpacer"></span>
 
 {% endblock %}

@@ -18,10 +18,13 @@ th {
 	text-align: left;
 }
 </style>
-<p>
-<a href="{{ url('teamraceAddMember', parameters={'idTeamrace': teamrace.idTeamrace}) }}">
-<span style="background:#ccc">+</span> {{ "Add member" | trans }}</a>
-</p>
+
+<h3>{{ 'Add new user to teamrace' | trans }}</h3>
+<div>
+{{ form_label(form.email, 'E-Mail address of user:' | trans) }}&nbsp;
+{{ form_widget(form.email) }}&nbsp;
+{{ form_widget(form.submit, { 'label': 'Add User' | trans }) }}
+</div>
 
 <h3>{{ 'List of participating members' | trans }}</h3>
 

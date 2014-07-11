@@ -11,10 +11,13 @@ div.challengeBox {
 	width: 600px;
 }
 </style>
+
+{% if role == 1 %}
 <p>
 <a href="{{ url('teamraceCreateChallenge', parameters={'idTeamrace': teamrace.idTeamrace}) }}">
 <span style="background:#ccc">+</span> {{ "Create a new challenge" | trans }}</a>
 </p>
+{% endif %}
 
 <h3>{{ 'Upcoming Challenges' | trans }}</h3>
 
@@ -44,9 +47,12 @@ div.challengeBox {
 	<a href="{{ url('teamraceChallengeViewResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeamraceChallenge': challenge.idTeamraceChallenge}) }}">
 		{{ 'View Results' | trans }}
 	</a>&nbsp;&nbsp;
-	<a href="{{ url('teamraceChallengeSetResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeamraceChallenge': challenge.idTeamraceChallenge}) }}">
-		{{ 'Set Results' | trans }}
-	</a>
+	
+	{% if role == 1 %}
+		<a href="{{ url('teamraceChallengeSetResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeamraceChallenge': challenge.idTeamraceChallenge}) }}">
+			{{ 'Set Results' | trans }}
+		</a>
+	{% endif %}
 </div>
 </div>
 

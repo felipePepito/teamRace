@@ -53,7 +53,8 @@ class TeamraceController extends Controller
 			->find($idTeamrace);
 		$this->role = $this->getDoctrine()
 			->getRepository('TeamRaceWebBundle:UserTeamrace')
-			->findOneBy(array('teamrace' => $idTeamrace, 'user' => $this->user->getIdUser()));
+			->findOneBy(array('teamrace' => $idTeamrace, 'user' => $this->user->getIdUser()))
+			->getRole();
 	} 
 	
 	
@@ -63,34 +64,37 @@ class TeamraceController extends Controller
     	
     	$blogs = $this->getDoctrine()
     		->getRepository('TeamRaceWebBundle:Blog')
-    		->findBy(array('teamrace' => $idTeamrace));
+    		->findBy(array('teamrace' => $idTeamrace), array('date' => 'DESC'));
     	 
     	$form = $this->createForm(new BlogType(), new Blog(), array(
     			'action' => $this->generateUrl('teamraceHome', array('idTeamrace' => $idTeamrace))));
     	
-    	$form->handleRequest($request);
-    	 
-    	if($form->isValid()) {
+    	if ($this->role == 1) {
+    		$form->handleRequest($request);
     		 
-    		$blog = $form->getData();
-    		$blog->setTeamrace($this->teamrace);
-    		$blog->setDate(new \DateTime());
-    		
-    		$em = $this->getDoctrine()->getManager();
-    		$em->persist($blog);
-    		$em->flush();
-    		
-    		// TODO successfull redirect flash
-    		$redirectUrl = $this->get('router')->generate('teamraceHome', array('idTeamrace' => $idTeamrace));
-    		return $this->redirect($redirectUrl);
-    		 
+	    	if($form->isValid()) {
+	    		 
+	    		$blog = $form->getData();
+	    		$blog->setTeamrace($this->teamrace);
+	    		$blog->setDate(new \DateTime());
+	    		
+	    		$em = $this->getDoctrine()->getManager();
+	    		$em->persist($blog);
+	    		$em->flush();
+	    		
+	    		// TODO successfull redirect flash
+	    		$redirectUrl = $this->get('router')->generate('teamraceHome', array('idTeamrace' => $idTeamrace));
+	    		return $this->redirect($redirectUrl);
+	    		 
+	    	}
     	}
-    	 
+    	
     	return $this->render(
     			'TeamRaceWebBundle:Teamrace:home.html.twig',
     			array(	'form' => $form->createView(),
     					'blogs' => $blogs,
-    					'teamrace' => $this->teamrace)
+    					'teamrace' => $this->teamrace,
+    					'role' => $this->role)
     	);
     	
     }
@@ -110,36 +114,30 @@ class TeamraceController extends Controller
     	
     	$content = $this->renderView('TeamRaceWebBundle:Teamrace:challenges.html.twig',
 			array(	'teamrace' => $this->teamrace,
-    				'challenges' => $challenges));
+    				'challenges' => $challenges,
+    				'role' => $this->role));
     	return new Response($content);
     }
     
-    public function createChallengeAction($idTeamrace)
+    public function createChallengeAction(Request $request, $idTeamrace)
     {
     	$this->initialize($idTeamrace);
     	
-    	$form = $this->createForm(new TeamraceChallengeType(), new TeamraceChallenge(), array(
-    			'action' => $this->generateUrl('teamraceDoCreateChallenge', array('idTeamrace' => $idTeamrace)),
-    	));
-    	 
-    	return $this->render(
-    			'TeamRaceWebBundle:Teamrace:createChallenge.html.twig',
-    			array(	'form' => $form->createView(),
-    					'teamrace' => $this->teamrace)
-    	);
-    	 
-    }
-    
-    public function doCreateChallengeAction(Request $request, $idTeamrace) {
-    
-    	$this->initialize($idTeamrace);
+    	// Check credentials to access
+    	if ($this->role != 1) {
+	    	$redirectUrl = $this->get('router')->generate('teamraceChallenges', array('idTeamrace' => $idTeamrace));
+	    	return $this->redirect($redirectUrl);
+    	}
     	
-    	$form = $this->createForm(new TeamraceChallengeType(), new TeamraceChallenge());
-    	 
+    	$form = $this->createForm(new TeamraceChallengeType(), new TeamraceChallenge(), array(
+    			'action' => $this->generateUrl('teamraceCreateChallenge', array('idTeamrace' => $idTeamrace)),
+    	));
+    	
+    	
     	$form->handleRequest($request);
-    	 
+    	
     	if ($form->isValid()) {
-    		
+    	
     		// Type of Challenge
     		// v 1.0 -> always type 1
     		$challenge = $this->getDoctrine()
@@ -147,9 +145,9 @@ class TeamraceController extends Controller
     		->find("1");
     		 
     		$user = $this->get('security.context')->getToken()->getUser();
-    
+    	
     		$teamraceChallenge = $form->getData();
-    		
+    	
     		$teamraceChallenge->setTutor($user);
     		$teamraceChallenge->setTeamrace($this->teamrace);
     		$teamraceChallenge->setChallenge($challenge);
@@ -161,19 +159,30 @@ class TeamraceController extends Controller
     		// TODO successfull redirect flash
     		$redirectUrl = $this->get('router')->generate('teamraceChallenges', array('idTeamrace' => $idTeamrace));
     		return $this->redirect($redirectUrl);
+	    
     	}
     	 
     	return $this->render(
-    			'TeamRaceWebBundle:User:createTeamRace.html.twig',
-    			array('form' => $form->createView())
+    			'TeamRaceWebBundle:Teamrace:createChallenge.html.twig',
+    			array(	'form' => $form->createView(),
+    					'teamrace' => $this->teamrace,
+    					'role' => $this->role)
     	);
+    	 
     }
+    
     
     public function challengeSetResultsAction(Request $request, $idTeamrace, $idTeamraceChallenge)
     {
     	$this->initialize($idTeamrace);
     	
-    	$challenge = $this->getDoctrine()
+    	// Check credentials to access
+    	if ($this->role != 1) {
+    		$redirectUrl = $this->get('router')->generate('teamraceChallenges', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    	}
+    	
+    	$teamraceChallenge = $this->getDoctrine()
     		->getRepository('TeamRaceWebBundle:TeamraceChallenge')
     		->find($idTeamraceChallenge);
     	 
@@ -184,12 +193,16 @@ class TeamraceController extends Controller
 		$builder = $this->createFormBuilder(array(
 				'action' => $this->generateUrl('teamraceChallengeSetResults', 
 						array('idTeamrace' => $idTeamrace, 'idTeamraceChallenge' => $idTeamraceChallenge))));
-    		
+    	
+		$idTeams = array();
     	foreach($teams as $team) {
-    		$builder->add('points_'.$team->getIdTeam(), 'integer', array('label' => $team->getName()));
+    		array_push($idTeams, $team->getIdTeam());
+    		$builder->add('points_'.$team->getIdTeam(), 'integer', 
+    				array('label' => $team->getName(),
+    					'attr' => array('min' => 0, 'max' => $teamraceChallenge->getMaxPoints())));
     	}
     	
-    	$builder->add('Set Results', 'submit');
+    	$builder->add('submit', 'submit');
     	
     	$form = $builder->getForm();
     	
@@ -219,7 +232,7 @@ class TeamraceController extends Controller
     				$challengeTeam = new ChallengeTeam();
     				$challengeTeam->setTeam($team);
     				$challengeTeam->setPoints($value);
-    				$challengeTeam->setChallenge($challenge);
+    				$challengeTeam->setChallenge($teamraceChallenge);
     				
     				$em->persist($challengeTeam);
     			}
@@ -236,7 +249,8 @@ class TeamraceController extends Controller
     			array(	'form' => $form->createView(),
     					'teams' => $teams,
     					'teamrace' => $this->teamrace,
-    					'challenge' => $challenge)
+    					'teamraceChallenge' => $teamraceChallenge,
+    					'role' => $this->role)
     	);
     }
     
@@ -256,57 +270,78 @@ class TeamraceController extends Controller
     			'TeamRaceWebBundle:Teamrace:challengeViewResults.html.twig',
     			array(	'teamrace' => $this->teamrace,
     					'challengeTeams' => $challengeTeams,
-    					'teamraceChallenge' => $challenge));
+    					'teamraceChallenge' => $challenge,
+    					'role' => $this->role));
     }
     
     /***** MEMBERS *****/
     
     
-    public function membersAction($idTeamrace)
+    public function membersAction(Request $request, $idTeamrace)
     {
     	$this->initialize($idTeamrace);
-    	
-    	$teams = $this->getDoctrine()
-    		->getRepository('TeamRaceWebBundle:Team')
-    		->findBy(array('teamrace' => $idTeamrace));
-    	
-    	$formAddToTeam = $this->createFormBuilder(array(
-    			'action' => $this->generateUrl('teamraceTeams', array('idTeamrace' => $idTeamrace))));
-    	$formAddToTeam->add('team', 'entity', array(
-    		'class' => 'TeamRaceWebBundle:Team',
-    		'choices' => $teams,
-    		'property' => 'name'
-    	));
-    	$formAddToTeam->add('Add to team', 'submit');
-    	$formAddToTeam = $formAddToTeam->getForm();
     	
     	$members = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:UserTeamrace')
     	->findBy(array('teamrace' => $idTeamrace));
+
+    	$teams = $this->getDoctrine()
+    	->getRepository('TeamRaceWebBundle:Team')
+    	->findBy(array('teamrace' => $idTeamrace));
     	 
+    	
+    	// FORM add a new member to teamrace
+    	
+    	$builder = $this->createFormBuilder(
+    			array('action' => $this->generateUrl('teamraceMembers', array('idTeamrace' => $idTeamrace))));
+    	$builder->add('email', 'email');
+    	$builder->add('submit', 'submit');
+    	$form = $builder->getForm();
+    	
+    	if ($this->role == 1) {
+    		$form->handleRequest($request);
+    		 
+    		if($form->isValid()) {
+    			
+    			$email = $form->getData()['email'];
+    			
+    			// Type of Challenge
+    			// v 1.0 -> always type 1
+    			$user = $this->getDoctrine()
+    				->getRepository('TeamRaceWebBundle:User')
+    				->findOneBy(array('email' => $email));
+    			
+    			if (!empty($user)) {
+    			
+    				$userTeamrace = new UserTeamrace();
+    				$userTeamrace->setUser($user);
+    				$userTeamrace->setTeamrace($this->teamrace);
+    				// Role: Teamrace Player
+    				$userTeamrace->setRole(3);
+    				 
+    				$em = $this->getDoctrine()->getManager();
+    				$em->persist($userTeamrace);
+    				$em->flush();
+    			
+    			}
+    			 
+    			// TODO successfull redirect flash
+    			$redirectUrl = $this->get('router')->generate('teamraceMembers', array('idTeamrace' => $idTeamrace));
+    			return $this->redirect($redirectUrl);
+
+    		}
+    	}
+    	
+    	
     	$content = $this->renderView('TeamRaceWebBundle:Teamrace:members.html.twig',
     			array(	'teamrace' => $this->teamrace,
     					'members' => $members,
     					'teams' => $teams,
-    					'formAddToTeam' => $formAddToTeam->createView()));
+    					'form' => $form->createView(),
+    					'role' => $this->role));
     	return new Response($content);
     }
     
-    public function addMemberAction($idTeamrace)
-    {
-    	$this->initialize($idTeamrace);
-    	 
-    	$form = $this->createForm(new AddMemberType(), new AddMember(), array(
-    			'action' => $this->generateUrl('teamraceDoAddMember', array('idTeamrace' => $idTeamrace)),
-    	));
-    
-    	return $this->render(
-    			'TeamRaceWebBundle:Teamrace:addMember.html.twig',
-    			array(	'form' => $form->createView(),
-    					'teamrace' => $this->teamrace)
-    	);
-    
-    }
     
     public function doAddMemberAction(Request $request, $idTeamrace) {
     
@@ -347,7 +382,8 @@ class TeamraceController extends Controller
     
     	return $this->render(
     			'TeamRaceWebBundle:User:createTeamRace.html.twig',
-    			array('form' => $form->createView())
+    			array(	'form' => $form->createView(),
+    					'role' => $this->role)
     	);
     }
     
@@ -411,7 +447,8 @@ class TeamraceController extends Controller
     			'TeamRaceWebBundle:Teamrace:teams.html.twig',
     			array(	'form' => $form->createView(),
     					'teams' => $teams,
-    					'teamrace' => $this->teamrace)
+    					'teamrace' => $this->teamrace,
+    					'role' => $this->role)
     	);
     }
     
@@ -526,7 +563,8 @@ class TeamraceController extends Controller
     	return $this->render(
     			'TeamRaceWebBundle:Teamrace:standings.html.twig',
     			array(	'results' => $results,
-    					'teamrace' => $this->teamrace)
+    					'teamrace' => $this->teamrace,
+    					'role' => $this->role)
     	);
     
     }

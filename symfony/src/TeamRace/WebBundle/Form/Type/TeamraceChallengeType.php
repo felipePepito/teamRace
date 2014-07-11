@@ -11,8 +11,8 @@ class TeamraceChallengeType extends AbstractType
 		
 		$builder->add('description', 'text');
 		$builder->add('date', 'datetime');
-		$builder->add('maxPoints', 'integer');
-		$builder->add('Create Challenge', 'submit');
+		$builder->add('maxPoints', 'integer', array('attr' => array('min' => 0)));
+		$builder->add('submit', 'submit');
 	}
 	
 	public function getName()

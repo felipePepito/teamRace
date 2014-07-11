@@ -1,7 +1,35 @@
 {% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
 
 {% block content %}
+
+<style>
+td {padding: 0 5px 0 0;}
+</style>
+
 <h3>{{ "Create a new challenge" | trans }}</h3>
-{{ form(form) }}
+
+{{ form_start(form) }}
+<table>
+
+<tr>
+	<td colspan="2">{{ form_errors(form) }}</td>
+</tr>
+<tr>
+	<td>{{ form_label(form.description, 'Headline' | trans) }}</td>
+	<td>{{ form_widget(form.description) }}</td>
+</tr>
+<tr>
+	<td>{{ form_label(form.date, 'Date and Time' | trans) }}</td>
+	<td>{{ form_widget(form.date) }}</td>
+</tr>
+<tr>
+	<td>{{ form_label(form.maxPoints, 'Highest Score possible' | trans) }}</td>
+	<td>{{ form_widget(form.maxPoints) }}</td>
+</tr>
+<tr>
+	<td colspan="2"><br>{{ form_widget(form.submit, { 'label': 'Create Challenge' | trans }) }}</td>
+</tr>
+</table>
+{{ form_end(form) }}
 
 {% endblock %}

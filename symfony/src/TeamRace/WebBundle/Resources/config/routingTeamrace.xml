@@ -18,11 +18,6 @@
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="teamraceDoCreateChallenge" pattern="/{_locale}/teamrace/{idTeamrace}/challenges/docreate">
-    <default key="_controller">TeamRaceWebBundle:Teamrace:doCreateChallenge</default>
-    <requirement key="_locale">en|de</requirement>
-  </route>
-  
   <route id="teamraceChallengeSetResults" pattern="/{_locale}/teamrace/{idTeamrace}/challenge/{idTeamraceChallenge}/setResults">
     <default key="_controller">TeamRaceWebBundle:Teamrace:challengeSetResults</default>
     <requirement key="_locale">en|de</requirement>
