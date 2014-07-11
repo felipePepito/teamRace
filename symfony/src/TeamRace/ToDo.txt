@@ -5,6 +5,12 @@ TODO:
 	- zugriff auf teamrace (initialize())
 	- editierungsmöglichkeiten, seitenaufrufe (addMember, ..)
 	- user nur einmal zu teamrace hinzufügen
+	
+- Alle Formulareingaben validieren
+
+- Eingabe von challenge ergebnissen: nur maximale punktzahl ermöglichen
+
+- Lösung für problem: nachträglich angelegte teams
 
 - Übersetzungen
 
@@ -14,6 +20,10 @@ TODO:
 - Do... Seiten entfernen
 
 - Teams: Teammitglieder anzeigen
+
+- Startseite Teamrace
+
+- Profile: Passwort ändern
 
 - Blog implementieren
 

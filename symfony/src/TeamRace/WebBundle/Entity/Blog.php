@@ -34,6 +34,13 @@ class Blog
      * @ORM\Column(name="text", type="text", nullable=false)
      */
     private $text;
+    
+     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
 
     /**
      * @var \Teamrace

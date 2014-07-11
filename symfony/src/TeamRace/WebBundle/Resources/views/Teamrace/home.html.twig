@@ -1,7 +1,31 @@
 {% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
 
 {% block content %}
-<p>{{ "Teamrace" | trans }} 
-{{ teamrace.name }}</p>
+
+<style>
+div.listBox {
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	margin: 0 0 10px;
+	padding: 2px;
+	width: 600px;
+}
+</style>
+
+<h3>{{ 'Welcome at the central hub of the Teamrace ' | trans }}{{ teamrace.name }}</h3>
+
+<p>{{ 'Here you are able to create, view and set the results of challenges, you can add users to the teamrace,
+create teams and view the standings' | trans }}</p>
+
+<h3>{{ 'Blog' | trans }}</h3>
+
+{{ form(form) }}
+
+{% for blog in blogs %}
+<div class="listBox">
+<div style="float:left"><h4>{{ blog.headline }}</h4></div><div style="float:right">{{ blog.date }}</div>
+<p>{{ blog.text }}</p>
+</div>
+{% endfor %}
 
 {% endblock %}

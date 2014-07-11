@@ -13,6 +13,8 @@ use TeamRace\WebBundle\Form\Type\AddMemberType;
 use TeamRace\WebBundle\Entity\Team;
 use TeamRace\WebBundle\Entity\UserTeam;
 use TeamRace\WebBundle\Entity\ChallengeTeam;
+use TeamRace\WebBundle\Entity\Blog;
+use TeamRace\WebBundle\Form\Type\BlogType;
 
 
 class TeamraceController extends Controller
@@ -55,14 +57,42 @@ class TeamraceController extends Controller
 	} 
 	
 	
-	public function homeAction($idTeamrace)
+	public function homeAction(Request $request, $idTeamrace)
     {
     	$this->initialize($idTeamrace);
     	
-    	$content = $this->renderView('TeamRaceWebBundle:Teamrace:home.html.twig',
-			array('teamrace' => $this->teamrace));
+    	$blogs = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:Blog')
+    		->findBy(array('teamrace' => $idTeamrace));
+    	 
+    	$form = $this->createForm(new BlogType(), new Blog(), array(
+    			'action' => $this->generateUrl('teamraceHome', array('idTeamrace' => $idTeamrace))));
     	
-    	return new Response($content);
+    	$form->handleRequest($request);
+    	 
+    	if($form->isValid()) {
+    		 
+    		$blog = $form->getData();
+    		$blog->setTeamrace($this->teamrace);
+    		$blog->setDate(new \DateTime());
+    		
+    		$em = $this->getDoctrine()->getManager();
+    		$em->persist($blog);
+    		$em->flush();
+    		
+    		// TODO successfull redirect flash
+    		$redirectUrl = $this->get('router')->generate('teamraceHome', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    		 
+    	}
+    	 
+    	return $this->render(
+    			'TeamRaceWebBundle:Teamrace:home.html.twig',
+    			array(	'form' => $form->createView(),
+    					'blogs' => $blogs,
+    					'teamrace' => $this->teamrace)
+    	);
+    	
     }
     
     
