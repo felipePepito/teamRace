@@ -1,0 +1,151 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, left=2.5cm, right=3cm, top=2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{ngerman}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{natbib}
+
+\bibliographystyle{alpha}  
+\setstretch {1.433}
+
+\title{Ausarbeitung\bigskip\\
+Praktikum praktische Programmierung\bigskip\\
+\textbf{Projekt Teamrace}\bigskip\\
+\large Betreuung: Martin Hofmann, Thomas Rau}
+
+\author{Philipp Strobl\\Matrikelnummer 2554775\\
+ph.strobl@gmx.de\\
+Kraillinger Weg 10\\
+81241 München}
+\date{München, 25. Juli 2014}
+
+\begin{document}
+
+\maketitle
+\pagebreak
+
+\tableofcontents 
+
+
+% ***** chapter 1 *****
+\chapter{Zielsetzung}
+
+\section{Definition des Begriffs 'Teamrace'}
+
+Der Name „Teamrace“ ist aus dem sportlichen entlehnt, er bezeichnet ursprünglich eine Team-orientierte Variante der Segelregatta. 
+\cite{teamrace} Die Grundidee des „Teamrace“ liegt im Bilden von Schüler-Teams, welche über einen längeren Zeitraum unterschiedliche Aufgaben bearbeiten und an Wettbewerben in verschiedenen Fächern teilnehmen sollen.
+
+So ist es zum Beispiel möglich, eine Klasse in mehrere Teams einzuteilen. Die Teams nehmen im Verlauf des Teamrace an unterschiedlichen Wettbewerben teil, wie z.B. an Vokabeltests, einem Basketballturnier, einer gemeinschaftlich erarbeiteten Präsentation oder Ähnlichem. Jeder Wettbewerb wird über eine maximal erreichbare Punktzahl entsprechend gewichtet. Die erreichte Punktzahl in jedem Wettbewerb summiert sich schließlich zu einer Gesamtwertung.
+
+\section{Zielsetzung im Rahmen des Praktikums}
+Ziel des Projekts ist das Erstellen eines Softwaresystems, das die zentrale Datenverwaltung des Teamrace ermöglicht. Über eine Webapplikation soll eine Schnittstelle geschaffen werden, die es den Beteiligten in ihren unterschiedlichen Rollen ermöglicht, auf die Daten des Teamrace zuzugreifen, Details zu den Wettbewerben und den einzelnen Teams einzusehen sowie sich über die Wettbewerbe auszutauschen. Den Schülern soll hier auch die Möglichkeit gegeben werden, ihr Team in geeigneter Form online zu präsentieren. 
+
+
+Konkret soll die Webapplikation also folgende Funktionalität bieten:\\
+Alle Beteiligten sollen sich in der Applikation registrieren und anmelden können. Es soll den Beteiligten die Möglichkeit gegeben werden, sich mit Hilfe eines Nachrichtensystems auszutauschen. Über eine Suchmaske kann sowohl nach anderen Personen, als auch nach Teamraces gesucht werden. Zu einem bereits existierenden Teamrace kann die Aufnahme beantragt werden. Jede Person kann ein neues Teamrace erstellen und wird folglich zum Administrator des Teamrace. Der Administrator kann weitere Personen zu dem Teamrace hinzufügen, entweder in der Rolle eines Spielers, also eines normalen Teilnehmers, oder in der Rolle eines Tutors. Auch kann er Personen wieder aus dem Teamrace entfernen. Sowohl der Administrator, als auch die Tutoren können neue Wettbewerbe erstellen. Jeder Wettbewerb hat einen Namen, eine Beschreibung, eine maximal zu erreichende Anzahl an Punkten, sowie ein Datum, an dem der Wettbewerb stattfindet. 
+
+Der Administrator kann Teams erstellen und jedes Mitglied einem Team zuordnen. Ab dem Zeitpunkt des Wettbewerbs können der Administrator und die Tutoren die von jedem Team erreichte Punktzahl festsetzen. Die Punktzahlen jedes Teams zu jedem Wettbewerb sowie der Zwischen- bzw. Endstand können von allen Mitgliedern eingesehen werden.
+
+Der Administrator sowie die Tutoren können über einen Blog Mitteilungen an alle Mitglieder verfassen.
+
+Vorneweg sei an dieser Stelle erwähnt, dass die hier aufgestellten Anforderungen an die Software den zeitlichen Rahmen des Projekts gesprengt haben. Daher habe ich in der Entwicklung im Rahmen des Praktikums versucht, die grundlegende Funktionalität der Software zu implementieren, um weitere Module im späteren Verlauf integrieren zu können. Insofern wurden das Nachrichtensystem, die Suche nach Personen und Teamraces, die Möglichkeit, die Mitgliedschaft bei bestehenden Teamraces zu beantragen sowie insgesamt die Rolle des Tutors nicht implementiert.
+
+
+
+% ***** chapter 2 *****
+\chapter{Lösungsmöglichkeiten}
+
+\section{Programmiersprachen für Webapplikationen}
+\section{Frameworks für Webapplikationen}
+\subsection{Component based Framework}
+\subsection{Request based Framework}
+\section{Im Projekt verwendeter Lösungsansatz}
+
+
+% ***** chapter 3 *****
+\chapter{Grundlegende technische Konzepte und Problemstellungen von Webapplikationen}
+
+Im Folgenden sollen einige grundlegende Konzepte und Problemstellungen von Webapplikationen erläutert und den im Projekt verwendeten Lösungsansätzen gegenübergestellt werden. 
+
+\section{Hypertext Transfer Protocol}
+Das Hypertext Transfer Protokol lässt sich in der Internet Protocol Suite auf der Darstellungsebene einordnen.
+\subsection{Verbindungsaufbau und -persistenz}
+Der Verbindungsaufbau, keep-alive.
+\subsection{Request Arten}
+Die beiden wichtigsten bzw. am häufigsten verwendeten Request-Arten sind GET und POST.
+\subsection{Response Codes}
+200 OK, 302, 404, 500
+\subsection{HTTPS}
+HTTPS gewährleistet die verschlüsselte Datenübertragung.
+
+\section{Session Management, Sicherheit}
+Da HTTP nicht zum Aufbau längerer Sessions in der Interaktion mit einem Webserver ausgelegt ist, gibt es andere Konzepte, einen Benutzer zu authentifizieren und längere Sessions zu ermöglichen.
+\subsection{Authentifizierung}
+Authentifizierung mittels Cookies, Login-Daten, ..
+\subsection{Verschlüsselung}
+HTTPS, Verschlüsselung des Passworts (in Datenbanken)
+
+\section{Datenpersistenz}
+Für eine persistente Datenspeicherung in Webapplikationen wird von Datenbanken Gebrauch gemacht.
+\subsection{relationale Datenbanken}
+Verwendung von MySQL Datenbank.
+\subsection{Object-relational mapping}
+Verwendung von Doctrine.
+
+\section{Darstellung der Informationen}
+\subsection{HTML, CSS}
+Die Hypertext markup language, css
+\subsection{PHP}
+PHP bietet die Möglichkeit, Daten dynamisch in statischen html-code einzubinden.
+\subsection{Twig}
+Twig ist eine Entwicklung von Sensio-Labs, sie übernimmt Aufgaben von PHP in leichter lesbarer Form.
+
+\section{Caching}
+Chaching findet auf Browser-Ebene, mit Hilfe von Proxy-Servern und durch Gateway-Caching (Reverse-Proxy) statt.
+
+\section{3-tier Konzept (MVC Pattern)}
+Das MVC Pattern ist ein Softwareentwicklungsmuster, dass die verschiedenen Aufgaben der Software voneinander trennen soll.
+\subsection{Controller}
+Der Controller ist das Bindeglied zwischen Model und View.
+\subsection{Model}
+Hier geschieht die Datenspeicherung.
+\subsection{View}
+Generierung der Darstellung
+\section{Exception Handling}
+Darstellung von Catchable Errors, verhalten der Applikation im Fehlerfall.
+
+
+% ***** chapter 4 *****
+\chapter{Softwarearchitektur des Symfony 2 Frameworks}
+Im Folgenden soll ein Überblick über die Softwarearchitektur des Symfony 2 Frameworks gegeben werden.
+\section{Seperation of concerns / Component based Framework}
+Grundlegend ist die Idee, alle Teile des Frameworks möglichst so voneinander zu trennen, dass sie auch unabhängig voneinander verwendet werden können.
+\section{Dependency-Injection / Container Pattern}
+Ein Container verbirgt alle technischen Details vor der eigentlichen Implementierung der Software
+\section{Verwendete Design-Patterns}
+Diese Liste soll keinen Anspruch auf Vollständigkeit erheben, es sollen lediglich beispielhaft die Verwendung einiger gängiger Design-Patterns erläutert werden.
+\subsection{Decorator}
+Decorator Pattern
+\subsection{Composite}
+Composite Pattern
+\subsection{Unit of Work}
+Verwendet in Doctrine \cite{ab94}
+
+
+% ***** chapter 5 *****
+\chapter{Dokumentation der Entwicklung des Projekts}
+Erläuterung der Implementierung.
+
+
+% ***** chapter 5 *****
+\chapter{Stand der Entwicklung, Ausblick}
+Darstellung der bislang erreichten Entwicklungsziele, Ausblick auf weitere notwendige bzw. mögliche Komponenten und Erweiterungen.
+
+
+\bibliographystyle{plain}
+
+\bibliography{bibtex}
+\end{document}

@@ -1,0 +1,237 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, left=2.5cm, right=3cm, top=2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{ngerman}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{natbib}
+
+\usepackage{listings,xcolor}
+\usepackage{inconsolata}
+
+\definecolor{dkgreen}{rgb}{0,.6,0}
+\definecolor{dkblue}{rgb}{0,0,.6}
+\definecolor{dkyellow}{cmyk}{0,0,.8,.3}
+
+\lstset{
+  language        = php,
+  basicstyle      = \small\ttfamily,
+  keywordstyle    = \color{dkblue},
+  stringstyle     = \color{red},
+  identifierstyle = \color{dkgreen},
+  commentstyle    = \color{gray},
+  emph            =[1]{php},
+  emphstyle       =[1]\color{black},
+  emph            =[2]{if,and,or,else},
+  emphstyle       =[2]\color{dkyellow}
+}
+  
+  
+\bibliographystyle{alpha}  
+\setstretch {1.433}
+
+\title{Ausarbeitung\bigskip\\
+Praktikum praktische Programmierung\bigskip\\
+\textbf{Projekt Teamrace}\bigskip\\
+\large Betreuung: Martin Hofmann, Thomas Rau}
+
+\author{Philipp Strobl\\Matrikelnummer 2554775\\
+ph.strobl@gmx.de\\
+Kraillinger Weg 10\\
+81241 München}
+\date{München, 25. Juli 2014}
+
+\begin{document}
+
+\maketitle
+\pagebreak
+
+\tableofcontents 
+
+
+% ***** chapter 0 *****
+\chapter{Zielsetzung}
+
+\section{Definition des Begriffs 'Teamrace'}
+
+Der Name „Teamrace“ ist aus dem sportlichen entlehnt, er bezeichnet ursprünglich eine Team-orientierte Variante der Segelregatta. 
+\cite{wiki:TeamRacing} Die Grundidee des „Teamrace“ liegt im Bilden von Schüler-Teams, welche über einen längeren Zeitraum unterschiedliche Aufgaben bearbeiten und an Wettbewerben in verschiedenen Fächern teilnehmen sollen.
+
+So ist es zum Beispiel möglich, eine Klasse in mehrere Teams einzuteilen. Die Teams nehmen im Verlauf des Teamrace an unterschiedlichen Wettbewerben teil, wie z.B. an Vokabeltests, einem Basketballturnier, einer gemeinschaftlich erarbeiteten Präsentation oder Ähnlichem. Jeder Wettbewerb wird über eine maximal erreichbare Punktzahl entsprechend gewichtet. Die erreichte Punktzahl in jedem Wettbewerb summiert sich schließlich zu einer Gesamtwertung.
+
+\section{Zielsetzung im Rahmen des Praktikums}
+Ziel des Projekts ist das Erstellen eines Softwaresystems, das die zentrale Datenverwaltung des Teamrace ermöglicht. Über eine Webapplikation soll eine Schnittstelle geschaffen werden, die es den Beteiligten in ihren unterschiedlichen Rollen ermöglicht, auf die Daten des Teamrace zuzugreifen, Details zu den Wettbewerben und den einzelnen Teams einzusehen sowie sich über die Wettbewerbe auszutauschen. Den Schülern soll hier auch die Möglichkeit gegeben werden, ihr Team in geeigneter Form online zu präsentieren. 
+
+
+Konkret soll die Webapplikation also folgende Funktionalität bieten:\\
+Alle Beteiligten sollen sich in der Applikation registrieren und anmelden können. Es soll den Beteiligten die Möglichkeit gegeben werden, sich mit Hilfe eines Nachrichtensystems auszutauschen. Über eine Suchmaske kann sowohl nach anderen Personen, als auch nach Teamraces gesucht werden. Zu einem bereits existierenden Teamrace kann die Aufnahme beantragt werden. Jede Person kann ein neues Teamrace erstellen und wird folglich zum Administrator des Teamrace. Der Administrator kann weitere Personen zu dem Teamrace hinzufügen, entweder in der Rolle eines Spielers, also eines normalen Teilnehmers, oder in der Rolle eines Tutors. Auch kann er Personen wieder aus dem Teamrace entfernen. Sowohl der Administrator, als auch die Tutoren können neue Wettbewerbe erstellen. Jeder Wettbewerb hat einen Namen, eine Beschreibung, eine maximal zu erreichende Anzahl an Punkten, sowie ein Datum, an dem der Wettbewerb stattfindet. 
+
+Der Administrator kann Teams erstellen und jedes Mitglied einem Team zuordnen. Ab dem Zeitpunkt des Wettbewerbs können der Administrator und die Tutoren die von jedem Team erreichte Punktzahl festsetzen. Die Punktzahlen jedes Teams zu jedem Wettbewerb sowie der Zwischen- bzw. Endstand können von allen Mitgliedern eingesehen werden.
+
+Der Administrator sowie die Tutoren können über einen Blog Mitteilungen an alle Mitglieder verfassen.
+
+Vorneweg sei an dieser Stelle erwähnt, dass die hier aufgestellten Anforderungen an die Software den zeitlichen Rahmen des Projekts gesprengt haben. Daher habe ich in der Entwicklung im Rahmen des Praktikums versucht, die grundlegende Funktionalität der Software zu implementieren, um weitere Module im späteren Verlauf integrieren zu können. Insofern wurden das Nachrichtensystem, die Suche nach Personen und Teamraces, die Möglichkeit, die Mitgliedschaft bei bestehenden Teamraces zu beantragen sowie insgesamt die Rolle des Tutors nicht implementiert.
+
+% ***** chapter 1 *****
+\chapter{Dokumentation der Entwicklung}
+
+Ausgangspunkt für die Entwicklung war die Entscheidung für PHP als Programmiersprache. Gegen die Entwicklung mit Ruby habe ich mich schlicht deswegen entschieden, weil ich keinerlei Erfahrung mit der Sprache habe. Eine Entwicklung mit Java habe ich lange in Betracht gezogen. Nach eingehendem Studium von Fachbüchern zu dem Thema wurde mir jedoch klar, dass die Vielzahl an Möglichkeiten, die die Verwendung von Java Enterprise Edition mit ihren Komponenten bietet, auch mit einer entsprechenden Komplexität einhergeht. Insofern habe ich mich schließlich gegen diese Alternative entschieden, da ich der Einschätzung war, die Software damit nicht in dem zeitlichen Rahmen des Praktikums entwickeln zu können. Ein kurzer Überblick über die Komponenten von Java EE, über Ruby und PHP bietet Kapitel \ref{sec:Programmiersprachen}.
+
+Schließlich ist meine Wahl auf PHP gefallen. Von den im Kapitel \ref{sec:Frameworks} dargestellten Frameworks habe ich mich für Symfony 2 entschieden, da es Open Source und von der Benutzbarkeit, Erweiterbarkeit und Architektur sehr ausgereift ist (siehe Kapitel \ref{sec:symfony}).
+
+
+
+
+% ***** chapter 2 *****
+\chapter{Lösungsmöglichkeiten}
+
+\section{Programmiersprachen für Webapplikationen}
+\label{sec:Programmiersprachen}
+\subsection{PHP}
+PHP ist eine Server-seitige Skriptsprache, die besonders für die Anwendungsentwicklung im World Wide Web entwickelt wurde, jedoch auch für andere Zwecke einsetzbar ist.
+
+Die hohe Verbreitung von PHP ist unter anderem darauf zurückzuführen, dass PHP die Vermischung von HTML und PHP Code im Quelltext, was die Gestaltung von dynamischen Internetseiten auch für Anfänger sehr einfach macht. PHP Code wird von einem Interpreter ausgeführt, der als Modul in den Webserver integriert ist (z.B. php5\_module unter Apache), oder als CGI Anwendung.
+
+Seit der Version 5 ist PHP eine objektorientierte Sprache. Auch wenn bei der Funktionsdefinition ein fester Typ von Übergabeparametern gefordert werden kann, ist PHP generell dynamisch typisiert. PHP ist freie Software und wird von den meisten Webservern und auf fast allen Plattformen und Betriebssystemen unterstützt.(\cite{ebooks:PHP}, \cite{ebooks:PHP2}, \cite{PHPManual})
+
+\subsection{Ruby}
+So wie PHP ist auch Ruby eine dynamisch typisierte sprache, jedoch keine Skriptsprache. Beliebte Compiler sind JRuby and Rubinius. Ruby hebt sich in seinem Syntax teilweise deutlich von C, Java oder PHP ab, insofern z.B. Blöcke nicht durch Klammern, sondern durch Schlüsselwörter markiert werden. (\cite{Ruby}, \cite{wiki:Ruby})
+
+Zur Programmierung von Webanwendungen erfreut sich das Framework "'Ruby on Rails"' hoher Popularität (\cite{RubyOnRails}).
+
+\subsection{Java (Enterprise Edition)}
+Die sprachlichen Eigenschaften von Java seien hier nicht erwähnt, insofern sie im verlauf des Studiums genügend diskutiert werden.
+
+Für die Entwicklung von Webapplikationen gibt es eine Reihe von Java Technologien, die standardisiert und in unterschiedlicher Weise implementiert wurden. Jene standardisierten technischen Spezifikationen sind unter dem Deckmantel "'Java Enterprise Edition"' \cite{JavaEE} zusammengefasst, sie werden im Rahmen des "'Java Community Process"' \cite{JavaCommunityProcess} entwickelt.
+
+Für den Application Server existieren mehr als 10 unterschiedliche Java EE 6 konforme Implementierungen. Als Vorteil ist zu nennen, dass Webapplikationen auf Basis von Java EE sehr skalierbar und variabel sind, daraus ergibt sich aber entsprechend eine hohe Komplexität und Hürde im Einstieg in der Programmierung von Webanwendungen. (\cite{eberling2007enterprise}, \cite{mueller2010javaserver})
+\section{Frameworks für Webapplikationen}
+\label{sec:Frameworks}
+\subsection{Component based Framework}
+\subsection{Request based Framework}
+\section{Im Projekt verwendeter Lösungsansatz}
+
+
+% ***** chapter 3 *****
+\chapter{Grundlegende technische Konzepte und Problemstellungen von Webapplikationen}
+
+Im Folgenden sollen einige grundlegende Konzepte und Problemstellungen von Webapplikationen erläutert und den im Projekt verwendeten Lösungsansätzen gegenübergestellt werden. 
+
+\section{Hypertext Transfer Protocol}
+Das Hypertext Transfer Protokol lässt sich in der Internet Protocol Suite auf der Darstellungsebene einordnen.\cite{wiki:HTTP}
+\subsection{Verbindungsaufbau und -persistenz}
+Der Verbindungsaufbau, keep-alive.
+\subsection{Request Arten}
+Die beiden wichtigsten bzw. am häufigsten verwendeten Request-Arten sind GET und POST.
+\subsection{Response Codes}
+200 OK, 302, 404, 500
+\subsection{HTTPS}
+HTTPS gewährleistet die verschlüsselte Datenübertragung.
+
+\section{Session Management, Sicherheit}
+Da HTTP nicht zum Aufbau längerer Sessions in der Interaktion mit einem Webserver ausgelegt ist, gibt es andere Konzepte, einen Benutzer zu authentifizieren und längere Sessions zu ermöglichen.
+\subsection{Authentifizierung}
+Authentifizierung mittels Cookies, Login-Daten, ..
+\subsection{Verschlüsselung}
+HTTPS, Verschlüsselung des Passworts (in Datenbanken)
+\subsection{Validierung}
+Ein kritischer Punkt im Bezug auf die Sicherheit von Web-Anwendungen stellt die Schnittstelle zwischen Umgebung und der Anwendung. \cite[S.212]{ebooks:Architekturen} So schreibt das Bundesamt für Sicherheit in der Informationstechnik dazu: "'Alle Daten, die von außen in die Anwendung gelangen, sind zu validieren und zu filtern."'
+\cite[S.20]{BSI}
+
+Folgendes Beispiel sei hierzu angeführt: 
+In einer fiktiven Anwendung werden zu speichernde Formulareingaben ohne Überprüfung ihres Inhalts in eine Datenbank gespeichert:
+
+\begin{lstlisting}
+<?php
+$con = mysqli_connect($host,$username,$password,$dbname);
+// Check connection
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+
+// Get Post Parameters, unfiltered
+$firstname = $_POST['firstname'];
+$lastname = $_POST['lastname'];
+mysqli_query($con,"INSERT INTO Persons (FirstName, LastName)
+VALUES ($firstname, $lastname)");
+
+mysqli_close($con);
+?>
+\end{lstlisting}
+
+Angenommen, ein Angreifer würde (richtig) vermuten, dass die Daten zur Registrierung in einer Tabelle mit Namen "'user"' gespeichert werden, könnte er mit folgender Eingabe in das Formularfeld "'Last Name"' den gesamten Tabelleninhalt löschen:
+\begin{lstlisting}
+x");TRUNCATE TABLE user; CREATE TABLE prank(id int(9)
+\end{lstlisting}
+Die Erzeugung einer neuen Tabelle dient hier nur dem Umgehen eines SQL Syntax-Errors wegen der noch ausstehenden schließenden Klammer.
+Dieses Beispiel stellt lediglich eine sehr einfache Angriffsmöglichkeit dar, vor die in jedem Grundlagenbuch über PHP gewarnt wird. Eine leichte Abhilfe bietet hierfür die folgende Funktion, indem sie alle speziellen Zeichen im SQL-Syntax "'entschärft"'.
+\begin{lstlisting}
+string mysqli_real_escape_string(string $escapestr)
+\end{lstlisting}
+
+An dieser Stelle bietet das Symfony Framework Abhilfe, in dem die "'HTTP Foundation"' Komponente alle Eingabedaten filtert und je nach Bedarf auch in entsprechende Typen umwandelt.\cite{sf2:HTTPFoundation}
+
+\section{Datenpersistenz}
+Für eine persistente Datenspeicherung in Webapplikationen wird von Datenbanken Gebrauch gemacht.
+\subsection{relationale Datenbanken}
+Verwendung von MySQL Datenbank.
+\subsection{Object-relational mapping}
+Verwendung von Doctrine.
+
+\section{Darstellung der Informationen}
+\subsection{HTML, CSS}
+Die Hypertext markup language, css
+\subsection{PHP}
+PHP bietet die Möglichkeit, Daten dynamisch in statischen html-code einzubinden.
+\subsection{Twig}
+Twig ist eine Entwicklung von Sensio-Labs, sie übernimmt Aufgaben von PHP in leichter lesbarer Form.
+
+\section{Caching}
+Chaching findet auf Browser-Ebene, mit Hilfe von Proxy-Servern und durch Gateway-Caching (Reverse-Proxy) statt.
+
+\section{3-tier Konzept (MVC Pattern)}
+Das MVC Pattern ist ein Softwareentwicklungsmuster, dass die verschiedenen Aufgaben der Software voneinander trennen soll.
+\subsection{Controller}
+Der Controller ist das Bindeglied zwischen Model und View.
+\subsection{Model}
+Hier geschieht die Datenspeicherung.
+\subsection{View}
+Generierung der Darstellung
+\section{Exception Handling}
+Darstellung von Catchable Errors, verhalten der Applikation im Fehlerfall.
+
+
+% ***** chapter 4 *****
+\chapter{Softwarearchitektur des Symfony 2 Frameworks}
+\label{sec:symfony}
+Im Folgenden soll ein Überblick über die Softwarearchitektur des Symfony 2 Frameworks gegeben werden.
+\section{Seperation of concerns / Component based Framework}
+Grundlegend ist die Idee, alle Teile des Frameworks möglichst so voneinander zu trennen, dass sie auch unabhängig voneinander verwendet werden können.
+\section{Dependency-Injection / Container Pattern}
+Ein Container verbirgt alle technischen Details vor der eigentlichen Implementierung der Software
+\section{Verwendete Design-Patterns}
+Diese Liste soll keinen Anspruch auf Vollständigkeit erheben, es sollen lediglich beispielhaft die Verwendung einiger gängiger Design-Patterns erläutert werden.
+\subsection{Decorator}
+Decorator Pattern
+\subsection{Composite}
+Composite Pattern
+\subsection{Unit of Work}
+Verwendet in Doctrine \cite{ab94} 
+
+
+% ***** chapter 5 *****
+\chapter{Dokumentation der Entwicklung des Projekts}
+Erläuterung der Implementierung.
+
+
+% ***** chapter 5 *****
+\chapter{Stand der Entwicklung, Ausblick}
+Darstellung der bislang erreichten Entwicklungsziele, Ausblick auf weitere notwendige bzw. mögliche Komponenten und Erweiterungen.
+
+
+\bibliographystyle{plain}
+
+\bibliography{bibtex}
+\end{document}
