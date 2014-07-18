@@ -156,17 +156,68 @@ Der Front Controller vereinigt bzw. bündelt alle Anfragen an die Anwendung, um 
 
 In Symfony Applikationen werden alle Anfragen an eine php-Datei geleitet, die im Normalfall mit \emph{app.php} benannt ist. Mittels Umbenennungsregeln seitens des Webservers (z.B. RewriteRule in Apache) wird erreicht, dass dies für den Nutzer im Normalfall nicht erkennbar ist. Hier wird eine Instanz des AppKernel Objekts generiert und ggf. dekoriert (z.B. mit dem einem HTTP Cache, wobei dann das \emph{AppKernel} Objekt von einem \emph{AppCache} Objekt umhüllt wird). 
 
-Weiter wird aus den Komponenten des Requests, die in PHP in globalen Variablen gespeichert sind (z.B. \emph{\$\_GET, \$\_POST, \$\_COOKIE}) ein Request Objekt geformt und dem AppKernel übergeben. Der AppKernel ist eine Unterklasse des Kernel, welcher den Kern der Anwendung darstellt. Hier werden alle Komponenten der Anwendungen (genannt \emph{Bundle}, z.B. die Templating-Engine \emph{Twig} oder das ORM Bundle \emph{Doctrine}) erzeugt und mit der Konfiguration versehen. Dies geschieht, indem die von dem Kernel Objekt nicht implementierten Methoden \emph{registerBundles} und \emph{registerContainerConfiguration} im AppKernel implementiert werden.
+Weiter wird aus den Komponenten des Requests, die in PHP in globalen Variablen gespeichert sind (z.B. \emph{\$\_GET, \$\_POST, \$\_COOKIE}) ein Request Objekt geformt und dem AppKernel übergeben. Der AppKernel ist eine Unterklasse des Kernel, welcher den Kern der Anwendung darstellt. Hier werden alle Komponenten der Anwendungen (auch genannt \emph{Bundle}, z.B. die Templating-Engine \emph{Twig} oder das ORM Bundle \emph{Doctrine}) erzeugt und mit der Konfiguration versehen. Dies geschieht, indem die von dem Kernel Objekt nicht implementierten Methoden \emph{registerBundles} und \emph{registerContainerConfiguration} im AppKernel implementiert werden.
 
 Symfony bietet darüber hinaus die Möglichkeit, die gleiche Applikation in verschiedenen Umgebungen zu betreiben, z.B. in einer Entwicklungsumgebung und einer Produktionsumgebung. Hierdurch ändert sich z.B. das Verhalten der Anwendung im Fehlerfall, so wird in der Entwicklungsumgebung ein Stacktrace und eine möglichst präzise Beschreibung des Fehlers wiedergegeben, während jene Informationen im Produktionsbetrieb aus Aspekten der Sicherheit natürlich möglichst vor dem Nutzer verborgen werden sollen. Technisch wird dies dadurch realisiert, dass mehrere Front Controller existieren, die bei der Erzeugung des AppKernels jeweils unterschiedliche Konfigurationsdateien und Komponenten laden.
 (\cite{sf2:FrontController})
+
 \subsection{Routing}
+
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=1.00]{Bilder/request-flow.png}
+\includegraphics[scale=0.7]{Bilder/request-flow.png}
 \caption{Schematische Darstellung der Verarbeitung von Anfragen \cite{sf2:HTTPFundamentals}}
-\label{}
+\label{fig:RequestFlow}
 \end{figure}
+In der Grafik \ref{fig:RequestFlow} ist eine Komponente mit Namen "'Routing"' zu erkennen. Sie sorgt dafür, dass jede Anfrage an den jeweils zugehörigen Controller weitergeleitet wird. Dies wird umgesetzt, indem die URL des Requests mit den Einträgen in den Routing-Tabellen der Applikation verglichen wird. Technisch besteht das Routing aus 3 Teilen: 
+
+\begin{itemize}
+\item{Einer \emph{RouteCollection}, die die Definitionen der einzelnen Routen enthält. Jede Definition ist dabei eine Instanz der Klasse \emph{Route}}.
+\item{Einem \emph{RequestContext}, der die Parameter des Requests enthält. Üblicherweise wird er direkt aus dem vom Front Controller übergebenen \emph{Request} Objekt gespeist.}
+\item{Einem \emph{UrlMatcher}, welchem bei der Konstruktion die \emph{RouteCollection} übergeben wird, und diese anschließend bei Bedarf nach Übereinstimmung mit einem \emph{RequestContext} zu durchsuchen.}
+\end{itemize}
+
+Im Fall einer gefundenen, passenden Route wird der Name des Controllers sowie der Name der Route zurück an den Kernel übergeben, andernfalls wirft der Router eine entsprechende Exception.(\ref{sf2:RoutingComponent})\\
+
+Die \emph{RouteCollection} wird üblicherweise aus entsprechenden Konfigurationsdateien generiert. Wie für alle Konfigurationsdateien bietet Symfony hier die Dateiformatsoptionen \emph{yml} und \emph{xml}. Auch eine Generierung über Annotationen in den Controllern ist möglich. Im beschriebenen Projekt habe ich mich für das \emph{xml} Format entschieden. Folgendes Listing zweigt beispielhaft die Definition einer Route:
+
+\begin{lstlisting}
+
+  <route id="teamraceHome" pattern="/{_locale}/teamrace/{idTeamrace}">
+    <default key="_controller">TeamRaceWebBundle:Teamrace:home</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+\end{lstlisting}
+  
+Im vorliegenden Pattern sind zwei unterschiedliche Platzhalter erkennbar: \emph{\_locale} und \emph{idTeamrace}. Für den Platzhalter \emph{\_locale} wird weiterhin über das \emph{requirement} Attribut gefordert, dass er entweder dem String "'en"' oder "'de"' entspricht.
+
+Es gibt noch weitere Möglichkeiten, Anforderungen an die Route zu stellen, z.B. die Art des HTTP-Requests (GET, POST, ..) oder der Host, an den die Anfrage gerichtet wurde. Außerdem können default-Werte für Platzhalter festgelegt werden. (\ref{sf2:Routing})\\
+
+Im vorliegenden Beispiel wird im Falle einer Übereinstimmung des Requests mit dem geforderten URL-Pattern für die Weiterleitung an den entsprechenden Controller der String \emph{TeamRaceWebBundle:Teamrace:home} an den Kernel übergeben. Der String wird als "'Logical Controller Name"' bezeichnet. Er beinhaltet den Namen des Bundles, die Kontroller-Klasse sowie die aufzurufende Funktion innerhalb der Klasse. In diesem Projekt sind alle Controller in einem Bundle zusammengefasst, dem TeamRaceWebBundle. Die Controller-Klasse heißt im obigen Beispiel Teamrace (insofern hier eine Seite aufgerufen wird, die Daten aus einem bestimmten Teamrace wiedergibt), die aufgerufene Funktion heißt \emph{homeAction}. Jener Funktion werden, je nach Funktionsdefinition, die Werte der Platzhalter übergeben, im obigen Fall der Wert für \emph{idTeamrace}.
+
+\subsection{Controller}
+Die Aufgabe des Controllers ist es, die Anfrage in eine Antwort umzusetzen. In vielen Fällen wird er dabei Daten aus einer Datenbank (der "'Model"' Komponente im MVC Entwurfsmuster) abfragen bzw. eine Veränderung des Datensatzes vornehmen und eine Darstellung in Form von HTML-Code erzeugen, um diese als Antwort an den Client zurückzusenden.
+
+Natürlich ist nicht in jedem Fall ein Miteinbezug eines Datenbestandes nötig, für rein statische Seiten, wie der Seiten im Projekt, die auch ohne Authentifizierung zugänglich sind (z.B. die "'home"'- oder "'about"' Seiten), ist keine Datenbankzugriff nötig.
+
+Ebenso kann die Anforderung an eine Antwort an den Client sehr unterschiedlich ausfallen. Zum einen ist z.B. ein Redirect auf eine andere Seite als Antwort möglich, zum anderen ist gerade in modernen Webanwendungen via AJAX (siehe \ref{sec:AJAX}) oft lediglich ein Transfer von reinen Daten ohne Informationen über ihre Darstellung gefordert, wobei hier die Daten üblicherweise im json-Format übermittelt werden.\\
+
+Technisch gesehen kann der Controller in Symfony aus jedwedem "'Callable"' bestehen, im Normalfall jedoch aus einer Methode innerhalb einer Klasse, die die Klasse \emph{Controller} beerbt. Dadurch werden innerhalb des Controllers die Funktionalität aller in die Applikation eingebundenen Komponenten verwendbar. Alternativ kann auch die \emph{ContainerAware} Klasse beerbt werden, der Unterschied besteht lediglich darin, dass die Klasse Controller einige Abkürzungen für die Verwendung von gängigen sogenannten "'Helper-Methoden"' bereitstellt. So kann z.B. zum Rendern eines Templates
+
+\begin{lstlisting}
+$this->render('TeamRaceWebBundle:External:about.html.twig');
+\end{lstlisting}
+statt 
+\begin{lstlisting}
+$this->get('templating')->renderResponse(
+	'TeamRaceWebBundle:External:about.html.twig');
+\end{lstlisting}
+verwendet werden.\\
+
+Wie oben bereits erwähnt, existieren eine Vielzahl von "'Helper-Methoden"', die die Funktionalität des Frameworks im Controller abrufbar machen.
+
+
 
 % ***** chapter 4 *****
 \chapter{Grundlegende technische Konzepte und Problemstellungen von Webapplikationen}
@@ -280,7 +331,17 @@ Verwendet in Doctrine \cite{ab94}
 % ***** chapter 5 *****
 \chapter{Stand der Entwicklung, Ausblick}
 Darstellung der bislang erreichten Entwicklungsziele, Ausblick auf weitere notwendige bzw. mögliche Komponenten und Erweiterungen.
+\section{Zu Verbesserndes}
 
+\begin{itemize}
+\item{Bereinigung der Namen (TeamRace => Teamrace)}
+\item{Einheitliche Verwendung vom yml Konfigurationsdateiformat}
+\end{itemize}
+
+\section{Weitere Technologien}
+
+\subsection{AJAX}
+\label{sec:AJAX}
 
 \bibliographystyle{plain}
 
