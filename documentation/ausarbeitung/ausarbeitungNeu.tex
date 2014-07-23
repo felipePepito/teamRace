@@ -21,19 +21,21 @@
 \lstset{
   language        = php,
   basicstyle      = \small\ttfamily,
-  keywordstyle    = \color{dkblue},
+  keywordstyle    = \color{dkgreen},
   stringstyle     = \color{red},
   identifierstyle = \color{dkgreen},
   commentstyle    = \color{gray},
   emph            =[1]{php},
   emphstyle       =[1]\color{black},
-  emph            =[2]{if,and,or,else},
-  emphstyle       =[2]\color{dkyellow}
+  emph            =[2]{if,and,or,else, for, endif, endfor},
+  emphstyle       =[2]\color{dkblue}
 }
   
   
 \bibliographystyle{alpha}  
 \setstretch {1.433}
+
+\setcounter{secnumdepth}{5}
 
 \title{Ausarbeitung\bigskip\\
 Praktikum praktische Programmierung\bigskip\\
@@ -177,12 +179,11 @@ In der Grafik \ref{fig:RequestFlow} ist eine Komponente mit Namen "'Routing"' zu
 \item{Einem \emph{UrlMatcher}, welchem bei der Konstruktion die \emph{RouteCollection} übergeben wird, und diese anschließend bei Bedarf nach Übereinstimmung mit einem \emph{RequestContext} zu durchsuchen.}
 \end{itemize}
 
-Im Fall einer gefundenen, passenden Route wird der Name des Controllers sowie der Name der Route zurück an den Kernel übergeben, andernfalls wirft der Router eine entsprechende Exception.(\ref{sf2:RoutingComponent})\\
+Im Fall einer gefundenen, passenden Route wird der Name des Controllers sowie der Name der Route zurück an den Kernel übergeben, andernfalls wirft der Router eine entsprechende Exception.(\cite{sf2:RoutingComponent})\\
 
 Die \emph{RouteCollection} wird üblicherweise aus entsprechenden Konfigurationsdateien generiert. Wie für alle Konfigurationsdateien bietet Symfony hier die Dateiformatsoptionen \emph{yml} und \emph{xml}. Auch eine Generierung über Annotationen in den Controllern ist möglich. Im beschriebenen Projekt habe ich mich für das \emph{xml} Format entschieden. Folgendes Listing zweigt beispielhaft die Definition einer Route:
 
-\begin{lstlisting}
-
+\begin{lstlisting}[language=PHP, caption=Auszug aus\\ src/TeamRace/WebBundle/Resources/config/routing.xml]
   <route id="teamraceHome" pattern="/{_locale}/teamrace/{idTeamrace}">
     <default key="_controller">TeamRaceWebBundle:Teamrace:home</default>
     <requirement key="_locale">en|de</requirement>
@@ -192,7 +193,7 @@ Die \emph{RouteCollection} wird üblicherweise aus entsprechenden Konfigurations
   
 Im vorliegenden Pattern sind zwei unterschiedliche Platzhalter erkennbar: \emph{\_locale} und \emph{idTeamrace}. Für den Platzhalter \emph{\_locale} wird weiterhin über das \emph{requirement} Attribut gefordert, dass er entweder dem String "'en"' oder "'de"' entspricht.
 
-Es gibt noch weitere Möglichkeiten, Anforderungen an die Route zu stellen, z.B. die Art des HTTP-Requests (GET, POST, ..) oder der Host, an den die Anfrage gerichtet wurde. Außerdem können default-Werte für Platzhalter festgelegt werden. (\ref{sf2:Routing})\\
+Es gibt noch weitere Möglichkeiten, Anforderungen an die Route zu stellen, z.B. die Art des HTTP-Requests (GET, POST, ..) oder der Host, an den die Anfrage gerichtet wurde. Außerdem können default-Werte für Platzhalter festgelegt werden. (\cite{sf2:Routing})\\
 
 Im vorliegenden Beispiel wird im Falle einer Übereinstimmung des Requests mit dem geforderten URL-Pattern für die Weiterleitung an den entsprechenden Controller der String \emph{TeamRaceWebBundle:Teamrace:home} an den Kernel übergeben. Der String wird als "'Logical Controller Name"' bezeichnet. Er beinhaltet den Namen des Bundles, die Kontroller-Klasse sowie die aufzurufende Funktion innerhalb der Klasse. In diesem Projekt sind alle Controller in einem Bundle zusammengefasst, dem TeamRaceWebBundle. Die Controller-Klasse heißt im obigen Beispiel Teamrace (insofern hier eine Seite aufgerufen wird, die Daten aus einem bestimmten Teamrace wiedergibt), die aufgerufene Funktion heißt \emph{homeAction}. Jener Funktion werden, je nach Funktionsdefinition, die Werte der Platzhalter übergeben, im obigen Fall der Wert für \emph{idTeamrace}.
 
@@ -213,27 +214,285 @@ statt
 $this->get('templating')->renderResponse(
 	'TeamRaceWebBundle:External:about.html.twig');
 \end{lstlisting}
-verwendet werden.\\
+verwendet werden.
 
-Wie oben bereits erwähnt, existieren eine Vielzahl von "'Helper-Methoden"', die die Funktionalität des Frameworks im Controller abrufbar machen.
+\subsection{View}
 
+Wie oben angeführt, ist eine der Hauptaufgaben des Controllers, die Darstellung der Inhalte zu erzeugen, um diese anschließend an den Client zu senden. Im obigen Listing ist bereits zu erkennen, dass der Templating-Engine ein String übergeben wird, der auf eine Datei verweist. Die Struktur der Namensgebung ist ähnlich wie beim Logischen Controller Namen: Hier wird auf die Datei "'\emph{about.html.twig}"' verwiesen, die im Ordner "'\emph{External}"' der Ressourcen des Bundles "'\emph{TeamRaceWebBundle}"' gespeichert ist.
+
+Generell bezeichnet der Begriff "'Template"' eine Textdatei, die mit einem entsprechenden Interpreter eine Text-basierte Datei zur Informationsdarstellung erzeugt. Mit PHP lassen sich Templates erzeugen, insofern der PHP-Interpreter die Integration von PHP Code in HTML Code erlaubt. In Symfony wird eine Templating-Engine mit Namen "'Twig"' verwendet. Twig wurde auf Grundlage von PHP entwickelt und bietet eine elegante Syntax, um Templates zu erstellen. (\cite{sf2:Templates}) 
+
+Folgender Code, entnommen aus dem Template zur überblickshaften Darstellung der Wettbewerbe, soll der Erläuterung des Syntax dienen:
+\begin{lstlisting}[language=PHP, caption=Auszug aus\\ src/TeamRace/WebBundle/Resources/views/Teamrace/challenges.html.twig, label=lst:challenges]
+{% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
+
+[...]
+
+{% for challenge in challenges %}
+{% if challenge.date | date('Y-m-d-G-i') >= "now" | date('Y-m-d-G-i') %}
+
+<div class="challengeBox">
+  <div style="width:460px; float:left;">
+    <a>{{ (loop.length - loop.index0) ~ '. Challenge' }}</a>
+  </div>
+  <div>
+    {{ "Date: " | trans }}
+    {{ challenge.date | date("d.m.y G:i") }}
+  </div>
+  <div>
+    {{ challenge.description | length > 150 
+      ? challenge.description | slice(0, 150) ~ '...' 
+      : challenge.description }}
+  </div>
+</div>
+
+{% endif %}
+{% endfor %}
+
+\end{lstlisting}
+
+
+Jeder Ausdruck innerhalb eines Blocks, der von \texttt{\{\{ \}\}} umschlossen ist, wird ausgegeben. Die Logik innerhalb des Templates, wie Kontrollstrukturen und Wiederholungsanweisungen, wird innerhalb von Blöcken formuliert, die mit \texttt{\{\% \%\}} umschlossen sind.
+
+Weiterhin gibt es Filter, die Inhalte verändern. Ein Beispiel hierfür ist die Verwendung des Filters \texttt{slice(0, 150)}, der den Inhalt der Variablen \texttt{challenge.description} auf die ersten maximal 150 Zeichen kürzt. Weiterhin werden im Beispiel die Filter \texttt{length}, der die Länge eines Strings ausgibt, \texttt{date("'d.m.y G:i"')}, der ein PHP \emph{DateTime} Objekt in einem entsprechend formatierten String ausgibt und der Filter \texttt{trans} verwendet. \texttt{trans} ist eine Funktion zur Internationalisierung, die nach Übersetzungen für Strings sucht. Mehr dazu im Kapitel \ref{sec:Internationalisierung}.
+
+Jedes Twig Template wird zu einer nativen PHP Klasse kompiliert, welches zur Laufzeit geladen wird.\\
+
+Elemente, die in jeder Seite wiederkehren, wie zum Beispiel die Navigation oder die HTML-Header Angaben, müssen nicht in jedem Template erscheinen. Hier kommt die sogenannte Template-Vererbung ins Spiel. Im vorliegenden Projekt haben die Templates eine zweistufige Vererbung. Das für alle Templates identische Grundgerüst enthält neben den Meta-Informationen und dem HTML-Seiten Grundgerüst die folgenden drei Blöcke:
+\begin{lstlisting}[language=PHP, caption=Auszug aus app/Resources/views/TeamRace.html.twig]
+<div id="navigation">
+  {% block navigation %}{% endblock %}
+</div>
+<div id="navigationTeamrace">
+  {% block navigationTeamrace %}{% endblock %}
+</div>
+<div id="content">
+  {% block content %}{% endblock %}
+</div>
+\end{lstlisting}
+
+Auf der nächsten Ebene in der Vererbungs-Hierarchie werden die Navigations-Blöcke implementiert. Diese sind in den drei Modulen der Applikation (siehe Kapitel \ref{sec:ApplikationsStruktur}) jeweils identisch: 
+\begin{lstlisting}[language=PHP, caption=Auszug aus \\src/TeamRace/WebBundle/Resources/views/Teamrace/\_layout.html.twig]
+{% extends '::TeamRace.html.twig' %}
+
+{% block navigation %}
+  <a id="navigationHome" href="{{ url('userHome') }}">
+    {{ 'home' | trans }}
+  </a>
+  <span class="navigationSpacer"></span>
+  [...]
+{% endblock %}
+
+{% block navigationTeamrace %}
+  [...]
+{% endblock %}
+\end{lstlisting}
+
+Auf der letzten Ebene der Vererbungs-Hierarchie (siehe Listing \ref{lst:challenges}) wird schließlich der Content-Block implementiert.
+(\cite{Twig})
+
+\section{Model}
+
+In der Interpretation des MVC-Schemas, welche dem Symfony-Framework zu Grunde liegt, ist die Model-Komponente der Teil der Applikation, der für die Verwaltung und den Abruf von Persistenten Daten zuständig ist. Für Symfony ist die Verwendung von zwei unterschiedlichen Object-Relational Mapping Bibliotheken dokumentiert (Propel bzw. Doctrine), denkbar ist jedoch auch hier die Verwendung beliebiger Alternativen. Standardmäßig wird die Verwendung der Doctrine-Bibliothek empfohlen, weshalb ich diese in der Applikation verwendet habe.
+
+\subsection{Entity Mapping}
+\label{entityMapping}
+ 
+Der Doctrine Object-Relational Mapper ist eine PHP Bibliothek, die eine Projektion von skalaren Daten, die in tabellarischer Form gespeichert sind, auf objektorientierte Daten ermöglicht. Als Beispiel sei hier die Klasse "'Blog"' dargestellt, die einen einzelnen Blogeintrag repräsentiert. Der Administrator eines Teamraces hat die Möglichkeit, über Blogeinträge aktuelle wichtige Informationen an alle Mitglieder des Teamrace weiterzugeben. Diese bestehen aus einer Überschrift, einem Text, dem Datum und der Uhrzeit der Erstellung sowie einer Referenz auf das zugehörige Teamrace.
+
+\begin{lstlisting}[language=PHP, caption=Auszug aus src/TeamRace/WebBundle/Entity/Blog.php]
+/**
+ * Blog
+ *
+ * @ORM\Table(name="blog", indexes={@ORM\Index(name="teamrace", 
+   columns={"teamrace"})})
+ * @ORM\Entity
+ */
+class Blog
+{
+    /**
+     * @var integer
+     * @ORM\Column(name="id_blog", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idBlog;
+
+    /**
+     * @var string
+     * @ORM\Column(name="headline", type="string", length=255, nullable=false)
+     */
+    private $headline;
+
+    /**
+     * @var string
+     * @ORM\Column(name="text", type="text", nullable=false)
+     */
+    private $text;
+    
+     /**
+     * @var \DateTime
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
+
+    /**
+     * @var \Teamrace
+     * @ORM\ManyToOne(targetEntity="Teamrace")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="teamrace", referencedColumnName="id_teamrace")
+     * })
+     */
+    private $teamrace;
+    
+    [...] // Getter and Setter Methods
+}
+\end{lstlisting}
+Im Beispiel wird sichtbar, dass den einzelnen Attributen der Klasse Blog über Annotationen Meta-Informationen beigefügt sind. Die \texttt{@var} Annotation gibt über den Typ in PHP Auskunft und ist für das ORM nicht von Bedeutung. Alle folgenden Annotationen besitzen den Namespace ORM. Annotationen als sprachliches Konstrukt sind in PHP 5.x noch nicht sehr ausgereift implementiert, daher verwendet Doctrine für die Annotationen eine eigene Bibliothek, die auf der Docblock Bibliothek aufbauen (\cite{Doctrine:BasicMapping}).\\\\ 
+\texttt{@ORM\textbackslash Entity} deklariert die PHP-Klasse als Entity innerhalb einer Datenbank\\
+\texttt{@ORM\textbackslash Table(name="'blog"', indexes=\{@ORM\textbackslash Index(name="'teamrace"', columns=\{"'teamrace"'\})\})} 
+definiert den Namen der zur Klasse assoziierten Tabelle, das Attribut, welches den Primärschlüssel definiert sowie alle Indizes.\\
+\texttt{@ORM\textbackslash Column(name="'.."', type="'.."', ..}) gibt Auskunft darüber, welchen Namen und Typ das Attribut in der referenzierten Tabelle hat und beinhaltet ggf. noch weitere Constraints (z.B. \texttt{nullable=false}).\\
+\texttt{@ORM\textbackslash Id} und \texttt{@ORM\textbackslash GeneratedValue(strategy="'IDENTITY"')} definieren das Attribut als Identifizierer und legen die Strategie fest, mit der die Ids von der Datenbank generiert werden. Die hier gewählte Strategie entspricht der MySQL Option "'Auto Increment"'.\\
+\texttt{@ORM\textbackslash ManyToOne(targetEntity="'Teamrace"')} definiert eine \emph{n:1} Assoziation zwischen den Entitiäten Blog und Teamrace. Die Annotation \texttt{@ORM\textbackslash JoinColumns(..)} beschreibt das referenzierte Attribut in der Tabelle Teamrace. (\cite{Doctrine:Associations})
+
+Nicht aufgeführt sind in obigem Beispiel die Getter- und (ausgenommen für das Feld "'Id"') Setter Methoden der Entity-Klasse.\\
+
+Weiter bietet Doctrine die Möglichkeit, das zugehörige Datenbankschema zu erstellen bzw. bei Änderungen zu überarbeiten. In obigem Beispiel wird folgender SQL-Code ausgeführt:
+
+\begin{lstlisting}[language=sql, caption=Erzeugter SQL-Code zu obigem Beispiel]
+CREATE TABLE blog (
+  id_blog INT AUTO_INCREMENT NOT NULL, 
+  teamrace INT DEFAULT NULL, 
+  headline VARCHAR(255) NOT NULL, 
+  text LONGTEXT NOT NULL, 
+  date DATETIME NOT NULL, 
+  INDEX Index_blog (teamrace), 
+  PRIMARY KEY(id_blog)
+)
+ALTER TABLE blog ADD CONSTRAINT FK_Blog 
+FOREIGN KEY (teamrace) REFERENCES teamrace (id_teamrace);
+\end{lstlisting}
+
+Alternativ gibt es neben Annotationen auch die Möglichkeit, die Meta-Daten der Entities in eigenen Konfigurationsdateien im xml- bzw. yml Format zu hinterlegen.
+
+
+\subsection{Arbeiten mit Entity-Objekten}
+\label{Transaktionen}
+Wie in den gängigen ORM Libraries für Java (Hibernate, JPA), wird auch in Doctrine der Zugriff auf Daten über einen Entity-Manager realisiert. Er ist der zentrale Zugangspunkt zur ORM Funktionalität. Dadurch wird auch ein "'Transactional write-behind"' realisiert, indem einzelne, atomare Änderungen an den Entitäten zu Transaktionen zusammengefasst werden. Erst bei einem Aufruf der Methode \emph{flush()} des Entity-Managers wird eine Strategie für die Änderungen am Datenbestand erarbeitet und durchgeführt. \cite{Doctrine:Architecture}
+
+\subsubsection{Lesender Datenzugriff}
+
+Es gibt mehrere Möglichkeiten, Objekte aus der Datenbank abzurufen. Der schlichte Abruf eines Objekts über den Primärschlüssel sowie der Abruf eines Arrays (genauer gesagt einer ArrayCollection) von Objekten, die bestimmte Eigenschaften erfüllen, ist im folgenden Listing darstellt:
+
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php]
+$this->teamrace = $this->getDoctrine()
+  ->getRepository('TeamRaceWebBundle:Teamrace')
+  ->find($idTeamrace);
+
+$this->role = $this->getDoctrine()
+  ->getRepository('TeamRaceWebBundle:UserTeamrace')
+  ->findOneBy(array(
+    'teamrace' => $idTeamrace, 
+    'user' => $this->user->getIdUser()));
+\end{lstlisting}
+
+Hier ist sichtbar, dass der Abruf von Objekten aus der Datenbank immer über ein Repository geschieht. Dieses Objekt enthält alle Metadaten der Entität und stellt Methoden bereit, um den Abruf von Objekten aus der Datenbank zu realisieren.
+
+Ersterer oben dargestellter Abruf sucht mit der Methode \texttt{find(..)} nach einem Eintrag in der Tabelle \emph{Teamrace} mit einem bestimmten Primärschlüssel. Er gibt entweder das passende Objekt oder \texttt{null} zurück.
+
+Der zweite Abruf verlangt nach den Einträgen in der Tabelle \emph{UserTeamrace}, die in den Spalten \emph{Teamrace} und \emph{User} jeweils einen bestimmten Wert besitzen. Er gibt eine ArrayCollection aus den Bedingungen entsprechenden Objekten zurück. Eine ArrayCollection ist ein Objekt aus der Biblothek Doctrine/Common, sie kapselt ein PHP Array und erweitert es um einige Funktionen. (\cite{Doctrine:ArrayCollection})
+
+Doctrine verwendet das sogenannte "'Lazy Loading"' und sogenannte Proxy Objekte. Sie werden benutzt, um Referenzen zu Objekten herzustellen, deren Identifier bekannt ist bzw. um Entitäten aus der Datenbank laden zu können, ohne gleichzeitig alle referenzierten Objekte laden zu müssen. Würde beispielsweise ein Blog-Eintrag aus der Datenbank ohne Lazy Loading geladen werden, müsste auch das komplette referenzierte Teamrace Objekt geladen werden. Um dies zu verhindern, wird ein stellvertretendes, "'leeres"' Teamrace Objekt erstellt. Sobald ein Zugriff auf das Teamrace Objekt erfolgt, wird es aus der Datenbank nachgeladen.\\
+
+Eine weitere, flexiblere Methode zum Abruf von Objekten aus der Datenbank bietet die "'Doctrine Query Language (DQL)"', ein Derivat einer "'Object Query Language"', ähnlich zu ihren Pendants in Java, der "'Hibernate Query Language"' bzw. der "'Java Persistence Query Language"'.
+
+Die DQL ist in ihrem Syntax an SQL angelehnt, arbeitet jedoch mit Objekten und ihren Attributen. Folgendes Beispiel gibt einen Einblick in den Syntax und die Funktionsweise:
+
+\begin{lstlisting}[language=php, caption=Auszug aus src/TeamRace/WebBundle/Entity/UserTeamRepository.php, showstringspaces=false]
+public function getUserAndTeams($idTeamrace) {
+  $queryString = "
+    SELECT userTeam, team, user
+      FROM TeamRaceWebBundle:UserTeam userTeam 
+      JOIN userTeam.team team
+      JOIN userTeam.user user
+        WHERE team IN
+        (SELECT team2 
+          FROM TeamRaceWebBundle:Team team2 
+          JOIN team2.teamrace teamrace
+            WHERE teamrace.idTeamrace = :idTeamrace)";
+		
+  $query = $this->getEntityManager()->createQuery($queryString);
+  $query->setParameters(array('idTeamrace' => $idTeamrace));		
+  return $query->getResult();
+}
+\end{lstlisting}
+\texttt{userTeam}, \texttt{team}, \texttt{user} sind sogenannte Identifikationsvariablen, die die jeweiligen Entitätsklassen referenzieren. Über den "'."' in z.B. \texttt{userTeam.user} wird ein Attribut eines Objekts referenziert.
+
+Der obige JOIN wird als "'Fetch Join"' bezeichnet, insofern er nicht nur die UserTeam Objekte aus der Datenbank lädt, die die gewünschten Eigenschaften erfüllen, sondern auch die referenzierten Team und User Objekte. Würde statt \texttt{SELECT userTeam, team, user} nur \texttt{SELECT userTeam} gefordert werden, würden die referenzierten User und Team Objekte nur mit den oben erwähnten Proxy Objekten versehen werden.
+
+Schließlich fällt in obigem Beispiel noch die Zeile \texttt{WHERE teamrace.idTeamrace = :idTeamrace} ins Auge. \texttt{:idTeamrace} bezeichnet einen "'Named parameter"', der im Folgenden durch den Aufruf der Funktion \texttt{setParameters(array("'idTeamrace"' => \$idTeamrace))} gesetzt wird. (\cite{Doctrine:DQL})\\
+
+Obiges Listing entstammt einem selbst erstellten Repository für die UserTeam Entität, welches das Standard-Repository beerbt und um die abgebildete Funktion erweitert. Durch das Setzen der Meta-Information \\
+\texttt{\@ORM\textbackslash Entity(repositoryClass="'TeamRace\textbackslash WebBundle\textbackslash Entity\textbackslash UserTeamRepository"')} in der Klasse der Entität \emph{UserTeam} (siehe Kapitel \ref{entityMapping}) wird fortan automatisch die erweiterte Repository-Klasse beim Aufruf der Funktion \texttt{getRepository(..)} gewählt:
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+// Fetch all users and the teams they participate in 
+$userAndTeams = $this->getDoctrine()
+  ->getRepository('TeamRaceWebBundle:UserTeam')
+  ->getUserAndTeams($idTeamrace);
+\end{lstlisting}
+
+\subsubsection{Schreibender Datenzugriff}
+Um neue Objekte in der Datenbank zu speichern, wird die Funktion \texttt{persist(..)} des Entity Managers, wie im folgenden Listing beispielhaft dargestellt, verwendet:
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+$team = new Team();
+[...]    	
+$em = $this->getDoctrine()->getManager();
+$em->persist($team);
+$em->flush();
+\end{lstlisting}
+In ähnlicher Weise werden Daten geändert oder gelöscht. Das Löschen von Daten ist in folgendem Listing erkennbar:
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+if (!empty($userTeamrace)) {
+  $em = $this->getDoctrine()->getManager();
+  $em->remove($userTeamrace);
+  $em->flush();
+}
+\end{lstlisting}
+Die Änderung von bereits in der Datenbank existieren Daten erfolgt implizit. Objekte, die aus der Datenbank abgerufen wurden, werden im Entity-Manager verwaltet, sie besitzen dabei sie den Zustand "'managed"'. Wenn diese Objekte verändert werden, wird beim nächsten Aufruf von \texttt{flush()} die Änderung in der Datenbank persistent gemacht.\\
+
+Die Funktion \texttt{flush()} ist allgemein die Aufforderung, alle bislang in der UnitOfWork gespeicherten Datenbankoperationen innerhalb einer Transaktion durchzuführen. Jenes Verhalten und das Prinzip des "'Transactional write-behind"' wurde bereits in Kapitel \ref{Transaktionen} angesprochen.\\
+
+Nachdem nun die übergeordnete Architektur und einige grundlegenden Komponenten des Symfony Frameworks besprochen wurden, soll im folgenden Abschnitt konkret auf die Struktur der Anwendung eingegangen werden.
+
+\section{Grundlegende Strukturierung der Applikation}
+
+Grundlegend gliedert sich die hier dokumentierte Webapplikation in drei Bereiche: 
+
+Einen "'externen"' Bereich, der ohne Authentifizierung zugänglich ist. Hier sind neben rechtlichen Hinweisen (dem Disclaimer) vor allem Informationen über das Projekt und die zu Grunde liegenden Ideen zu finden. Außerdem bietet das externe Modul die Möglichkeit, sich zu registrieren, und sich anzumelden.
+
+Einen "'Benutzerbereich"', in dem der Nutzer seine Daten einsehen und verändern, auf das Nachrichtensystem zugreifen, nach Nutzern oder Teamraces suchen, auf Teamraces zugreifen oder neue Teamraces erstellen kann.
+
+Einen Teamrace-spezifischen Bereich. Hier findet sich die gesamte Funktionalität, um auf die Daten des Teamrace zuzugreifen oder sie anzulegen und zu verändern.
+
+\label{sec:ApplikationsStruktur}
+
+\subsection{Externes Modul}
+Anonyme Authentifizierung
+\subsubsection{Registrierung}
+\subsubsection{Login}
+
+\subsection{User Modul}
+
+\subsection{Teamrace Modul}
+\section{Internationalisierung}
+\label{sec:Internationalisierung}
 
 
 % ***** chapter 4 *****
 \chapter{Grundlegende technische Konzepte und Problemstellungen von Webapplikationen}
 
 Im Folgenden sollen einige grundlegende Konzepte und Problemstellungen von Webapplikationen erläutert und den im Projekt verwendeten Lösungsansätzen gegenübergestellt werden. 
-
-\section{Hypertext Transfer Protocol}
-Das Hypertext Transfer Protokol lässt sich in der Internet Protocol Suite auf der Darstellungsebene einordnen.\cite{wiki:HTTP}
-\subsection{Verbindungsaufbau und -persistenz}
-Der Verbindungsaufbau, keep-alive.
-\subsection{Request Arten}
-Die beiden wichtigsten bzw. am häufigsten verwendeten Request-Arten sind GET und POST.
-\subsection{Response Codes}
-200 OK, 302, 404, 500
-\subsection{HTTPS}
-HTTPS gewährleistet die verschlüsselte Datenübertragung.
 
 \section{Session Management, Sicherheit}
 Da HTTP nicht zum Aufbau längerer Sessions in der Interaktion mit einem Webserver ausgelegt ist, gibt es andere Konzepte, einen Benutzer zu authentifizieren und längere Sessions zu ermöglichen.
@@ -278,32 +537,9 @@ string mysqli_real_escape_string(string $escapestr)
 
 An dieser Stelle bietet das Symfony Framework Abhilfe, in dem die "'HTTP Foundation"' Komponente alle Eingabedaten filtert und je nach Bedarf auch in entsprechende Typen umwandelt.\cite{sf2:HTTPFoundation}
 
-\section{Datenpersistenz}
-Für eine persistente Datenspeicherung in Webapplikationen wird von Datenbanken Gebrauch gemacht.
-\subsection{relationale Datenbanken}
-Verwendung von MySQL Datenbank.
-\subsection{Object-relational mapping}
-Verwendung von Doctrine.
-
-\section{Darstellung der Informationen}
-\subsection{HTML, CSS}
-Die Hypertext markup language, css
-\subsection{PHP}
-PHP bietet die Möglichkeit, Daten dynamisch in statischen html-code einzubinden.
-\subsection{Twig}
-Twig ist eine Entwicklung von Sensio-Labs, sie übernimmt Aufgaben von PHP in leichter lesbarer Form.
-
 \section{Caching}
 Chaching findet auf Browser-Ebene, mit Hilfe von Proxy-Servern und durch Gateway-Caching (Reverse-Proxy) statt.
 
-\section{3-tier Konzept (MVC Pattern)}
-Das MVC Pattern ist ein Softwareentwicklungsmuster, dass die verschiedenen Aufgaben der Software voneinander trennen soll.
-\subsection{Controller}
-Der Controller ist das Bindeglied zwischen Model und View.
-\subsection{Model}
-Hier geschieht die Datenspeicherung.
-\subsection{View}
-Generierung der Darstellung
 \section{Exception Handling}
 Darstellung von Catchable Errors, verhalten der Applikation im Fehlerfall.
 
@@ -331,6 +567,20 @@ Verwendet in Doctrine \cite{ab94}
 % ***** chapter 5 *****
 \chapter{Stand der Entwicklung, Ausblick}
 Darstellung der bislang erreichten Entwicklungsziele, Ausblick auf weitere notwendige bzw. mögliche Komponenten und Erweiterungen.
+
+\section{Zu implementieren}
+\begin{itemize}
+\item{Nachrichtensystem}
+\item{Suche}
+\item{Bilder hochladen}
+\item{Passwort rücksetzen}
+\item{email verifikation}
+\item{profil von teams}
+\end{itemize}
+
+**** umbedingt noch die routing-Tabellen aufteilen und den Dateinamen von listing 3.1 entsprechend ändern ****
+
+
 \section{Zu Verbesserndes}
 
 \begin{itemize}

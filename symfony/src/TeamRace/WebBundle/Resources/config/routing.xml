@@ -42,32 +42,32 @@
   
   <!-- User -->
   
-  <route id="userHome" pattern="/{_locale}/home">
+  <route id="userHome" pattern="/{_locale}/user/home">
     <default key="_controller">TeamRaceWebBundle:User:home</default>
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="userProfile" pattern="/{_locale}/profile">
+  <route id="userProfile" pattern="/{_locale}/user/profile">
     <default key="_controller">TeamRaceWebBundle:User:profile</default>
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="userTeamRaces" pattern="/{_locale}/teamRaces">
+  <route id="userTeamRaces" pattern="/{_locale}/user/teamRaces">
     <default key="_controller">TeamRaceWebBundle:User:teamRaces</default>
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="userCreateTeamRace" pattern="/{_locale}/createTeamRace">
+  <route id="userCreateTeamRace" pattern="/{_locale}/user/createTeamRace">
     <default key="_controller">TeamRaceWebBundle:User:createTeamRace</default>
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="userDoCreateTeamRace" pattern="/{_locale}/doCreateTeamRace">
+  <route id="userDoCreateTeamRace" pattern="/{_locale}/user/doCreateTeamRace">
     <default key="_controller">TeamRaceWebBundle:User:doCreateTeamRace</default>
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="userAbout" pattern="/{_locale}/userAbout">
+  <route id="userAbout" pattern="/{_locale}/user/userAbout">
     <default key="_controller">TeamRaceWebBundle:User:about</default>
     <requirement key="_locale">en|de</requirement>
   </route>

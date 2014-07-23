@@ -28,13 +28,6 @@ security:
             logout: ~
             anonymous: ~
            
-
     access_control:
-        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(en|de)/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(en|de)/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(en|de)/about$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(en|de)/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(en|de)/register/create$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/languageSwitch/(en|de), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: ROLE_USER }
+        - { path: ^/(en|de)/user, roles: ROLE_USER }
+        - { path: ^/(en|de)/teamrace, roles: ROLE_USER }

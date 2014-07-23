@@ -414,10 +414,11 @@ class TeamraceController extends Controller
     {
     	$this->initialize($idTeamrace);
     
+    	// Fetch all users and the teams they participate in
     	$userAndTeams = $this->getDoctrine()
     		->getRepository('TeamRaceWebBundle:UserTeam')
     		->getUserAndTeams($idTeamrace);
-    	//print("<pre>");print_r($userAndTeams);print "</pre>"; exit;
+
     	$teams = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:Team')
     	->findBy(array('teamrace' => $idTeamrace));
