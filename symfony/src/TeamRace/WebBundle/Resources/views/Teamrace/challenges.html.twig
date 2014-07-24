@@ -25,7 +25,7 @@ div.challengeBox {
 {% if challenge.date | date('Y-m-d-G-i') >= "now" | date('Y-m-d-G-i') %}
 
 <div class="challengeBox">
-<div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge' }}</a></div>
+<div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge: ' ~ challenge.name }}</a></div>
 <div>{{ "Date: " | trans }}{{ challenge.date | date("d.m.y G:i") }}</div>
 <div>{{ challenge.description | length > 150 ? challenge.description|slice(0, 150) ~ '...' : challenge.description }}</div>
 
@@ -40,16 +40,16 @@ div.challengeBox {
 {% if challenge.date | date('Y-m-d-G-i') < "now" | date('Y-m-d-G-i') %}
 
 <div class="challengeBox">
-<div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge' }}</a></div>
+<div style="width:460px; float:left;"><a>{{ (loop.length - loop.index0) ~ '. Challenge: ' ~ challenge.name }}</a></div>
 <div>{{ "Date: " | trans }}{{ challenge.date | date("d.m.y G:i") }}</div>
 <div>{{ challenge.description | length > 150 ? challenge.description|slice(0, 150) ~ '...' : challenge.description }}</div>
 <div>
-	<a href="{{ url('teamraceChallengeViewResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeamraceChallenge': challenge.idTeamraceChallenge}) }}">
+	<a href="{{ url('teamraceChallengeViewResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idChallenge': challenge.idChallenge}) }}">
 		{{ 'View Results' | trans }}
 	</a>&nbsp;&nbsp;
 	
 	{% if role == 1 %}
-		<a href="{{ url('teamraceChallengeSetResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeamraceChallenge': challenge.idTeamraceChallenge}) }}">
+		<a href="{{ url('teamraceChallengeSetResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idChallenge': challenge.idChallenge}) }}">
 			{{ 'Set Results' | trans }}
 		</a>
 	{% endif %}

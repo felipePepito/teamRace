@@ -15,7 +15,11 @@ td {padding: 0 5px 0 0;}
 	<td colspan="2">{{ form_errors(form) }}</td>
 </tr>
 <tr>
-	<td>{{ form_label(form.description, 'Headline' | trans) }}</td>
+	<td>{{ form_label(form.name, 'Name' | trans) }}</td>
+	<td>{{ form_widget(form.name) }}</td>
+</tr>
+<tr>
+	<td>{{ form_label(form.description, 'Description' | trans) }}</td>
 	<td>{{ form_widget(form.description) }}</td>
 </tr>
 <tr>

@@ -7,6 +7,7 @@
 
 /documentation/planning/database/*.bak
 /documentation/planning/*.swp
+*.mwb
 *~
 *.pdf
 

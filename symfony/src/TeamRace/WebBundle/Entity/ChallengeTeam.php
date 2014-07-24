@@ -29,11 +29,11 @@ class ChallengeTeam
     private $points;
 
     /**
-     * @var \TeamraceChallenge
+     * @var \Challenge
      *
-     * @ORM\ManyToOne(targetEntity="TeamraceChallenge")
+     * @ORM\ManyToOne(targetEntity="Challenge")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="challenge", referencedColumnName="id_teamrace_challenge")
+     *   @ORM\JoinColumn(name="challenge", referencedColumnName="id_challenge")
      * })
      */
     private $challenge;
@@ -86,10 +86,10 @@ class ChallengeTeam
     /**
      * Set challenge
      *
-     * @param \TeamRace\WebBundle\Entity\TeamraceChallenge $challenge
+     * @param \TeamRace\WebBundle\Entity\Challenge $challenge
      * @return ChallengeTeam
      */
-    public function setChallenge(\TeamRace\WebBundle\Entity\TeamraceChallenge $challenge = null)
+    public function setChallenge(\TeamRace\WebBundle\Entity\Challenge $challenge = null)
     {
         $this->challenge = $challenge;
 
@@ -99,7 +99,7 @@ class ChallengeTeam
     /**
      * Get challenge
      *
-     * @return \TeamRace\WebBundle\Entity\TeamraceChallenge 
+     * @return \TeamRace\WebBundle\Entity\Challenge 
      */
     public function getChallenge()
     {

@@ -52,6 +52,15 @@ class Blog
      */
     private $teamrace;
 
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="creator", referencedColumnName="id_user")
+     * })
+     */
+    private $creator;
 
 
     /**
@@ -154,5 +163,28 @@ class Blog
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set creator
+     *
+     * @param \TeamRace\WebBundle\Entity\User $creator
+     * @return Blog
+     */
+    public function setCreator(\TeamRace\WebBundle\Entity\User $creator = null)
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get creator
+     *
+     * @return \TeamRace\WebBundle\Entity\User 
+     */
+    public function getCreator()
+    {
+        return $this->creator;
     }
 }

@@ -5,7 +5,7 @@ namespace TeamRace\WebBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use TeamRace\WebBundle\Entity\TeamraceChallenge;
+use TeamRace\WebBundle\Entity\Challenge;
 use TeamRace\WebBundle\Form\Type\TeamraceChallengeType;
 use TeamRace\WebBundle\Entity\UserTeamrace;
 use TeamRace\WebBundle\Form\Model\AddMember;
@@ -109,7 +109,7 @@ class TeamraceController extends Controller
     	$this->initialize($idTeamrace);
     	
     	$challenges = $this->getDoctrine()
-    	->getRepository('TeamRaceWebBundle:TeamraceChallenge')
+    	->getRepository('TeamRaceWebBundle:Challenge')
     	->findBy(array('teamrace' => $idTeamrace), array('date' => 'DESC'));
     	
     	$content = $this->renderView('TeamRaceWebBundle:Teamrace:challenges.html.twig',
@@ -129,7 +129,7 @@ class TeamraceController extends Controller
 	    	return $this->redirect($redirectUrl);
     	}
     	
-    	$form = $this->createForm(new TeamraceChallengeType(), new TeamraceChallenge(), array(
+    	$form = $this->createForm(new TeamraceChallengeType(), new Challenge(), array(
     			'action' => $this->generateUrl('teamraceCreateChallenge', array('idTeamrace' => $idTeamrace)),
     	));
     	
@@ -138,22 +138,15 @@ class TeamraceController extends Controller
     	
     	if ($form->isValid()) {
     	
-    		// Type of Challenge
-    		// v 1.0 -> always type 1
-    		$challenge = $this->getDoctrine()
-    		->getRepository('TeamRaceWebBundle:Challenge')
-    		->find("1");
-    		 
     		$user = $this->get('security.context')->getToken()->getUser();
     	
-    		$teamraceChallenge = $form->getData();
+    		$challenge = $form->getData();
     	
-    		$teamraceChallenge->setTutor($user);
-    		$teamraceChallenge->setTeamrace($this->teamrace);
-    		$teamraceChallenge->setChallenge($challenge);
+    		$challenge->setTutor($user);
+    		$challenge->setTeamrace($this->teamrace);
     		 
     		$em = $this->getDoctrine()->getManager();
-    		$em->persist($teamraceChallenge);
+    		$em->persist($challenge);
     		$em->flush();
     		 
     		// TODO successfull redirect flash
@@ -172,7 +165,7 @@ class TeamraceController extends Controller
     }
     
     
-    public function challengeSetResultsAction(Request $request, $idTeamrace, $idTeamraceChallenge)
+    public function challengeSetResultsAction(Request $request, $idTeamrace, $idChallenge)
     {
     	$this->initialize($idTeamrace);
     	
@@ -182,9 +175,9 @@ class TeamraceController extends Controller
     		return $this->redirect($redirectUrl);
     	}
     	
-    	$teamraceChallenge = $this->getDoctrine()
-    		->getRepository('TeamRaceWebBundle:TeamraceChallenge')
-    		->find($idTeamraceChallenge);
+    	$challenge = $this->getDoctrine()
+    		->getRepository('TeamRaceWebBundle:Challenge')
+    		->find($idChallenge);
     	 
     	$teams = $this->getDoctrine()
     		->getRepository('TeamRaceWebBundle:Team')
@@ -192,14 +185,14 @@ class TeamraceController extends Controller
     		
 		$builder = $this->createFormBuilder(array(
 				'action' => $this->generateUrl('teamraceChallengeSetResults', 
-						array('idTeamrace' => $idTeamrace, 'idTeamraceChallenge' => $idTeamraceChallenge))));
+						array('idTeamrace' => $idTeamrace, 'idChallenge' => $idChallenge))));
     	
 		$idTeams = array();
     	foreach($teams as $team) {
     		array_push($idTeams, $team->getIdTeam());
     		$builder->add('points_'.$team->getIdTeam(), 'integer', 
     				array('label' => $team->getName(),
-    					'attr' => array('min' => 0, 'max' => $teamraceChallenge->getMaxPoints())));
+    					'attr' => array('min' => 0, 'max' => $challenge->getMaxPoints())));
     	}
     	
     	$builder->add('submit', 'submit');
@@ -215,7 +208,7 @@ class TeamraceController extends Controller
     		// Delete all Results already set
     		$challengeTeams = $this->getDoctrine()
     			->getRepository('TeamRaceWebBundle:ChallengeTeam')
-    			->findBy(array('challenge' => $idTeamraceChallenge));
+    			->findBy(array('challenge' => $idChallenge));
 
     		foreach ($challengeTeams as $challengeTeam) {
     			$em->remove($challengeTeam);
@@ -232,7 +225,7 @@ class TeamraceController extends Controller
     				$challengeTeam = new ChallengeTeam();
     				$challengeTeam->setTeam($team);
     				$challengeTeam->setPoints($value);
-    				$challengeTeam->setChallenge($teamraceChallenge);
+    				$challengeTeam->setChallenge($challenge);
     				
     				$em->persist($challengeTeam);
     			}
@@ -249,28 +242,28 @@ class TeamraceController extends Controller
     			array(	'form' => $form->createView(),
     					'teams' => $teams,
     					'teamrace' => $this->teamrace,
-    					'teamraceChallenge' => $teamraceChallenge,
+    					'challenge' => $challenge,
     					'role' => $this->role)
     	);
     }
     
-    public function challengeViewResultsAction($idTeamrace, $idTeamraceChallenge) {
+    public function challengeViewResultsAction($idTeamrace, $idChallenge) {
     	
     	$this->initialize($idTeamrace);
     	 
     	$challengeTeams = $this->getDoctrine()
     		->getRepository('TeamRaceWebBundle:ChallengeTeam')
-    		->findBy(array('challenge' => $idTeamraceChallenge));
+    		->findBy(array('challenge' => $idChallenge));
     	
     	$challenge = $this->getDoctrine()
-    		->getRepository('TeamRaceWebBundle:TeamraceChallenge')
-    		->find($idTeamraceChallenge);
+    		->getRepository('TeamRaceWebBundle:Challenge')
+    		->find($idChallenge);
     		
     	return $this->render(
     			'TeamRaceWebBundle:Teamrace:challengeViewResults.html.twig',
     			array(	'teamrace' => $this->teamrace,
     					'challengeTeams' => $challengeTeams,
-    					'teamraceChallenge' => $challenge,
+    					'challenge' => $challenge,
     					'role' => $this->role));
     }
     

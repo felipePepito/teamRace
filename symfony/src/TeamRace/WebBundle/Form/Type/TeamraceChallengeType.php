@@ -8,7 +8,7 @@ class TeamraceChallengeType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options) 
 	{
-		
+		$builder->add('name', 'text');
 		$builder->add('description', 'text');
 		$builder->add('date', 'datetime');
 		$builder->add('maxPoints', 'integer', array('attr' => array('min' => 0)));

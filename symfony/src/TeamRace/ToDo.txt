@@ -29,3 +29,7 @@ TODO:
 
 - Kommentieren
 
+- Entities:
+	- Challenge: CreatedBy (für tutor später)
+	- Blog: Created By
+(- Tutor Rolle)

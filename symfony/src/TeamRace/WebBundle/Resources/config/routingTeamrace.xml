@@ -18,12 +18,12 @@
     <requirement key="_locale">en|de</requirement>
   </route>
   
-  <route id="teamraceChallengeSetResults" pattern="/{_locale}/teamrace/{idTeamrace}/challenge/{idTeamraceChallenge}/setResults">
+  <route id="teamraceChallengeSetResults" pattern="/{_locale}/teamrace/{idTeamrace}/challenge/{idChallenge}/setResults">
     <default key="_controller">TeamRaceWebBundle:Teamrace:challengeSetResults</default>
     <requirement key="_locale">en|de</requirement>
   </route> 
   
-  <route id="teamraceChallengeViewResults" pattern="/{_locale}/teamrace/{idTeamrace}/challenge/{idTeamraceChallenge}/viewResults">
+  <route id="teamraceChallengeViewResults" pattern="/{_locale}/teamrace/{idTeamrace}/challenge/{idChallenge}/viewResults">
     <default key="_controller">TeamRaceWebBundle:Teamrace:challengeViewResults</default>
     <requirement key="_locale">en|de</requirement>
   </route> 
