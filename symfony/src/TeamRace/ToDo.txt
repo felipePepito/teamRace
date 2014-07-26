@@ -33,3 +33,7 @@ TODO:
 	- Challenge: CreatedBy (für tutor später)
 	- Blog: Created By
 (- Tutor Rolle)
+
+
+**** umbedingt noch die routing-Tabellen aufteilen und den Dateinamen von listing 3.1 entsprechend ändern ****
+

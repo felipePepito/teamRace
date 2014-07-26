@@ -46,7 +46,7 @@ Praktikum praktische Programmierung\bigskip\\
 ph.strobl@gmx.de\\
 Kraillinger Weg 10\\
 81241 München}
-\date{München, 25. Juli 2014}
+\date{München, 27. Juli 2014}
 
 \usepackage{graphicx}
 \begin{document}
@@ -68,6 +68,7 @@ Der Name „Teamrace“ ist aus dem sportlichen entlehnt, er bezeichnet ursprün
 So ist es zum Beispiel möglich, eine Klasse in mehrere Teams einzuteilen. Die Teams nehmen im Verlauf des Teamrace an unterschiedlichen Wettbewerben teil, wie z.B. an Vokabeltests, einem Basketballturnier, einer gemeinschaftlich erarbeiteten Präsentation oder Ähnlichem. Jeder Wettbewerb wird über eine maximal erreichbare Punktzahl entsprechend gewichtet. Die erreichte Punktzahl in jedem Wettbewerb summiert sich schließlich zu einer Gesamtwertung.
 
 \section{Zielsetzung im Rahmen des Praktikums}
+\label{sec:Zielsetzung}
 Ziel des Projekts ist das Erstellen eines Softwaresystems, das die zentrale Datenverwaltung des Teamrace ermöglicht. Über eine Webapplikation soll eine Schnittstelle geschaffen werden, die es den Beteiligten in ihren unterschiedlichen Rollen ermöglicht, auf die Daten des Teamrace zuzugreifen, Details zu den Wettbewerben und den einzelnen Teams einzusehen sowie sich über die Wettbewerbe auszutauschen. Den Schülern soll hier auch die Möglichkeit gegeben werden, ihr Team in geeigneter Form online zu präsentieren. 
 
 
@@ -78,7 +79,7 @@ Der Administrator kann Teams erstellen und jedes Mitglied einem Team zuordnen. A
 
 Der Administrator sowie die Tutoren können über einen Blog Mitteilungen an alle Mitglieder verfassen.
 
-Vorneweg sei an dieser Stelle erwähnt, dass die hier aufgestellten Anforderungen an die Software den zeitlichen Rahmen des Projekts gesprengt haben. Daher habe ich in der Entwicklung im Rahmen des Praktikums versucht, die grundlegende Funktionalität der Software zu implementieren, um weitere Module im späteren Verlauf integrieren zu können. Insofern wurden das Nachrichtensystem, die Suche nach Personen und Teamraces, die Möglichkeit, die Mitgliedschaft bei bestehenden Teamraces zu beantragen sowie insgesamt die Rolle des Tutors nicht implementiert.
+Vorneweg sei an dieser Stelle erwähnt, dass die hier aufgestellten Anforderungen an die Software den zeitlichen Rahmen des Projekts gesprengt haben. Daher habe ich in der Entwicklung im Rahmen des Praktikums versucht, die grundlegende Funktionalität der Software zu implementieren, um weitere Module im späteren Verlauf integrieren zu können. Insofern wurden das Nachrichtensystem, die Suche nach Personen und Teamraces, die Möglichkeit, die Mitgliedschaft bei bestehenden Teamraces zu beantragen sowie insgesamt die Rolle des Tutors nicht implementiert (siehe auch Kapitel \ref{sec:Stand}).
 
 
 
@@ -90,7 +91,7 @@ Vorneweg sei an dieser Stelle erwähnt, dass die hier aufgestellten Anforderunge
 \subsection{PHP}
 PHP ist eine Server-seitige Skriptsprache, die besonders für die Anwendungsentwicklung im World Wide Web entwickelt wurde, jedoch auch für andere Zwecke einsetzbar ist.
 
-Die hohe Verbreitung von PHP ist unter anderem darauf zurückzuführen, dass PHP die Vermischung von HTML und PHP Code im Quelltext, was die Gestaltung von dynamischen Internetseiten auch für Anfänger sehr einfach macht. PHP Code wird von einem Interpreter ausgeführt, der als Modul in den Webserver integriert ist (z.B. php5\_module unter Apache), oder als CGI Anwendung.
+Die hohe Verbreitung von PHP ist unter anderem darauf zurückzuführen, dass PHP die Vermischung von HTML und PHP Code im Quelltext erlaubt, was die Gestaltung von dynamischen Internetseiten auch für Anfänger sehr einfach macht. PHP Code wird von einem Interpreter ausgeführt, der als Modul in den Webserver integriert ist (z.B. php5\_module unter Apache), oder als CGI Anwendung.
 
 Seit der Version 5 ist PHP eine objektorientierte Sprache. Auch wenn bei der Funktionsdefinition ein fester Typ von Übergabeparametern gefordert werden kann, ist PHP generell dynamisch typisiert. PHP ist freie Software und wird von den meisten Webservern und auf fast allen Plattformen und Betriebssystemen unterstützt.(\cite{ebooks:PHP}, \cite{ebooks:PHP2}, \cite{PHPManual})
 
@@ -134,13 +135,12 @@ Es existieren eine Reihe von unterschiedlichen Frameworks für PHP, z.B. CakePHP
 
 
 % ***** chapter 3 *****
-\chapter{Dokumentation der Entwicklung}
-Im Folgenden soll die Entwicklung der Software in Verbindung mit den zugrunde liegenden technischen und konzeptionellen Hintergründen dargestellt werden. Zur besseren Lesbarkeit wird versucht, beides möglichst flüssig ineinander zu integrieren.
 
-\section{Einführung in die Architektur des Symfony Frameworks}
+
+\chapter{Einführung in die Architektur und Komponenten des Symfony Frameworks}
 Für die Erläuterung des Aufbaus der Software ist ein grober Überblick über die Architektur und Strukturierung des Symfony Frameworks nötig. In Symfony ist das Entwicklungsprinzip "'Seperation of Concerns"' von grundlegender Bedeutung. Alle Komponenten sind unabhängig voneinander und auch in entkoppeltem Zustand zu verwenden.
 
-\subsection{Model View Control}
+\section{Model View Controller}
 Grundmotivation hinter dem Strukturmuster "'Model View Controller"' ist die Entkopplung der Darstellung der Informationen von ihrer Aufbereitung. Hierzu werden die Verantwortlichkeiten innerhalb der Software auf die Darstellung (View), die Verwaltung der Daten (Model) sowie die Verbindung der Darstellung mit den Daten und der Benutzerschnittstelle (Controller) aufgeteilt.\cite{MVC}
 
 Symfony bedient sich dem Muster, dabei sind die einzelnen Komponenten untereinander auch austauschbar. So gibt es zwei unterschiedliche ORM Implementierungen (Doctrine und Propel), die verwendet werden können.
@@ -152,23 +152,23 @@ Symfony bedient sich dem Muster, dabei sind die einzelnen Komponenten untereinan
 \label{}
 \end{figure}
 
-\subsection{Front Controller}
+\section{Front Controller}
 Der Front Controller vereinigt bzw. bündelt alle Anfragen an die Anwendung, um sie anschließend an die entsprechende Bestimmung weiterzuleiten. Dies hat den Vorteil, dass für in vielen Anfragen wiederkehrende Aufgaben (z.B. Authentifizierung, Internationalisierung) nicht auf viele Objekte verteilt wird, sondern im Front Controller einheitlich abgearbeitet werden.
 \cite{FrontController}
 
 In Symfony Applikationen werden alle Anfragen an eine php-Datei geleitet, die im Normalfall mit \emph{app.php} benannt ist. Mittels Umbenennungsregeln seitens des Webservers (z.B. RewriteRule in Apache) wird erreicht, dass dies für den Nutzer im Normalfall nicht erkennbar ist. Hier wird eine Instanz des AppKernel Objekts generiert und ggf. dekoriert (z.B. mit dem einem HTTP Cache, wobei dann das \emph{AppKernel} Objekt von einem \emph{AppCache} Objekt umhüllt wird). 
 
-Weiter wird aus den Komponenten des Requests, die in PHP in globalen Variablen gespeichert sind (z.B. \emph{\$\_GET, \$\_POST, \$\_COOKIE}) ein Request Objekt geformt und dem AppKernel übergeben. Der AppKernel ist eine Unterklasse des Kernel, welcher den Kern der Anwendung darstellt. Hier werden alle Komponenten der Anwendungen (auch genannt \emph{Bundle}, z.B. die Templating-Engine \emph{Twig} oder das ORM Bundle \emph{Doctrine}) erzeugt und mit der Konfiguration versehen. Dies geschieht, indem die von dem Kernel Objekt nicht implementierten Methoden \emph{registerBundles} und \emph{registerContainerConfiguration} im AppKernel implementiert werden.
+Weiter wird aus den Komponenten des Requests, die in PHP in globalen Variablen gespeichert sind (z.B. \emph{\$\_GET, \$\_POST, \$\_COOKIE}) ein Request Objekt geformt und dem AppKernel übergeben. Der AppKernel ist eine Unterklasse des Kernel, welcher den Kern der Anwendung darstellt. Hier werden alle Komponenten der Anwendung (auch genannt \emph{Bundle}, z.B. die Templating-Engine \emph{Twig} oder das ORM Bundle \emph{Doctrine}) erzeugt und mit der Konfiguration versehen. Dies geschieht, indem die von dem Kernel Objekt nicht implementierten Methoden \emph{registerBundles} und \emph{registerContainerConfiguration} im AppKernel implementiert werden.
 
 Symfony bietet darüber hinaus die Möglichkeit, die gleiche Applikation in verschiedenen Umgebungen zu betreiben, z.B. in einer Entwicklungsumgebung und einer Produktionsumgebung. Hierdurch ändert sich z.B. das Verhalten der Anwendung im Fehlerfall, so wird in der Entwicklungsumgebung ein Stacktrace und eine möglichst präzise Beschreibung des Fehlers wiedergegeben, während jene Informationen im Produktionsbetrieb aus Aspekten der Sicherheit natürlich möglichst vor dem Nutzer verborgen werden sollen. Technisch wird dies dadurch realisiert, dass mehrere Front Controller existieren, die bei der Erzeugung des AppKernels jeweils unterschiedliche Konfigurationsdateien und Komponenten laden.
 (\cite{sf2:FrontController})
 
-\subsection{Routing}
+\section{Routing}
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.7]{Bilder/request-flow.png}
-\caption{Schematische Darstellung der Verarbeitung von Anfragen \cite{sf2:HTTPFundamentals}}
+\caption{Schematische Darstellung der Verarbeitung von Anfragen (\cite{sf2:HTTPFundamentals})}
 \label{fig:RequestFlow}
 \end{figure}
 In der Grafik \ref{fig:RequestFlow} ist eine Komponente mit Namen "'Routing"' zu erkennen. Sie sorgt dafür, dass jede Anfrage an den jeweils zugehörigen Controller weitergeleitet wird. Dies wird umgesetzt, indem die URL des Requests mit den Einträgen in den Routing-Tabellen der Applikation verglichen wird. Technisch besteht das Routing aus 3 Teilen: 
@@ -179,7 +179,7 @@ In der Grafik \ref{fig:RequestFlow} ist eine Komponente mit Namen "'Routing"' zu
 \item{Einem \emph{UrlMatcher}, welchem bei der Konstruktion die \emph{RouteCollection} übergeben wird, und diese anschließend bei Bedarf nach Übereinstimmung mit einem \emph{RequestContext} zu durchsuchen.}
 \end{itemize}
 
-Im Fall einer gefundenen, passenden Route wird der Name des Controllers sowie der Name der Route zurück an den Kernel übergeben, andernfalls wirft der Router eine entsprechende Exception.(\ref{sf2:RoutingComponent})\\
+Im Fall einer gefundenen, passenden Route wird der Name des Controllers sowie der Name der Route zurück an den Kernel übergeben, andernfalls wirft der Router eine entsprechende Exception.(\cite{sf2:RoutingComponent})\\
 
 Die \emph{RouteCollection} wird üblicherweise aus entsprechenden Konfigurationsdateien generiert. Wie für alle Konfigurationsdateien bietet Symfony hier die Dateiformatsoptionen \emph{yml} und \emph{xml}. Auch eine Generierung über Annotationen in den Controllern ist möglich. Im beschriebenen Projekt habe ich mich für das \emph{xml} Format entschieden. Folgendes Listing zweigt beispielhaft die Definition einer Route:
 
@@ -193,18 +193,18 @@ Die \emph{RouteCollection} wird üblicherweise aus entsprechenden Konfigurations
   
 Im vorliegenden Pattern sind zwei unterschiedliche Platzhalter erkennbar: \emph{\_locale} und \emph{idTeamrace}. Für den Platzhalter \emph{\_locale} wird weiterhin über das \emph{requirement} Attribut gefordert, dass er entweder dem String "'en"' oder "'de"' entspricht.
 
-Es gibt noch weitere Möglichkeiten, Anforderungen an die Route zu stellen, z.B. die Art des HTTP-Requests (GET, POST, ..) oder der Host, an den die Anfrage gerichtet wurde. Außerdem können default-Werte für Platzhalter festgelegt werden. (\ref{sf2:Routing})\\
+Es gibt noch weitere Möglichkeiten, Anforderungen an die Route zu stellen, z.B. die Art des HTTP-Requests (GET, POST, ..) oder der Host, an den die Anfrage gerichtet wurde. Außerdem können default-Werte für Platzhalter festgelegt werden. (\cite{sf2:Routing})\\
 
 Im vorliegenden Beispiel wird im Falle einer Übereinstimmung des Requests mit dem geforderten URL-Pattern für die Weiterleitung an den entsprechenden Controller der String \emph{TeamRaceWebBundle:Teamrace:home} an den Kernel übergeben. Der String wird als "'Logical Controller Name"' bezeichnet. Er beinhaltet den Namen des Bundles, die Kontroller-Klasse sowie die aufzurufende Funktion innerhalb der Klasse. In diesem Projekt sind alle Controller in einem Bundle zusammengefasst, dem TeamRaceWebBundle. Die Controller-Klasse heißt im obigen Beispiel Teamrace (insofern hier eine Seite aufgerufen wird, die Daten aus einem bestimmten Teamrace wiedergibt), die aufgerufene Funktion heißt \emph{homeAction}. Jener Funktion werden, je nach Funktionsdefinition, die Werte der Platzhalter übergeben, im obigen Fall der Wert für \emph{idTeamrace}.
 
-\subsection{Controller}
+\section{Controller}
 Die Aufgabe des Controllers ist es, die Anfrage in eine Antwort umzusetzen. In vielen Fällen wird er dabei Daten aus einer Datenbank (der "'Model"' Komponente im MVC Entwurfsmuster) abfragen bzw. eine Veränderung des Datensatzes vornehmen und eine Darstellung in Form von HTML-Code erzeugen, um diese als Antwort an den Client zurückzusenden.
 
 Natürlich ist nicht in jedem Fall ein Miteinbezug eines Datenbestandes nötig, für rein statische Seiten, wie der Seiten im Projekt, die auch ohne Authentifizierung zugänglich sind (z.B. die "'home"'- oder "'about"' Seiten), ist keine Datenbankzugriff nötig.
 
 Ebenso kann die Anforderung an eine Antwort an den Client sehr unterschiedlich ausfallen. Zum einen ist z.B. ein Redirect auf eine andere Seite als Antwort möglich, zum anderen ist gerade in modernen Webanwendungen via AJAX (siehe \ref{sec:AJAX}) oft lediglich ein Transfer von reinen Daten ohne Informationen über ihre Darstellung gefordert, wobei hier die Daten üblicherweise im json-Format übermittelt werden.\\
 
-Technisch gesehen kann der Controller in Symfony aus jedwedem "'Callable"' bestehen, im Normalfall jedoch aus einer Methode innerhalb einer Klasse, die die Klasse \emph{Controller} beerbt. Dadurch werden innerhalb des Controllers die Funktionalität aller in die Applikation eingebundenen Komponenten verwendbar. Alternativ kann auch die \emph{ContainerAware} Klasse beerbt werden, der Unterschied besteht lediglich darin, dass die Klasse Controller einige Abkürzungen für die Verwendung von gängigen sogenannten "'Helper-Methoden"' bereitstellt. So kann z.B. zum Rendern eines Templates
+Technisch gesehen kann der Controller in Symfony aus jedwedem "'Callable"' bestehen, im Normalfall jedoch aus einer Methode innerhalb einer Klasse, die die Klasse \emph{Controller} beerbt. Dadurch werden innerhalb des Controllers die Funktionalität aller in die Applikation eingebundenen Komponenten verwendbar. Alternativ kann auch die \emph{ContainerAware} Klasse beerbt werden, der Unterschied besteht lediglich darin, dass die Klasse Controller einige Abkürzungen für die Verwendung von gängigen, sogenannten "'Helper-Methoden"' bereitstellt. So kann z.B. zum Rendern eines Templates
 
 \begin{lstlisting}
 $this->render('TeamRaceWebBundle:External:about.html.twig');
@@ -216,11 +216,13 @@ $this->get('templating')->renderResponse(
 \end{lstlisting}
 verwendet werden.
 
-\subsection{View}
+\section{View}
 
 Wie oben angeführt, ist eine der Hauptaufgaben des Controllers, die Darstellung der Inhalte zu erzeugen, um diese anschließend an den Client zu senden. Im obigen Listing ist bereits zu erkennen, dass der Templating-Engine ein String übergeben wird, der auf eine Datei verweist. Die Struktur der Namensgebung ist ähnlich wie beim Logischen Controller Namen: Hier wird auf die Datei "'\emph{about.html.twig}"' verwiesen, die im Ordner "'\emph{External}"' der Ressourcen des Bundles "'\emph{TeamRaceWebBundle}"' gespeichert ist.
 
-Generell bezeichnet der Begriff "'Template"' eine Textdatei, die mit einem entsprechenden Interpreter eine Text-basierte Datei zur Informationsdarstellung erzeugt. Mit PHP lassen sich Templates erzeugen, insofern der PHP-Interpreter die Integration von PHP Code in HTML Code erlaubt. In Symfony wird eine Templating-Engine mit Namen "'Twig"' verwendet. Twig wurde auf Grundlage von PHP entwickelt und bietet eine elegante Syntax, um Templates zu erstellen. Folgender Code, entnommen aus dem Template zur überblickshaften Darstellung der Wettbewerbe, soll der Erläuterung des Syntax dienen:
+Generell bezeichnet der Begriff "'Template"' eine Textdatei, die mit einem entsprechenden Interpreter eine Text-basierte Datei zur Informationsdarstellung erzeugt. Mit PHP lassen sich Templates erzeugen, insofern der PHP-Interpreter die Integration von PHP Code in HTML Code erlaubt. In Symfony wird eine Templating-Engine mit Namen "'Twig"' verwendet. Twig wurde auf Grundlage von PHP entwickelt und bietet einen eleganten Syntax, um Templates zu erstellen. (\cite{sf2:Templates}) 
+
+Folgender Code, entnommen aus dem Template zur überblickshaften Darstellung der Wettbewerbe, soll der Erläuterung des Syntax dienen:
 \begin{lstlisting}[language=PHP, caption=Auszug aus\\ src/TeamRace/WebBundle/Resources/views/Teamrace/challenges.html.twig, label=lst:challenges]
 {% extends "TeamRaceWebBundle:Teamrace:_layout.html.twig" %}
 
@@ -252,7 +254,7 @@ Generell bezeichnet der Begriff "'Template"' eine Textdatei, die mit einem entsp
 
 Jeder Ausdruck innerhalb eines Blocks, der von \texttt{\{\{ \}\}} umschlossen ist, wird ausgegeben. Die Logik innerhalb des Templates, wie Kontrollstrukturen und Wiederholungsanweisungen, wird innerhalb von Blöcken formuliert, die mit \texttt{\{\% \%\}} umschlossen sind.
 
-Weiterhin gibt es Filter, die Inhalte verändern. Ein Beispiel hierfür ist die Verwendung des Filters \texttt{slice(0, 150)}, der den Inhalt der Variablen \texttt{challenge.description} auf die ersten maximal 150 Zeichen kürzt. Weiterhin werden im Beispiel die Filter \texttt{length}, der die Länge eines Strings ausgibt, \texttt{date("'d.m.y G:i"')}, der ein PHP \emph{DateTime} Objekt in einem entsprechend formatierten String ausgibt und der Filter \texttt{trans} verwendet. \texttt{trans} ist eine Funktion zur Internationalisierung, die nach Übersetzungen für Strings sucht. Mehr dazu im Kapitel \ref{sec:Internationalisierung}.
+Weiterhin gibt es Filter, die Inhalte verändern. Ein Beispiel hierfür ist die Verwendung des Filters \texttt{slice(0, 150)}, der den Inhalt der Variablen \texttt{challenge.description} auf die ersten maximal 150 Zeichen kürzt. Überdies werden im Beispiel die Filter \texttt{length}, der die Länge eines Strings ausgibt, \texttt{date("'d.m.y G:i"')}, der ein PHP \emph{DateTime} Objekt in einem entsprechend formatierten String ausgibt und der Filter \texttt{trans} verwendet. \texttt{trans} ist eine Funktion zur Internationalisierung, die nach Übersetzungen für Strings sucht. Mehr dazu im Kapitel \ref{sec:Internationalisierung}.
 
 Jedes Twig Template wird zu einer nativen PHP Klasse kompiliert, welches zur Laufzeit geladen wird.\\
 
@@ -287,152 +289,421 @@ Auf der nächsten Ebene in der Vererbungs-Hierarchie werden die Navigations-Blö
 \end{lstlisting}
 
 Auf der letzten Ebene der Vererbungs-Hierarchie (siehe Listing \ref{lst:challenges}) wird schließlich der Content-Block implementiert.
+(\cite{Twig})
 
 \section{Model}
 
-\section{Grundlegende Strukturierung der Applikation}
-\label{sec:ApplikationsStruktur}
+In der Interpretation des MVC-Schemas, welche dem Symfony-Framework zu Grunde liegt, ist die Model-Komponente der Teil der Applikation, der für die Verwaltung und den Abruf von Persistenten Daten zuständig ist. Für Symfony ist die Verwendung von zwei unterschiedlichen Object-Relational Mapping Bibliotheken dokumentiert (Propel bzw. Doctrine), denkbar ist jedoch auch hier die Verwendung beliebiger Alternativen. Standardmäßig wird die Verwendung der Doctrine-Bibliothek empfohlen, weshalb ich diese in der Applikation verwendet habe.
 
-\subsection{Externes Modul}
-Anonyme Authentifizierung
-\subsubsection{Registrierung}
-\subsubsection{Login}
+\subsection{Entity Mapping}
+\label{entityMapping}
+ 
+Der Doctrine Object-Relational Mapper ist eine PHP Bibliothek, die eine Projektion von skalaren Daten, die in tabellarischer Form gespeichert sind, auf objektorientierte Daten ermöglicht. Als Beispiel sei hier die Klasse "'Blog"' dargestellt, die einen einzelnen Blogeintrag repräsentiert. Der Administrator eines Teamraces hat die Möglichkeit, über Blogeinträge aktuelle wichtige Informationen an alle Mitglieder des Teamrace weiterzugeben. Diese bestehen aus einer Überschrift, einem Text, dem Datum und der Uhrzeit der Erstellung sowie einer Referenz auf das zugehörige Teamrace.
 
-\subsection{User Modul}
+\begin{lstlisting}[language=PHP, caption=Auszug aus src/TeamRace/WebBundle/Entity/Blog.php]
+/**
+ * Blog
+ *
+ * @ORM\Table(name="blog", indexes={@ORM\Index(name="teamrace", 
+   columns={"teamrace"})})
+ * @ORM\Entity
+ */
+class Blog
+{
+    /**
+     * @var integer
+     * @ORM\Column(name="id_blog", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idBlog;
 
-\subsection{Teamrace Modul}
+    /**
+     * @var string
+     * @ORM\Column(name="headline", type="string", length=255, nullable=false)
+     */
+    private $headline;
+
+    /**
+     * @var string
+     * @ORM\Column(name="text", type="text", nullable=false)
+     */
+    private $text;
+    
+     /**
+     * @var \DateTime
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
+
+    /**
+     * @var \Teamrace
+     * @ORM\ManyToOne(targetEntity="Teamrace")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="teamrace", referencedColumnName="id_teamrace")
+     * })
+     */
+    private $teamrace;
+    
+    [...] // Getter and Setter Methods
+}
+\end{lstlisting}
+Im Beispiel wird sichtbar, dass den einzelnen Attributen der Klasse Blog über Annotationen Meta-Informationen beigefügt sind. Die \texttt{@var} Annotation gibt über den Typ in PHP Auskunft und ist für das ORM nicht von Bedeutung. Alle folgenden Annotationen besitzen den Namespace ORM. Annotationen als sprachliches Konstrukt sind in PHP 5.x noch nicht sehr ausgereift implementiert, daher verwendet Doctrine für die Annotationen eine eigene Bibliothek, die auf der Docblock Bibliothek aufbauen (\cite{Doctrine:BasicMapping}).\\\\ 
+\texttt{@ORM\textbackslash Entity} deklariert die PHP-Klasse als Entity innerhalb einer Datenbank\\
+\texttt{@ORM\textbackslash Table(name="'blog"', indexes=\{@ORM\textbackslash Index(name="'teamrace"', columns=\{"'teamrace"'\})\})} 
+definiert den Namen der zur Klasse assoziierten Tabelle, das Attribut, welches den Primärschlüssel definiert, sowie alle Indizes.\\
+\texttt{@ORM\textbackslash Column(name="'.."', type="'.."', ..}) gibt Auskunft darüber, welchen Namen und Typ das Attribut in der referenzierten Tabelle hat und beinhaltet ggf. noch weitere Constraints (z.B. \texttt{nullable=false}).\\
+\texttt{@ORM\textbackslash Id} und \texttt{@ORM\textbackslash GeneratedValue(strategy="'IDENTITY"')} definieren das Attribut als Identifizierer und legen die Strategie fest, mit der die Ids von der Datenbank generiert werden. Die hier gewählte Strategie entspricht der MySQL Option "'Auto Increment"'.\\
+\texttt{@ORM\textbackslash ManyToOne(targetEntity="'Teamrace"')} definiert eine \emph{n:1} Assoziation zwischen den Entitiäten Blog und Teamrace. Die Annotation \texttt{@ORM\textbackslash JoinColumns(..)} beschreibt das referenzierte Attribut in der Tabelle Teamrace. (\cite{Doctrine:Associations})
+
+Nicht aufgeführt sind in obigem Beispiel die Getter- und (ausgenommen für das Feld "'Id"') Setter Methoden der Entity-Klasse.\\
+
+Weiter bietet Doctrine die Möglichkeit, das zugehörige Datenbankschema zu erstellen bzw. bei Änderungen zu überarbeiten. In obigem Beispiel wird folgender SQL-Code ausgeführt:
+
+\begin{lstlisting}[language=sql, caption=Erzeugter SQL-Code zu obigem Beispiel]
+CREATE TABLE blog (
+  id_blog INT AUTO_INCREMENT NOT NULL, 
+  teamrace INT DEFAULT NULL, 
+  headline VARCHAR(255) NOT NULL, 
+  text LONGTEXT NOT NULL, 
+  date DATETIME NOT NULL, 
+  INDEX Index_blog (teamrace), 
+  PRIMARY KEY(id_blog)
+)
+ALTER TABLE blog ADD CONSTRAINT FK_Blog 
+FOREIGN KEY (teamrace) REFERENCES teamrace (id_teamrace);
+\end{lstlisting}
+
+Alternativ gibt es neben Annotationen auch die Möglichkeit, die Meta-Daten der Entities in eigenen Konfigurationsdateien im xml- bzw. yml Format zu hinterlegen.
+
+
+\subsection{Arbeiten mit Entity-Objekten}
+\label{Transaktionen}
+Wie in den gängigen ORM Libraries für Java (Hibernate, JPA), wird auch in Doctrine der Zugriff auf Daten über einen Entity-Manager realisiert. Er ist der zentrale Zugangspunkt zur ORM Funktionalität. Dadurch wird auch ein "'Transactional write-behind"' realisiert, indem einzelne, atomare Änderungen an den Entitäten zu Transaktionen zusammengefasst werden. Erst bei einem Aufruf der Methode \emph{flush()} des Entity-Managers wird eine Strategie für die Änderungen am Datenbestand erarbeitet und durchgeführt. \cite{Doctrine:Architecture}
+
+\subsubsection{Lesender Datenzugriff}
+
+Es gibt mehrere Möglichkeiten, Objekte aus der Datenbank abzurufen. Der schlichte Abruf eines Objekts über den Primärschlüssel sowie der Abruf eines Arrays (genauer gesagt einer ArrayCollection) von Objekten, die bestimmte Eigenschaften erfüllen, ist im folgenden Listing darstellt:
+
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php]
+$this->teamrace = $this->getDoctrine()
+  ->getRepository('TeamRaceWebBundle:Teamrace')
+  ->find($idTeamrace);
+
+$this->role = $this->getDoctrine()
+  ->getRepository('TeamRaceWebBundle:UserTeamrace')
+  ->findOneBy(array(
+    'teamrace' => $idTeamrace, 
+    'user' => $this->user->getIdUser()));
+\end{lstlisting}
+
+Hier ist sichtbar, dass der Abruf von Objekten aus der Datenbank immer über ein Repository geschieht. Dieses Objekt enthält alle Metadaten der Entität und stellt Methoden bereit, um den Abruf von Objekten aus der Datenbank zu realisieren.
+
+Ersterer oben dargestellter Abruf sucht mit der Methode \texttt{find(..)} nach einem Eintrag in der Tabelle \emph{Teamrace} mit einem bestimmten Primärschlüssel. Er gibt entweder das passende Objekt oder \texttt{null} zurück.
+
+Der zweite Abruf verlangt nach den Einträgen in der Tabelle \emph{UserTeamrace}, die in den Spalten \emph{Teamrace} und \emph{User} jeweils einen bestimmten Wert besitzen. Er gibt eine ArrayCollection aus den Bedingungen entsprechenden Objekten zurück. Eine ArrayCollection ist ein Objekt aus der Biblothek Doctrine/Common, sie kapselt ein PHP Array und erweitert es um einige Funktionen. (\cite{Doctrine:ArrayCollection})
+
+Doctrine verwendet das sogenannte "'Lazy Loading"' und sogenannte Proxy Objekte. Sie werden benutzt, um Referenzen zu Objekten herzustellen, deren Identifier bekannt ist bzw. um Entitäten aus der Datenbank laden zu können, ohne gleichzeitig alle referenzierten Objekte laden zu müssen. Würde beispielsweise ein Blog-Eintrag aus der Datenbank ohne Lazy Loading geladen werden, müsste auch das komplette referenzierte Teamrace Objekt geladen werden. Um dies zu verhindern, wird ein stellvertretendes, "'leeres"' Teamrace Objekt erstellt. Sobald ein Zugriff auf das Teamrace Objekt erfolgt, wird es aus der Datenbank nachgeladen.\\
+
+Eine weitere, flexiblere Methode zum Abruf von Objekten aus der Datenbank bietet die "'Doctrine Query Language (DQL)"', ein Derivat einer "'Object Query Language"', ähnlich zu ihren Pendants in Java, der "'Hibernate Query Language"' bzw. der "'Java Persistence Query Language"'.
+
+Die DQL ist in ihrem Syntax an SQL angelehnt, arbeitet jedoch mit Objekten und ihren Attributen. Folgendes Beispiel gibt einen Einblick in den Syntax und die Funktionsweise:
+
+\begin{lstlisting}[language=php, caption=Auszug aus src/TeamRace/WebBundle/Entity/UserTeamRepository.php, showstringspaces=false]
+public function getUserAndTeams($idTeamrace) {
+  $queryString = "
+    SELECT userTeam, team, user
+      FROM TeamRaceWebBundle:UserTeam userTeam 
+      JOIN userTeam.team team
+      JOIN userTeam.user user
+        WHERE team IN
+        (SELECT team2 
+          FROM TeamRaceWebBundle:Team team2 
+          JOIN team2.teamrace teamrace
+            WHERE teamrace.idTeamrace = :idTeamrace)";
+		
+  $query = $this->getEntityManager()->createQuery($queryString);
+  $query->setParameters(array('idTeamrace' => $idTeamrace));		
+  return $query->getResult();
+}
+\end{lstlisting}
+\texttt{userTeam}, \texttt{team}, \texttt{user} sind sogenannte Identifikationsvariablen, die die jeweiligen Entitätsklassen referenzieren. Über den "'."' in z.B. \texttt{userTeam.user} wird ein Attribut eines Objekts referenziert.
+
+Der obige JOIN wird als "'Fetch Join"' bezeichnet, insofern er nicht nur die \emph{UserTeam} Objekte aus der Datenbank lädt, die die gewünschten Eigenschaften erfüllen, sondern auch die referenzierten \emph{Team} und \emph{User} Objekte. Würde statt \texttt{SELECT userTeam, team, user} nur \texttt{SELECT userTeam} gefordert werden, würden die referenzierten \emph{User} und \emph{Team} Objekte nur mit den oben erwähnten Proxy Objekten versehen werden.
+
+Schließlich fällt in obigem Beispiel noch die Zeile \texttt{WHERE teamrace.idTeamrace = :idTeamrace} ins Auge. \texttt{:idTeamrace} bezeichnet einen "'Named parameter"', der im Folgenden durch den Aufruf der Funktion \texttt{setParameters(array("'idTeamrace"' => \$idTeamrace))} gesetzt wird. (\cite{Doctrine:DQL})\\
+
+Obiges Listing entstammt einem selbst erstellten Repository für die UserTeam Entität, welches das Standard-Repository beerbt und um die abgebildete Funktion erweitert. Durch das Setzen der Meta-Information \\
+\texttt{\@ORM\textbackslash Entity(repositoryClass="'TeamRace\textbackslash WebBundle\textbackslash Entity\textbackslash UserTeamRepository"')} in der Klasse der Entität \emph{UserTeam} (siehe Kapitel \ref{entityMapping}) wird fortan automatisch die erweiterte Repository-Klasse beim Aufruf der Funktion \texttt{getRepository(..)} gewählt:
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+// Fetch all users and the teams they participate in 
+$userAndTeams = $this->getDoctrine()
+  ->getRepository('TeamRaceWebBundle:UserTeam')
+  ->getUserAndTeams($idTeamrace);
+\end{lstlisting}
+
+\subsubsection{Schreibender Datenzugriff}
+Um neue Objekte in der Datenbank zu speichern, wird die Funktion \texttt{persist(..)} des Entity Managers, wie im folgenden Listing beispielhaft dargestellt, verwendet:
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+$team = new Team();
+[...]    	
+$em = $this->getDoctrine()->getManager();
+$em->persist($team);
+$em->flush();
+\end{lstlisting}
+In ähnlicher Weise werden Daten geändert oder gelöscht. Das Löschen von Daten ist in folgendem Listing erkennbar:
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+if (!empty($userTeamrace)) {
+  $em = $this->getDoctrine()->getManager();
+  $em->remove($userTeamrace);
+  $em->flush();
+}
+\end{lstlisting}
+Die Änderung von bereits in der Datenbank existieren Daten erfolgt implizit. Objekte, die aus der Datenbank abgerufen wurden, werden im Entity-Manager verwaltet, sie besitzen dabei sie den Zustand "'managed"'. Wenn diese Objekte verändert werden, wird beim nächsten Aufruf von \texttt{flush()} die Änderung in der Datenbank persistent gemacht.\\
+
+Die Funktion \texttt{flush()} ist allgemein die Aufforderung, alle bislang in der UnitOfWork gespeicherten Datenbankoperationen innerhalb einer Transaktion durchzuführen. Jenes Verhalten und das Prinzip des "'Transactional write-behind"' wurde bereits in Kapitel \ref{Transaktionen} angesprochen.\\
+
+\section{Die Sicherheits-Komponente}
+
+Eine wichtige Rolle in jeder Webapplikation spielen die Kontrolle über die Identifizierung von Nutzern und den Zugriff auf die einzelnen Teile der Applikation. In Symfony ist dies in die Security Kompontente ausgegliedert. Sie übernimmt die Authentifizierung des Nutzers sowie die Authorisierung für den Zugriff auf die Angeforderten Inhalte.
+
+\subsection{Firewall und Access Control}
+
+In der vorliegenden Applikation erfolgt die Authentifizierung über ein Login-Formular. Sobald ein Nutzer einen HTTP-Request an eine URL sendet, für die eine "'Firewall"' existiert, wird das Sicherheitssystem aktiviert. Die Konfiguration des Sicherheitssystems erfolgt innerhalb einer speziellen Konfigurationsdatei, wie im folgenden Listing ausschnittsweise dargestellt:
+
+\begin{lstlisting}[language=php, caption=Auszug aus app/config/security.yml, showstringspaces=false]
+security:
+    encoders:
+        TeamRace\WebBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 13
+[...]
+    providers:
+        main:
+            entity:
+                class: TeamRace\WebBundle\Entity\User
+                property: email
+    firewalls:
+[...]
+        main:
+            pattern: ^/
+            form_login:
+                check_path: loginCheck
+                login_path: login
+                default_target_path: userHome
+[...]
+    access_control:
+        - { path: ^/(en|de)/user, roles: ROLE_USER }
+        - { path: ^/(en|de)/teamrace, roles: ROLE_USER }
+\end{lstlisting}
+
+Hier ist erkennbar, dass die Firewall mit Namen "'main"' sämtliche Requests an den Host umschließt, und damit bei jedem Seitenaufruf das Sicherheitssystem aktiviert wird. Solange ein Nutzer sich nicht über das Login Formular identifiziert hat, ist er anonym (und hat diese Rolle). Er hat nach wie vor Zugriff auf alle Seiten, die nicht unter einen Pfad fallen, die durch die "'access control"' im Zugriff beschränkt sind. In der Anwendung Teamrace sind das alle Seiten mit dem Präfix \texttt{(en\textbar de)/user} oder \texttt{(en\textbar de)/teamrace}, diese Seiten sind nur von authentifizierten und eingeloggten Nutzern sichtbar.
+
+\subsection{Login}
+
+Die (nicht anonyme) Authentifizierung erfolgt über sogenannte Provider. In der Applikation Teamrace ist der Provider, anders formuliert die Sammlung von Nutzerdaten, eine Entität mit Namen "'User"', zudem werden die Nutzer über das Attibut "'email"' identifiziert. 
+
+Die Entität selbst muss nun das Interface "'UserInterface"' mit folgenden angeführten (und anderen, hier nicht angeführten) Methoden implementieren:
+
+\begin{lstlisting}[language=php, caption=Auszug aus src/TeamRace/WebBundle/Entity/User.php, showstringspaces=false, label=userInterface]
+class User implements UserInterface
+{
+    public function getUsername()
+    {
+    	return $this->email;
+    }
+    
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getSalt()
+    {
+    	return null;
+    }
+
+    public function getRoles()
+    {
+    	return array('ROLE_USER');
+    }
+}
+\end{lstlisting}
+Das Attributpaar, anhand derer der Nutzer identifiziert wird, ist durch die Rückgabe der Funktionen \texttt{getUsername()} und \texttt{getPassword()} bestimmt. Um das über das Login-Formular im Klartext übergebene Passwort mit dem hier zurückgegebenen Passwort zu vergleichen, verwendet das Sicherheitssystem den Encoder, der in der Konfigurationsdatei angegeben wurde. In der vorliegenden Applikation ist dies der Algorithmus mit Namen "'bcrypt"', hinter dem Namen verbirgt sich die Blowfish Implementierung für PHP. Insofern der Blowfish Algorithmus selbst das Salt erzeugt und mitsamt dem chiffrierten Passwort in nur einem String speichert, wird im Listing \ref{userInterface} von \texttt{getSalt()} immer \texttt{null} zurückgegeben.
+Weiterhin gibt es in der Teamrace Applikation bislang nur einen Nutzertyp, daher wird von \texttt{getRoles()} immer \texttt{array("'ROLE\_USER"')} zurückgegeben. (\cite{sf2:Security})
+
+\section{Die Formular-Komponente}
+In Webapplikationen ist ein Großteil der Schnittstellen zwischen Applikation und Nutzer über Formulare realisiert. Symfony bietet auch hierfür eine eigene Komponente. Sie erlaubt es dem Entwickler, Formulare in einfacher Weise zu erstellen und wiederzuverwenden, sowie ihre Daten zu verarbeiten.
+
+Das Erstellen von Formularen geschieht über das \emph{FormBuilder} Objekt, welches von jedem Controller, der die Basis-Controller Klasse beerbt, über die Abkürzung \texttt{\$this->createFormBuilder} generiert werden kann.
+
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+$builder = $this->createFormBuilder(
+  array('action' => $this->generateUrl(
+    'teamraceMembers', array('idTeamrace' => $idTeamrace))));
+$builder->add('email', 'email');
+$builder->add('submit', 'submit');
+$form = $builder->getForm();
+\end{lstlisting}
+Obiges Listing zeigt die Erstellung eines Formulars mit dem Feld "'email"' und einem Submit Button. Die Form Komponente bietet eine vielzahl an bereits vorgefertigten Formular-Elementen, wie z.B. das Element "'email"'. Als "'Action"', also die Seite, an der die Inhalte des Formulars gesendet werden sollen, ist die Seite angegeben worden, deren Route den Namen "'teamraceMembers"' trägt. Das Formular wird verwendet, um dem Teamrace Administrator die Möglichkeit zu geben, einzelne Mitglieder (identifiziert anhand ihrer e-Mail Adressen) zum Teamrace hinzuzufügen.\\
+
+Sobald alle Elemente des Formulars dem \emph{FormBuilder} Objekt hinzugefügt wurden, wird das \emph{Form} Objekt durch den Aufruf der Methode \texttt{getForm()} erzeugt. Dieses enthält 3 verschiedene Repräsentationen des Formulars: Eine Repräsentation, die die Felder und ihre Typen im Bezug auf die zugrunde liegende Datenbankmodellierung beinhaltet, eine interne Repräsentation der Felder und Typen der Formklasse, sowie eine Repräsentation, in der die einzelnen Komponenten jedes Formularelements als HTML-Code gespeichert sind (\cite{sf2:FormAPI}).
+
+Die schon angesprochene Wiederverwendbarkeit von Formularen gestaltet sich derart, dass das Bilden von Formularen einer bestimmten Art auch in eigene Objekte ausgelagert werden kann. Beispielhaft sei hier das Formular zum Erstellen eines Blogeintrags dargestellt:
+
+\begin{lstlisting}[language=php, caption=Auszug aus src/TeamRace/WebBundle/Form/Type/BlogType.php, showstringspaces=false]
+class BlogType extends AbstractType
+{
+  public function buildForm(FormBuilderInterface $builder, array $options) 
+  {
+    $builder->add('headline', 'text', array(
+      'attr' => array('size' => '50')));
+    [...]
+  }
+  [...]
+}
+\end{lstlisting}
+Weiterhin kann dem FormBuilder Objekt auch eine Entität übergeben werden, mit deren Attributen die Elemente der Formulars verknüpft sind. Dadurch ist es möglich, in der Entität formulierte Bedingungen an die Beschaffenheit der eingehenden Daten bei deren Verarbeitung zu überprüfen, und alle eingehenden Formulardaten den passenden Attributen zuzuordnen. Folgendes Beispiel zur Verarbeitung der Daten aus dem Blog-Formular verdeutlicht dies:
+
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Controller/TeamraceController.php, showstringspaces=false]
+$form = $this->createForm(new BlogType(), new Blog(), array(
+  'action' => [...]));
+[...]		 
+if($form->isValid()) {
+  $blog = $form->getData();
+  [...]
+  $em = $this->getDoctrine()->getManager();
+  $em->persist($blog);
+}
+\end{lstlisting}
+Durch den Aufruf der Funktion \texttt{isValid()} wird der Request auf den Empfang von Formulardaten aus dem vorher definierten Formular überprüft und gegebenfalls eine Validierung der Daten vorgenommen. Die Angabe zu den Bedingungen zur Validierung der Daten werden in der Entitäts-Klasse über Annotationen vor den jeweiligen Attributen gemacht. (\cite{sf2:Forms}, \cite{sf2:FormComponent})
+
 \section{Internationalisierung}
 \label{sec:Internationalisierung}
+Um die Inhalte der Webapplikation mehrsprachig zu halten, gibt es in Symfony die Übersetzungs-Koponente. Die grundsätzliche Funktionsweise folgt dem folgenden Prinzip: Alle zu übersetzenden Strings werden in den Templates mit dem Filter \texttt{trans} versehen (siehe z.B. Listing \ref{lst:challenges}). Bei der Konfiguration des Translation-Moduls wird die Rückfall-Sprache angegeben, in der die zu übersetzenden Strings verfasst sind. In den Übersetzungs-Dateien für die jeweiligen Sprachen werden alle mit dem Filter versehenen Strings einzeln in die Zielsprache übersetzt:
 
-
-% ***** chapter 4 *****
-\chapter{Grundlegende technische Konzepte und Problemstellungen von Webapplikationen}
-
-Im Folgenden sollen einige grundlegende Konzepte und Problemstellungen von Webapplikationen erläutert und den im Projekt verwendeten Lösungsansätzen gegenübergestellt werden. 
-
-\section{Hypertext Transfer Protocol}
-Das Hypertext Transfer Protokol lässt sich in der Internet Protocol Suite auf der Darstellungsebene einordnen.\cite{wiki:HTTP}
-\subsection{Verbindungsaufbau und -persistenz}
-Der Verbindungsaufbau, keep-alive.
-\subsection{Request Arten}
-Die beiden wichtigsten bzw. am häufigsten verwendeten Request-Arten sind GET und POST.
-\subsection{Response Codes}
-200 OK, 302, 404, 500
-\subsection{HTTPS}
-HTTPS gewährleistet die verschlüsselte Datenübertragung.
-
-\section{Session Management, Sicherheit}
-Da HTTP nicht zum Aufbau längerer Sessions in der Interaktion mit einem Webserver ausgelegt ist, gibt es andere Konzepte, einen Benutzer zu authentifizieren und längere Sessions zu ermöglichen.
-\subsection{Authentifizierung}
-Authentifizierung mittels Cookies, Login-Daten, ..
-\subsection{Verschlüsselung}
-HTTPS, Verschlüsselung des Passworts (in Datenbanken)
-\subsection{Validierung}
-Ein kritischer Punkt im Bezug auf die Sicherheit von Web-Anwendungen stellt die Schnittstelle zwischen Umgebung und der Anwendung. \cite[S.212]{ebooks:Architekturen} So schreibt das Bundesamt für Sicherheit in der Informationstechnik dazu: "'Alle Daten, die von außen in die Anwendung gelangen, sind zu validieren und zu filtern."'
-\cite[S.20]{BSI}
-
-Folgendes Beispiel sei hierzu angeführt: 
-In einer fiktiven Anwendung werden zu speichernde Formulareingaben ohne Überprüfung ihres Inhalts in eine Datenbank gespeichert:
-
-\begin{lstlisting}
-<?php
-$con = mysqli_connect($host,$username,$password,$dbname);
-// Check connection
-if (mysqli_connect_errno()) {
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-}
-
-// Get Post Parameters, unfiltered
-$firstname = $_POST['firstname'];
-$lastname = $_POST['lastname'];
-mysqli_query($con,"INSERT INTO Persons (FirstName, LastName)
-VALUES ($firstname, $lastname)");
-
-mysqli_close($con);
-?>
+\begin{lstlisting}[language=php, caption=Auszug aus \\src/TeamRace/WebBundle/Resources/translations/messages.de.xlf, showstringspaces=false]
+<trans-unit id="31c3c76e275496ee4e5c7b7a6bb19cd9" 
+  resname="What is a teamRace?">
+  <source>What is a teamRace?</source>
+  <target>Was ist ein teamRace?</target>
+</trans-unit>
 \end{lstlisting}
 
-Angenommen, ein Angreifer würde (richtig) vermuten, dass die Daten zur Registrierung in einer Tabelle mit Namen "'user"' gespeichert werden, könnte er mit folgender Eingabe in das Formularfeld "'Last Name"' den gesamten Tabelleninhalt löschen:
-\begin{lstlisting}
-x");TRUNCATE TABLE user; CREATE TABLE prank(id int(9)
-\end{lstlisting}
-Die Erzeugung einer neuen Tabelle dient hier nur dem Umgehen eines SQL Syntax-Errors wegen der noch ausstehenden schließenden Klammer.
-Dieses Beispiel stellt lediglich eine sehr einfache Angriffsmöglichkeit dar, vor die in jedem Grundlagenbuch über PHP gewarnt wird. Eine leichte Abhilfe bietet hierfür die folgende Funktion, indem sie alle speziellen Zeichen im SQL-Syntax "'entschärft"'.
-\begin{lstlisting}
-string mysqli_real_escape_string(string $escapestr)
-\end{lstlisting}
+In der Teamrace-Applikation wird die Locale des Nutzers standardmäßig auf deutsch gesetzt. Er kann diese in der Navigation oben verändern. Die Sprache, in der die aufgerufene Seite dargestellt werden soll, ist in die Request-URL integriert. Diese wird während dem Routing vom Front-Controller extrahiert und in dem Attribut \texttt{\_locale} gespeichert. 
 
-An dieser Stelle bietet das Symfony Framework Abhilfe, in dem die "'HTTP Foundation"' Komponente alle Eingabedaten filtert und je nach Bedarf auch in entsprechende Typen umwandelt.\cite{sf2:HTTPFoundation}
+Dem Nutzer werden schließlich alle Strings in der gewünschten Sprache dargestellt. Ist ein String in der Übersetzungs-Datei nicht übersetzt, wird auf den urspünglichen String in der Rückfall-Sprache zurückgegriffen. (\cite{sf2:Translations})\\
 
-\section{Datenpersistenz}
-Für eine persistente Datenspeicherung in Webapplikationen wird von Datenbanken Gebrauch gemacht.
-\subsection{relationale Datenbanken}
-Verwendung von MySQL Datenbank.
-\subsection{Object-relational mapping}
-Verwendung von Doctrine.
-
-\section{Darstellung der Informationen}
-\subsection{HTML, CSS}
-Die Hypertext markup language, css
-\subsection{PHP}
-PHP bietet die Möglichkeit, Daten dynamisch in statischen html-code einzubinden.
-\subsection{Twig}
-Twig ist eine Entwicklung von Sensio-Labs, sie übernimmt Aufgaben von PHP in leichter lesbarer Form.
 
 \section{Caching}
-Chaching findet auf Browser-Ebene, mit Hilfe von Proxy-Servern und durch Gateway-Caching (Reverse-Proxy) statt.
 
-\section{3-tier Konzept (MVC Pattern)}
-Das MVC Pattern ist ein Softwareentwicklungsmuster, dass die verschiedenen Aufgaben der Software voneinander trennen soll.
-\subsection{Controller}
-Der Controller ist das Bindeglied zwischen Model und View.
-\subsection{Model}
-Hier geschieht die Datenspeicherung.
-\subsection{View}
-Generierung der Darstellung
-\section{Exception Handling}
-Darstellung von Catchable Errors, verhalten der Applikation im Fehlerfall.
+Um die Serverlast und Antwortzeit auch bei der Verwendung eines Backends von so umfassender Funktionalität möglichst klein zu halten, gibt es mehrere hier beschriebene Maßnahmen des Cachings.
+
+\subsection{Gateway-Caching (Reverse-Proxy)}
+
+Ein Gateway-Cache ist von der eigentlichen Webapplikation entkoppelt und befindet sich, strukturell betrachtet, vor der eigentlichen Applikation. Er nimmt die Anfragen von Nutzern entgegen, leitet sie an die Applikation weiter, und empfängt und leitet auch die Antwort umgekehrt an den Nutzer weiter. Alle Antworten, die er als "'cachable"' betrachtet, werden von ihm gespeichert. Innerhalb ihrer Gültigkeitsdauer werden erneute Anfragen auf die gleiche Ressource nicht an die Applikation weitergeleitet, sondern mit der Antwort aus dem Cache bedient. Alle Angaben zur Gültigkeitsdauer (\texttt{max age}) und der letzten Änderungen an der Seite (\texttt{last modified}) werden den entsprechenden HTTP Header Angaben entnommen, sie sind in den Request bzw. Response Objekten gekapselt und können über die entsprechenden Getter- und Setter Methoden beeinflusst werden.
+
+Das Gateway-Caching wird aktiviert, indem das eigentliche AppKernel Objekt im Front-Controller von einem AppCache Objekt ersetzt wird. Dem AppCache Objekt wird der eigentliche Kernel bei der Konstruktion übergeben:
+
+\begin{lstlisting}[language=php, caption=Auszug aus web/app.php, showstringspaces=false]
+$kernel = new AppKernel('prod', false);
+$kernel->loadClassCache();
+$kernel = new AppCache($kernel);
+\end{lstlisting}
+
+Gateway Caching hat allerdings den Nachteil, dass er für Seiten mit hoher Nutzerinteraktivität und nutzerspezifischen Antworten kaum zum Einsatz kommt, da er immer nur ganze Seiten zwischenspeichern kann. Abhilfe schafft hier das sogenannte Edge-Site Including (ESI), bei dem einzelne Fragmente der Seite zwischengespeichert werden. Die Technologie wird in der Teamrace Applikation jedoch nicht verwendet und ist hier daher nur der Vollständigkeit halber erwähnt. (\cite{sf2:Cache})
+
+\subsection{Alternative PHP-Cache (APC)}
+
+Um das zeitaufwendige Kompilieren von PHP-Skripten bei wiederkehrender Verwendung zu ersparen, werden die bereits kompilierten Quelltexte vom APC zwischengespeichert. 
+Außerdem bietet der APC einen 'User-Cache', der das Zwischenspeichern von Objekten 
+im Shared-Memory des Webservers ermöglicht. Dies stellt ebenfalls eine Möglichkeit dar, die Serverlast sowie die Antwortzeit des Servers bei häufig wiederkehrenden gleichen Anfragen deutlich zu verringern. (\cite{wiki:APC})
+
+\subsection{Class-Loader}
+
+Um die Einbindung und Kompilierung von bereits übersetzten Klassen zu umgehen, 
+bietet das Sf2 framework eine Komponente (The PSR-0 Class Loader), die automatisch
+(die Benutzung bestimmter Naming Conventions vorausgesetzt) nach Klassen sucht und
+sie einbindet, sobald sie mittels 'use' deklariert wurden. Dadurch kann ein wiederholtes Einbinden und Kompilieren von Skripten umgangen werden. Auch in der Doctrine Bibliothek wird der Classloader verwendet. (\cite{php:ClassLoader})\\
 
 
-% ***** chapter 4 *****
-\chapter{Softwarearchitektur des Symfony 2 Frameworks}
-\label{sec:symfony}
-Im Folgenden soll ein Überblick über die Softwarearchitektur des Symfony 2 Frameworks gegeben werden.
-\section{Seperation of concerns / Component based Framework}
-Grundlegend ist die Idee, alle Teile des Frameworks möglichst so voneinander zu trennen, dass sie auch unabhängig voneinander verwendet werden können.
-\section{Dependency-Injection / Container Pattern}
-Ein Container verbirgt alle technischen Details vor der eigentlichen Implementierung der Software
-\section{Verwendete Design-Patterns}
-Diese Liste soll keinen Anspruch auf Vollständigkeit erheben, es sollen lediglich beispielhaft die Verwendung einiger gängiger Design-Patterns erläutert werden.
-\subsection{Decorator}
-Decorator Pattern
-\subsection{Composite}
-Composite Pattern
-\subsection{Unit of Work}
-Verwendet in Doctrine \cite{ab94} 
+Nachdem nun die übergeordnete Architektur und einige grundlegenden Komponenten des Symfony Frameworks besprochen wurden, soll im folgenden Abschnitt konkret auf die Struktur der Anwendung eingegangen werden.
 
+\chapter{Konzeption der Software zum Projekt Teamrace}
+Nachdem im vorigen Kapitel die technischen und konzeptionellen Details der Software geschildert wurden, soll nun im Folgenden die Entwicklung der Software im Hinblick auf die zugrunde liegende Strukturierung und das Datenbankdesign dargestellt werden.
+
+\section{Grundlegende Strukturierung der Applikation}
+\label{sec:ApplikationsStruktur}
+Grundlegend gliedert sich die hier dokumentierte Webapplikation in drei Bereiche: 
+
+Einen "'externen"' Bereich, der ohne Authentifizierung zugänglich ist, einen "'Benutzerbereich"' für alle Teamrace-unspezifischen Funktionen der Applikation sowie einen Teamrace-spezifischen Bereich. Dem wird sowohl im Erscheinungsbild der Anwendung, als auch in ihrer inneren Struktur Rechnung getragen: Die Navigationsleiste oben ist in jedem der drei Module den jeweiligen Funktionalitäten angepasst. Intern sind die Routingtabellen auf drei Konfigurationsdateien aufgeteilt und die Controller für die drei Bereiche auf drei Klassen verteilt. Auch die Templates zu den Modulen sind in je einem eigenen Ordner untergebracht.
+
+\subsection{Externes Modul}
+Im externen Modul sind neben rechtlichen Hinweisen (dem Disclaimer) vor allem Informationen über das Projekt und die zu Grunde liegenden Ideen zu finden. Außerdem bietet das externe Modul die Möglichkeit, sich zu registrieren, und sich anzumelden.
+
+\subsection{User Modul}
+Im User Modul kann der Nutzer nach anderen Nutzern oder Teamraces suchen, auf Teamraces zugreifen oder neue Teamraces erstellen. Das eigene sowie fremde Profile können betrachtet werden, die eigenen Profilinformationen können bearbeitet werden und ein neues Passwort kann angefordert werden. Außerdem können Nachrichten an andere Nutzer gesendet und empfangen werden.
+
+\subsection{Teamrace Modul}
+Im Teamrace Modul findet sich die gesamte Funktionalität, um auf die Daten eines bestimmten Teamrace zuzugreifen oder sie anzulegen und zu verändern. Die Darstellung und Funktionen, die sich dem Nutzer bieten, unterscheiden sich in Abhängigkeit der Rollen, die sie im Teamrace innehaben (Administrator, Tutor oder Spieler). 
+
+Das Modul untergliedert sich neben der Haupt-(bzw. Start)seite in die vier Aspekte "'Wettbewerbe"', "'Teams"', "'Mitglieder"' und "'Ergebnisse"'.
+
+Der Administrator und die Tutoren können auf der Startseite Blogeinträge verfassen, die von allen Mitgliedern des Teamrace auf eben dieser Seite sichtbar sind. Von allen Nutzern können die Daten der kommenden bzw. vergangenen Wettbewerbe eingesehen werden. Der Administrator kann neue Wettbewerbe erstellen sowie die Punkte zu jedem Wettbewerb vergeben. Tutoren können ebenfalls Wettbewerbe erstellen, sie können allerdings nur zu von ihnen erstellten Wettbewerben Punkte vergeben. 
+
+Alle Nutzer können einsehen, aus welchen Teams das Teamrace besteht, der Administrator kann Teams hinzufügen und entfernen. Ebenfalls von allen Nutzern kann eine Liste der Mitglieder des Teamrace eingesehen werden. Der Administrator hat die Möglichkeit, neue Nutzer hinzuzufügen bzw. zu entfernen und Nutzer zu Teams hinzuzufügen. Letztlich können noch von allen Nutzern die Gesamtplatzierungen der Teams eingesehen werden.
+
+\section{Datenbankdesign}
+
+Als Datenbank wird die relationale Datenbank MySQL verwendet. Zentral sind die Tabellen zur Datenspeicherung über die Nutzer, die Teamraces, die Teams und die Wettbewerbe. 
+
+Zwischen Nutzern und Teams besteht eine n:m Relation, da Nutzer in unterschiedlichen Teamraces und folglich auch in mehreren Teams sein können, umgekehrt besteht ein Team aus mehreren Nutzern. Die Mitgliedschaft eines Nutzers in einem Team ist in der Tabelle \emph{user\_team} gespeichert. Ebenso verhält es sich auch mit der Mitgliedschaft eines Nutzers in einem Teamrace, sie ist mit gleicher Begründung ebenfalls eine n:m Relation. Sie ist in der Tabelle \emph{user\_teamrace} vermerkt. Jedes Teamrace wird von einem Nutzer erzeugt und hat eine Fremdrelation zur Tabelle \emph{user}. Jedes Team gehört zu einem bestimmten Teamrace und hat eine Fremdrelation zur Tabelle \emph{teamrace}. Jede Challenge hat einen Tutor, gehört zu einem Teamrace und ist von einem Challenge-Typ, daher besitzt es Fremdrelationen zu den Tabellen \emph{user}, \emph{teamrace} und \emph{challenge\_type}. Die Punkte, die die Teams in den Challenges erzielen, sind in der Tabelle \emph{challenge\_team} gespeichert.
+
+In der Tabelle \emph{blog} sind die Blogeinträge zu einem Teamrace, erstellt von einem Nutzer gespeichert. Sie enthält daher Fremdrelationen zu den Tabellen \emph{user} und \emph{teamrace}. Schließlich sind alle Nachrichten, die von einem Nutzer an einen anderen Nutzer erstellt wurden, in der Tabelle \emph{messages} gespeichert, sie enthält zwei Fremdrelationen zur Tabelle \emph{user}.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.65]{Bilder/dbschema.png}
+\caption{Entity-Relationship Diagramm zum Datenbankschema der Anwendung}
+\label{}
+\end{figure}
 
 
 
 % ***** chapter 5 *****
 \chapter{Stand der Entwicklung, Ausblick}
-Darstellung der bislang erreichten Entwicklungsziele, Ausblick auf weitere notwendige bzw. mögliche Komponenten und Erweiterungen.
+\label{sec:Stand}
 
+Wie bereits im Kapitel \ref{sec:Zielsetzung} erwähnt, war die Zielsetzung des Projekts die Implementierung der Plattform dahingehend, dass die grundlegenden Funktionen entwickelt sind. Insofern ist es zum momentanen Stand möglich, sich in der Applikation zu registrieren und anzumelden und Teamraces zu erstellen. Die Rolle des Tutors ist bislang nicht implementiert, insofern kann lediglich der Ersteller des Teamrace (Administrator) Wettbewerbe und Teams erstellen und Mitglieder zu den Teams bzw. zum Teamrace hinzufügen. Weiterhin kann der Administrator für alle bereits stattgefundenen Wettbewerbe die Punktestände eintragen. Außerdem kann er über den Blog Mitteilungen an alle Mitglieder verfassen.
 
-**** umbedingt noch die routing-Tabellen aufteilen und den Dateinamen von listing 3.1 entsprechend ändern ****
+Die Teilnehmer des Teamrace können alle Informationen zu den Wettbewerben, Teams und Punkteständen sowie den Blog einsehen.
 
+\section{Weitere Schritte in der Entwicklung}
 
-\section{Zu Verbesserndes}
-
+Die wichtigsten Aspekte, die nun im Folgenden implementiert werden sollen, sind in folgender Tabellarischer Auflistung zusammengefasst:
 \begin{itemize}
-\item{Bereinigung der Namen (TeamRace => Teamrace)}
-\item{Einheitliche Verwendung vom yml Konfigurationsdateiformat}
+\item{\textbf{Rolle "'Tutor"':} Der Administrator kann bei der Aufnahme von neuen Mitgliedern die Rollen "'Spieler"' oder "'Tutor"' zuweisen. Weiterhin müssen die Berechtigungen für die Rolle des Tutors (Erstellen neuer Wettbewerbe, Bewertung der von ihnen erstellten Wettbewerbe) gesetzt werden.}
+\item{\textbf{E-Mail Funktionalität (Swift Mailer):} Um die Nutzer des Teamrace per e-mail benachrichtigen zu können, ihre angegebene e-Mail Adresse verifizieren zu können und ihnen die Möglichkeit zu geben, das Passwort zurückzusetzen, ist die Einbindung des Swift-Mailer Bibliothek nötig.}
+\item{\textbf{Nutzerprofil:} Den Nutzern soll die Möglichkeit gegeben werden, ihr Profil um ein paar Informationen über sich selbst auszukleiden und Profilbilder hochzuladen. Dies gehört mittlerweile zum Standard in Webapplikationen und erhöht sicherlich das Interesse der Schüler an der Applikation.}
+\item{\textbf{Bilderupload:} Auch für Wettbewerbe und Teamraces soll die Möglichkeit geschaffen werden, Bilder hochzuladen, insofern dies die Benutzerfreundlichkeit wesentlich erhöht.}
+\item{\textbf{Mitgliedschaft im Teamrace beantragen:} Auch im Hinblick darauf, dem Administrator des Teamrace Arbeit abzunehmen, muss es den Nutzern möglich sein, die Mitgliedschaft in einem bereits bestehenden Teamrace zu beantragen.}
+\item{\textbf{Suche:} Für die Kommunikation der Nutzer untereinander und das Auffinden von bereits existierenden Teamraces ist eine Suchfunktion nach den Kriterien "'Nutzer"' und "'Teamrace"' nötig. }
+\item{\textbf{Änderungs-Funktionalität:} Momentan gibt es nur wenig Möglichkeiten, bereits eingegebene Daten zu verändern. Den Nutzern soll, in Abhängigkeit ihrer Rollen, je nach Sinnhaftigkeit die Möglichkeit eingeräumt werden, die Daten des Teamrace, für Wettbewerbe oder zu ihrem Profil zu verändern.}
+\item{\textbf{Nachrichtensystem:} Um den Austausch zwischen einzelnen Mitgliedern zu ermöglichen, soll ein Nachrichtensystem integriert werden, das im User-Modul der Seite integriert ist.}
 \end{itemize}
 
-\section{Weitere Technologien}
-
-\subsection{AJAX}
+\section{Zu Verbesserndes (Technische Aspekte)}
 \label{sec:AJAX}
+
+\begin{itemize}
+\item{\textbf{AJAX:} Gerade für die oben angesprochenen Funktionen zum Bearbeiten der Daten ist eine Integration von asynchronem Datentransfer über Javascript und eine damit einhergehende dynamische Veränderung im DOM-Baum wünschenswert. Dies macht einen Datentransfer mit dem Server möglich, ohne immer vollständige Seiteninhalte auszutauschen und im Browser neu laden zu müssen. In modernen Webapplikationen ist die Technik Standard, auch weil sie stark zur Erhöhung der Benutzerfreundlichkeit beiträgt. }
+\item{\textbf{Tests}: Die Integration von Modultests, z.B. via PHPUnit, gehört zum Standard in ausgereiften Softwareprojekten, und sollte auch in dieser Applikation zum Einsatz kommen. }
+\item{\textbf{Bereinigung der Modulnamen:} Bei der anfänglichen Konfiguration habe ich aus ästhetischen Gründen die Schweibweise "'TeamRace"' verwendet, später erschien mir dies jedoch unsinning, und ich habe begonnen, stattdessen "'Teamrace"' zu verwenden. Eine Vereinheitlichung hin zu "'Teamrace"' ist angebracht.}
+\item{\textbf{Einheitliche Verwendung vom yml Konfigurationsdateiformat:} Momentan werden für die Konfiguration auf Applikationsebene das "'yml"' Format, für die Konfiguration innerhalb des TeamraceWebBundles das "'xml"' Format verwendet. Eine Vereinheitlichung wäre sinnvoll.}
+
+\item{\textbf{Exception Handling:} Das Verhalten der Applikation im Fehlerfall unterliegt momentan noch vollständig den Voreinstellungen des Symfony Frameworks. Eine Anpassung dieses ist angebracht.}
+
+\end{itemize}
 
 \bibliographystyle{plain}
 
