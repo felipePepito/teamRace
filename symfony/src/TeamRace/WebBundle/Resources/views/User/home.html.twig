@@ -1,16 +1,31 @@
 {% extends "TeamRaceWebBundle:User:_layout.html.twig" %}
 
 {% block content %}
-<p>{{ "You are now logged in!" | trans }} </p>
+<h3>{{ "Welcome (back) to the user-area!" | trans}}</h3>
+<p>{{ "You are now logged in. At the" | trans }}&nbsp;
+<a href="{{  url('userProfile') }}">{{ "Profile page" | trans }}</a>
+{{ ", you can view and edit your own profile. The" | trans}}&nbsp;
+<a href="{{  url('userTeamraces') }}">{{ "Teamraces page" | trans }}</a>&nbsp;
+{{ "shows a list of all currently existing teamraces." | trans }}
+</p>
 
-<table>
+<h3>{{ "Teamraces you take part in:" | trans }}</h3>
+<table cellpadding="0" cellspacing="0">
 {% for userTeamrace in userTeamraces %}
 
-<tr><td>
-<a href="{{ url('teamraceHome', parameters={'idTeamrace': userTeamrace.teamrace.idTeamrace}) }}">{{ userTeamrace.teamrace.name }}</a></td></tr>
+	<tr>
+		<td>{{ userTeamrace.teamrace.name }}&nbsp;&nbsp;</td>
+		<td>
+		<a href="{{ url('teamraceHome', parameters={'idTeamrace': userTeamrace.teamrace.idTeamrace}) }}">
+			{{ "Go to teamrace" | trans }}
+		</a>
+		</td>
+	</tr>
 
 {% endfor %}
 </table>
 
-<p><a href="{{ url('userCreateTeamRace') }}">{{ "Create a new teamRace" | trans }}</a>
+<p><a href="{{ url('userCreateTeamrace') }}">
+<span style="background:#ccc">+</span>&nbsp;{{ "Create a new teamRace" | trans }}
+</a></p>
 {% endblock %}

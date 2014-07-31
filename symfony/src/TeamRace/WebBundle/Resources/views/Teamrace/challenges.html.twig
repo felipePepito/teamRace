@@ -19,7 +19,7 @@ div.challengeBox {
 </p>
 {% endif %}
 
-<h3>{{ 'Upcoming Challenges' | trans }}</h3>
+<h3>{{ "Upcoming Challenges" | trans }}</h3>
 
 {% for challenge in challenges %}
 {% if challenge.date | date('Y-m-d-G-i') >= "now" | date('Y-m-d-G-i') %}
@@ -34,7 +34,7 @@ div.challengeBox {
 {% endif %}
 {% endfor %}
 
-<h3>{{ 'Past Challenges' | trans }}</h3>
+<h3>{{ "Past Challenges" | trans }}</h3>
 
 {% for challenge in challenges %}
 {% if challenge.date | date('Y-m-d-G-i') < "now" | date('Y-m-d-G-i') %}
@@ -45,12 +45,12 @@ div.challengeBox {
 <div>{{ challenge.description | length > 150 ? challenge.description|slice(0, 150) ~ '...' : challenge.description }}</div>
 <div>
 	<a href="{{ url('teamraceChallengeViewResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idChallenge': challenge.idChallenge}) }}">
-		{{ 'View Results' | trans }}
+		{{ "View Results" | trans }}
 	</a>&nbsp;&nbsp;
 	
 	{% if role == 1 %}
 		<a href="{{ url('teamraceChallengeSetResults', parameters={'idTeamrace': teamrace.idTeamrace, 'idChallenge': challenge.idChallenge}) }}">
-			{{ 'Set Results' | trans }}
+			{{ "Set Results" | trans }}
 		</a>
 	{% endif %}
 </div>

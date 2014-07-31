@@ -2,10 +2,80 @@
 'Welcome, this is a teamRace hub.': 'Willkommen, dies ist ein teamRace hub.'
 'This software is designed as a service for teamRaces.': 'Diese Software ist die zentrale Verwaltungseinheit für teamRaces'
 'What is a teamRace?': 'Was ist ein teamRace?'
-'It is thought to be a great, interdisciplinary competition, consisting of several challenges and teams.': 'Ein teamRace ist eine großer, interdisziplinärer Wettbewerb, der aus mehreren Teams und Herausforderungen besteht.'
-Hallo: __Hallo
+'It is thought to be a great, interdisciplinary competition, consisting of several challenges and teams.': 'Ein teamRace ist ein großer, interdisziplinaerer Wettbewerb, der aus mehreren Teams und Wettbewerben besteht.'
+Hallo: Hallo
 'You are now logged in!': 'Du bist nun angemeldet!'
 'Check out the %about% page': 'Siehe auch die %about% seite'
-page: __page
-'Check out the about page': '__Check out the about page'
-'Congratulations, you just registered successfully': '__Congratulations, you just registered successfully'
+page: Seite
+'Check out the about page': 'Siehe auch die about seite'
+'Congratulations, you just registered successfully': 'Glückwunsch, sie haben sich soeben erfolgreich registriert'
+home: home
+about: Impressum
+profile: Profil
+teamRaces: Teamraces
+logout: Logout
+challenges: Wettbewerbe
+teams: Teams
+members: Teilnehmer
+standings: Gesamtwertung
+'Save Scores': 'Ergebnisse speichern'
+'Results of challenge': 'Ergebnisse des Wettbewerbs'
+Team: Team
+Points: Punkte
+'Create a new challenge': 'Einen neuen Wettbewerb erstellen'
+'Upcoming Challenges': 'Kommende Wettbewerbe'
+'Date:': 'Datum:'
+'Past Challenges': 'Vergangene Wettbewerbe'
+'View Results': Ergebnisse
+'Set Results': 'Ergebnisse bearbeiten'
+Name: Name
+Description: Beschreibung
+'Date and Time': 'Datum und Uhrzeit'
+'Highest Score possible': 'Maximal erreichbare Punkte'
+'Create Challenge': 'Wettbewerb erstellen'
+'Welcome at the central hub of the Teamrace': 'Willkommen im zentralen Hub des Teamrace'
+"Here you are able to create, view and set the results of challenges, you can add users to the teamrace,\ncreate teams and view the standings": 'Hier kannst du Wettbewerbe erstellen, ihre Ergebnisse einsehen und verändern. Außerdem kannst du Nutzer zum Teamrace hinzufügen, neue Teams erstellen, sowie die Gesamtwertung einsehen.'
+Blog: Blog
+Headline: Überschrift
+Text: Text
+'Send Blog Post': 'Erstelle Blog Eintrag'
+'Add new user to teamrace': 'Füge neuen Nutzer zum Teamrace hinzu'
+'E-Mail address of user:': 'E-Mail Addresse des Nutzers:'
+'Add User': 'Füge Nutzer hinzu'
+'List of participating members': 'Liste von teilnehmenden Mitgliedern'
+Member: Teilnehmer
+Role: Rolle
+Admin: Administrator
+Player: Spieler
+'Add to ..': 'Hinzufügen zu ..'
+'Remove user from Teamrace': 'Entferne Nutzer aus Teamrace'
+Standings: Gesamtwertung
+Place: Platz
+'. Place': '. Platz'
+'Add new Team': 'Neues Team hinzufügen'
+'Name:': 'Name:'
+'Create team': 'Team erstellen'
+'List of teams': 'Liste von Teams'
+'Remove team': 'Lösche Team'
+'Create a new Teamrace:': 'Ein neues Teamrace erstellen:'
+'Create Teamrace': 'Erstelle Teamrace'
+'You are now logged in. At the': 'Du bist nun angemeldet. Auf der'
+'Profile page': 'Profil Seite'
+'Teamraces page': 'Teamraces Seite'
+'shows a list of all currently existing teamraces.': 'zeigt eine Liste von allen momentan existierenden Teamraces.'
+'Teamraces you take part in:': 'Teamraces, an denen du teilnimmst:'
+'Go to teamrace': 'Gehe zum Teamrace'
+'Create a new teamRace': 'Erstelle ein neues Teamrace'
+'Profile Information': 'Profil Informationen'
+'Your first name:': 'Dein Vorname:'
+'Your last name:': 'Dein Nachname:'
+'Member since:': 'Mitglied seit:'
+'List of all existing Teamraces:': 'Liste aller existierenden Teamraces:'
+Founder: Gründer
+login: Login
+register: Registrieren
+'E-mail address': 'E-mail Addresse'
+Password: Passwort
+'List of teams!': 'Liste von Teams!'
+'Welcome (back) to the user-area!': 'Willkommen (zurück) im User-Bereich!'
+', you can view and edit your own profile. The': ' kannst du dein eigenes Profil betrachten und verändern. Die'

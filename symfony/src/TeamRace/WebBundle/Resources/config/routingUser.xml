@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+  
+  <!-- User -->
+  
+  <route id="userHome" pattern="/{_locale}/user/home">
+    <default key="_controller">TeamRaceWebBundle:User:home</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="userProfile" pattern="/{_locale}/user/profile">
+    <default key="_controller">TeamRaceWebBundle:User:profile</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="userTeamraces" pattern="/{_locale}/user/teamRaces">
+    <default key="_controller">TeamRaceWebBundle:User:teamRaces</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="userCreateTeamrace" pattern="/{_locale}/user/createTeamRace">
+    <default key="_controller">TeamRaceWebBundle:User:createTeamRace</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="userAbout" pattern="/{_locale}/user/userAbout">
+    <default key="_controller">TeamRaceWebBundle:User:about</default>
+    <requirement key="_locale">en|de</requirement>
+  </route>
+  
+  <route id="languageSwitch" pattern="/languageSwitch/{locale}">
+    <default key="_controller">TeamRaceWebBundle:External:languageSwitch</default>
+    <requirement key="locale">en|de</requirement>
+  </route>
+  
+  
+</routes>

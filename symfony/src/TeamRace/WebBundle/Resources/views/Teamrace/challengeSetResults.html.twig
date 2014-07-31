@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h3>{{ 'Set Results for Challenge ' ~ challenge.name | trans }}</h3>
+<h3>{{ "Set Results for Challenge " ~ challenge.name | trans }}</h3>
 
 {{ form_start(form) }}
 <table>
@@ -13,13 +13,13 @@
 
 {% for team in teams %}
 <tr>
-	<td>{{ form_label(attribute(form, 'points_' ~ team.idTeam), team.name | trans) }}</td>
-	<td>{{ form_widget(attribute(form, 'points_' ~ team.idTeam)) }}</td>
+	<td>{{ form_label(attribute(form, "points_" ~ team.idTeam), team.name | trans) }}</td>
+	<td>{{ form_widget(attribute(form, "points_" ~ team.idTeam)) }}</td>
 </tr>
 {% endfor %}
 
 <tr>
-	<td colspan="2"><br>{{ form_widget(form.submit, { 'label': 'Save Scores' | trans }) }}</td>
+	<td colspan="2"><br>{{ form_widget(form.submit, { "label": "Save Scores" | trans }) }}</td>
 </tr>
 
 </table>

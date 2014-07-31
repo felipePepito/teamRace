@@ -1,5 +1,24 @@
 {% extends "TeamRaceWebBundle:User:_layout.html.twig" %}
 
 {% block content %}
-{{ form(form) }}
+<h3>{{ "Create a new Teamrace:" | trans }}</h3>
+{{ form_start(form) }}
+<table>
+
+<tr>
+	<td colspan="2">{{ form_errors(form) }}</td>
+</tr>
+<tr>
+	<td>{{ form_label(form.name, "Name" | trans) }}</td>
+	<td>{{ form_widget(form.name) }}</td>
+</tr>
+<tr>
+	<td>{{ form_label(form.description, "Description" | trans) }}</td>
+	<td>{{ form_widget(form.description) }}</td>
+</tr>
+<tr>
+	<td colspan="2"><br>{{ form_widget(form.submit, { 'label': "Create Teamrace" | trans }) }}</td>
+</tr>
+</table>
+{{ form_end(form) }}
 {% endblock %}

@@ -15,23 +15,23 @@ td {padding: 0 5px 0 0;}
 	<td colspan="2">{{ form_errors(form) }}</td>
 </tr>
 <tr>
-	<td>{{ form_label(form.name, 'Name' | trans) }}</td>
+	<td>{{ form_label(form.name, "Name" | trans) }}</td>
 	<td>{{ form_widget(form.name) }}</td>
 </tr>
 <tr>
-	<td>{{ form_label(form.description, 'Description' | trans) }}</td>
+	<td>{{ form_label(form.description, "Description" | trans) }}</td>
 	<td>{{ form_widget(form.description) }}</td>
 </tr>
 <tr>
-	<td>{{ form_label(form.date, 'Date and Time' | trans) }}</td>
+	<td>{{ form_label(form.date, "Date and Time" | trans) }}</td>
 	<td>{{ form_widget(form.date) }}</td>
 </tr>
 <tr>
-	<td>{{ form_label(form.maxPoints, 'Highest Score possible' | trans) }}</td>
+	<td>{{ form_label(form.maxPoints, "Highest Score possible" | trans) }}</td>
 	<td>{{ form_widget(form.maxPoints) }}</td>
 </tr>
 <tr>
-	<td colspan="2"><br>{{ form_widget(form.submit, { 'label': 'Create Challenge' | trans }) }}</td>
+	<td colspan="2"><br>{{ form_widget(form.submit, { 'label': "Create Challenge" | trans }) }}</td>
 </tr>
 </table>
 {{ form_end(form) }}

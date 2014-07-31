@@ -2,10 +2,10 @@
 
 {% block navigation %}
 
-<a id="navigationHome" href="{{ url('externalIndex') }}">teamRace</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('externalAbout') }}">about</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('login') }}">login</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('externalRegister') }}">register</a><span class="navigationSpacer"></span>
+<a id="navigationHome" href="{{ url('externalIndex') }}">teamrace</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('externalAbout') }}">{{ "about" | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('login') }}">{{ "login" | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('externalRegister') }}">{{ "register" | trans }}</a><span class="navigationSpacer"></span>
 
 <span class="navigationSpacer"></span>
 <span class="navigationSpacer"></span>

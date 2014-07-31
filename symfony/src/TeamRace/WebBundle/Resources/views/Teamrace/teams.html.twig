@@ -10,23 +10,49 @@ div.listBox {
 	padding: 2px;
 	width: 600px;
 }
+td {
+	vertical-align: top;
+}
 </style>
 
+
+{% if role == 1 %}
+
 <h3>{{ "Add new Team" | trans }}</h3>
-{{ form(form) }}
+<div>
+{{ form_label(form.name,"Name:" | trans) }}&nbsp;
+{{ form_widget(form.name) }}&nbsp;
+{{ form_widget(form.submit, { 'label': "Create team" | trans }) }}
+</div>
 <p>
 
-<h3>{{ 'List of teams' | trans }}</h3>
+{% endif %}
 
-{% for team in teams %}
+<h3>{{ "List of teams!"| trans }}</h3>
+
+{% for team in teamsWithUser %}
 
 <div class="listBox">
 
 <table>
-  <tr>
-    <td width="400">{{ team.name }}</td>
-    <td><a href="{{ url('teamraceRemoveTeam', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeam': team.idTeam}) }}">{{ 'Remove team' | trans }}</a>
-  </tr>
+	<tr>
+		<td width="200"><span style="font-weight:bold;">{{ team.team.name }}</span></td>
+		<td width="200">
+		<table cellspacing="0" cellpadding="0">
+			{% for user in team.user %}
+			<tr><td>{{ user.firstName ~ " " ~ user.lastName }}</td></tr>
+			{% endfor %}
+		</table>
+		</td>
+		<td>
+			
+			{% if role == 1 %}
+			<a href="{{ url('teamraceRemoveTeam', parameters={'idTeamrace': teamrace.idTeamrace, 'idTeam': team.team.idTeam}) }}">{{ "Remove team" | trans }}</a>
+			{% endif %}
+	</tr>
+  
+	
+	
 </table>
 
 </div>

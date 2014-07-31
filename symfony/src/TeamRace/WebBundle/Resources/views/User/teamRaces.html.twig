@@ -1,13 +1,27 @@
 {% extends "TeamRaceWebBundle:User:_layout.html.twig" %}
 
 {% block content %}
+
+<style>
+th {
+	text-align: left;
+}
+</style>
+
+<h3>{{ "List of all existing Teamraces:" | trans }}</h3>
 <table>
+<tr>
+	<th width="200">{{ "Name" | trans }}</th>
+	<th>{{ "Founder"| trans }}</th>
 {% for teamrace in teamraces %}
 
-<tr><td>{{ teamrace.name }}</td></tr>
+<tr>
+	<td>{{ teamrace.name }}</td>
+	<td>{{ teamrace.creator.firstName ~ " " ~ teamrace.creator.lastName }}</td>
+</tr>
 
 {% endfor %}
 </table>
 
-<p><a href="{{ url('userCreateTeamRace') }}">{{ "Create a new teamRace" | trans }}</a>
+<p><a href="{{ url('userCreateTeamrace') }}">{{ "Create a new teamRace" | trans }}</a>
 {% endblock %}

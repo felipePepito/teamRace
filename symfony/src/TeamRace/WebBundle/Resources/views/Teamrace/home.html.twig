@@ -12,25 +12,25 @@ div.listBox {
 }
 </style>
 
-<h3>{{ 'Welcome at the central hub of the Teamrace ' | trans }}{{ teamrace.name }}</h3>
+<h3>{{ "Welcome at the central hub of the Teamrace" | trans }}&nbsp;{{ teamrace.name }}</h3>
 
-<p>{{ 'Here you are able to create, view and set the results of challenges, you can add users to the teamrace,
-create teams and view the standings' | trans }}</p>
+<p>{{ "Here you are able to create, view and set the results of challenges, you can add users to the teamrace,
+create teams and view the standings" | trans }}</p>
 
-<h3>{{ 'Blog' | trans }}</h3>
+<h3>{{ "Blog" | trans }}</h3>
 
 {% if role == 1 %}
 
 {{ form_start(form) }}
 	{{ form_errors(form) }}
 
-	{{ form_label(form.headline, 'Headline' | trans) }}<br>
+	{{ form_label(form.headline, "Headline" | trans) }}<br>
 	{{ form_widget(form.headline) }}<br>
 
-	{{ form_label(form.text, 'Text' | trans) }}<br>
+	{{ form_label(form.text, "Text" | trans) }}<br>
 	{{ form_widget(form.text) }}<br>
 	
-	{{ form_widget(form.submit, { 'label': 'Send Blog Post' | trans }) }}
+	{{ form_widget(form.submit, { 'label': "Send Blog Post" | trans }) }}
 {{ form_end(form) }}
 
 {% endif %}

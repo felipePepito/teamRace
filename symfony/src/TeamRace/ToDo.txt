@@ -16,22 +16,18 @@ TODO:
 
 - Form Styles
 
-- Add Member in Seite einfügen
 - Do... Seiten entfernen
 
 - Teams: Teammitglieder anzeigen
 
-- Startseite Teamrace
-
 - Profile: Passwort ändern
-
-- DB set current userTeamrace roles to 3
 
 - Kommentieren
 
-- Entities:
-	- Challenge: CreatedBy (für tutor später)
-	- Blog: Created By
+- Redirect Flashes
+
+- POST request for "remove member", "remove team", "remove member from team"
+
 (- Tutor Rolle)
 
 

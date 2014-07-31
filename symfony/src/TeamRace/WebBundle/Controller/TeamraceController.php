@@ -55,6 +55,13 @@ class TeamraceController extends Controller
 			->getRepository('TeamRaceWebBundle:UserTeamrace')
 			->findOneBy(array('teamrace' => $idTeamrace, 'user' => $this->user->getIdUser()))
 			->getRole();
+		
+		if (empty($this->role)) {
+			// TODO redirect flash
+			$redirectUrl = $this->get('router')->generate('userHome');
+			return $this->redirect($redirectUrl);
+			
+		}
 	} 
 	
 	
@@ -77,6 +84,7 @@ class TeamraceController extends Controller
 	    		$blog = $form->getData();
 	    		$blog->setTeamrace($this->teamrace);
 	    		$blog->setDate(new \DateTime());
+	    		$blog->setCreator($this->user);
 	    		
 	    		$em = $this->getDoctrine()->getManager();
 	    		$em->persist($blog);
@@ -337,9 +345,15 @@ class TeamraceController extends Controller
     
     
     public function doAddMemberAction(Request $request, $idTeamrace) {
-    
+
     	$this->initialize($idTeamrace);
-    	 
+    	
+    	// Check credentials to access
+    	if ($this->role != 1) {
+    		$redirectUrl = $this->get('router')->generate('teamraceMembers', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    	}
+    	
     	$form = $this->createForm(new AddMemberType(), new AddMember());
     
     	$form->handleRequest($request);
@@ -383,7 +397,13 @@ class TeamraceController extends Controller
     public function removeMemberAction($idTeamrace, $idUser)
     {
     	$this->initialize($idTeamrace);
-    
+
+    	// Check credentials to access
+    	if ($this->role != 1) {
+    		$redirectUrl = $this->get('router')->generate('teamraceMembers', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    	}
+    	 
     	$userTeamrace = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:UserTeamrace')
     	->findOneBy(array('user' => $idUser));
@@ -412,6 +432,17 @@ class TeamraceController extends Controller
     		->getRepository('TeamRaceWebBundle:UserTeam')
     		->getUserAndTeams($idTeamrace);
 
+    	$teamsWithUser = array();
+    	foreach ($userAndTeams as $userTeam) {
+    		$idTeam = $userTeam->getTeam()->getIdTeam();
+    		if (!array_key_exists($idTeam, $teamsWithUser)) {
+    			$teamsWithUser[$idTeam] = array();
+    			$teamsWithUser[$idTeam]['team'] = $userTeam->getTeam();
+    			$teamsWithUser[$idTeam]['user'] = array();
+    		}
+    		array_push($teamsWithUser[$idTeam]['user'], $userTeam->getUser());
+    	}
+    	
     	$teams = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:Team')
     	->findBy(array('teamrace' => $idTeamrace));
@@ -419,28 +450,32 @@ class TeamraceController extends Controller
     	$form = $this->createFormBuilder(array(
     			'action' => $this->generateUrl('teamraceTeams', array('idTeamrace' => $idTeamrace))));
     	$form->add('name', 'text');
-    	$form->add('Create Team', 'submit');
+    	$form->add('submit', 'submit');
     	
     	$form = $form->getForm();
-    	 
-    	$form->handleRequest($request);
-    	
-    	if($form->isValid()) {
-    	
-    		$team = new Team();
-    		$team->setName($form->getData()['name']);
-    		$team->setTeamrace($this->teamrace);
-    	
-    		$em = $this->getDoctrine()->getManager();
-    		$em->persist($team);
-    		$em->flush();
+
+    	// Check credentials
+    	if ($this->role == 1) {
+    		
+	    	$form->handleRequest($request);
+	    	
+	    	if($form->isValid()) {
+	    	
+	    		$team = new Team();
+	    		$team->setName($form->getData()['name']);
+	    		$team->setTeamrace($this->teamrace);
+	    	
+	    		$em = $this->getDoctrine()->getManager();
+	    		$em->persist($team);
+	    		$em->flush();
+	    	}
     	
     	}
     	
     	return $this->render(
     			'TeamRaceWebBundle:Teamrace:teams.html.twig',
     			array(	'form' => $form->createView(),
-    					'teams' => $teams,
+    					'teamsWithUser' =>$teamsWithUser,
     					'teamrace' => $this->teamrace,
     					'role' => $this->role)
     	);
@@ -450,6 +485,12 @@ class TeamraceController extends Controller
     {
     	$this->initialize($idTeamrace);
     
+    	// Check credentials to access
+    	if ($this->role != 1) {
+    		$redirectUrl = $this->get('router')->generate('teamraceTeams', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    	}
+    	
     	$team = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:Team')
     	->findOneBy(array('idTeam' => $idTeam));
@@ -469,19 +510,23 @@ class TeamraceController extends Controller
     public function addMemberToTeamAction(Request $request, $idTeamrace, $idUser)
     {
     	$this->initialize($idTeamrace);
-    	
+
+    	// Check credentials to access
+    	if ($this->role != 1) {
+    		$redirectUrl = $this->get('router')->generate('teamraceTeams', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    	}
+    	 
     	$em = $this->getDoctrine()->getManager();
     	
     	$idTeam = $request->get('idTeam');
     
-    	// Check if user is already member in other team, if so, delete the membership
+    	// Check if user is already member of other team
     	$userTeamArray = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:UserTeam')
     	->findUserTeam($idUser, $idTeamrace);
     	
-    	if(!empty($userTeamArray)) {
-	    	$em->remove($userTeamArray[0]);
-	    } 
+    	
     	
 	    // Create the membership in the team
     	$user = $this->getDoctrine()
@@ -498,6 +543,11 @@ class TeamraceController extends Controller
     		$userTeam->setUser($user);
     		$userTeam->setTeam($team);
 
+    		// If user is already member of other team, delete the membership
+    		if(!empty($userTeamArray)) {
+    			$em->remove($userTeamArray[0]);
+    		}
+    		
     		$em->persist($userTeam);
     		$em->flush();
     		 
@@ -513,6 +563,12 @@ class TeamraceController extends Controller
     {
     	$this->initialize($idTeamrace);
 
+    	// Check credentials to access
+    	if ($this->role != 1) {
+    		$redirectUrl = $this->get('router')->generate('teamraceTeams', array('idTeamrace' => $idTeamrace));
+    		return $this->redirect($redirectUrl);
+    	}
+    	
     	$userTeam = $this->getDoctrine()
     	->getRepository('TeamRaceWebBundle:User')
     	->findBy(array('user' => $idUser, 'team' => $idTeam));

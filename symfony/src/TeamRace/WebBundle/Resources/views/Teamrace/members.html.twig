@@ -19,28 +19,39 @@ th {
 }
 </style>
 
-<h3>{{ 'Add new user to teamrace' | trans }}</h3>
+{% if role == 1 %}
+
+<h3>{{ "Add new user to teamrace" | trans }}</h3>
 <div>
-{{ form_label(form.email, 'E-Mail address of user:' | trans) }}&nbsp;
-{{ form_widget(form.email) }}&nbsp;
-{{ form_widget(form.submit, { 'label': 'Add User' | trans }) }}
+
+{{ form_start(form) }}
+	{{ form_errors(form) }}
+
+	{{ form_label(form.email, "E-Mail address of user:" | trans) }}&nbsp;
+	{{ form_widget(form.email) }}&nbsp;
+	{{ form_widget(form.submit, { 'label': "Add User" | trans }) }}
+
+{{ form_end(form) }}
 </div>
 
-<h3>{{ 'List of participating members' | trans }}</h3>
+{% endif %}
+
+<h3>{{ "List of participating members" | trans }}</h3>
+
 
 <table>
 
   <tr>
-    <th>{{ 'Member' | trans }}</th>
-    <th>{{ 'Role' | trans }}</th>
-    <th>{{ 'Team' | trans }}</th>
+    <th>{{ "Member" | trans }}</th>
+    <th>{{ "Role" | trans }}</th>
+    <th>{{ "Team" | trans }}</th>
     <th></th>
   </tr>
 
 {% for member in members if member.role == 1%}
 
 	<tr>
-		<td width="100px">{{ 'Admin' | trans }}</td>
+		<td width="100px">{{ "Admin" | trans }}</td>
 		<td colspan="3">{{ member.user.firstName ~ " " ~ member.user.lastName }}</td>
 	</tr>
 	
@@ -49,24 +60,29 @@ th {
 {% for member in members if member.role != 1%}
 
 	<tr>
-		<td class="player">{{ 'Player' | trans }}</td>
+		<td class="player">{{ "Player" | trans }}</td>
 		<td class="player">{{ member.user.firstName ~ " " ~ member.user.lastName }}</td>
 		<td class="player">
 		
+		{% if role == 1 %}
 		<form action="{{ url('teamraceAddMemberToTeam', parameters={'idTeamrace': teamrace.idTeamrace, 'idUser': member.user.idUser}) }}" method="POST">
 		    <select name="idTeam">
+		    	<option disabled selected>{{ "Add to .." | trans }}</option>
 		        {% for team in teams %}
 		        <option value="{{ team.idTeam }}">{{ team.name }}</option>
 		        {% endfor %}
 		    </select>
 		    <input type="submit" value="Add">		    
 		</form>
+		{% endif %}
 		
 		</td>
 		<td class="player" width="200px">
+		{% if role == 1 %}
 		<a href="{{ url('teamraceRemoveMember', parameters={'idTeamrace': teamrace.idTeamrace, 'idUser': member.user.idUser}) }}">
 			{{ "Remove user from Teamrace" | trans}}
 		</a>
+		{% endif %}
 		</td>
 	</tr>
 	

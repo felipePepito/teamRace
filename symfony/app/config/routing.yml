@@ -1,5 +1,9 @@
 team_race_web_external:
-    resource: "@TeamRaceWebBundle/Resources/config/routing.xml"
+    resource: "@TeamRaceWebBundle/Resources/config/routingExternal.xml"
+    prefix:   /
+    
+team_race_web_user:
+    resource: "@TeamRaceWebBundle/Resources/config/routingUser.xml"
     prefix:   /
     
 team_race_web_teamrace:

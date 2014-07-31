@@ -2,11 +2,11 @@
 
 {% block navigation %}
 
-<a id="navigationHome" href="{{ url('userHome') }}">home</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('userAbout') }}">about</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('userProfile') }}">profile</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('userTeamRaces') }}">teamRaces</a><span class="navigationSpacer"></span>
-<a class="navigationItem" href="{{ url('logout') }}">logout</a><span class="navigationSpacer"></span>
+<a id="navigationHome" href="{{ url('userHome') }}">{{ "home" | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userAbout') }}">{{ "about" | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userProfile') }}">{{ "profile" | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('userTeamraces') }}">{{ "teamRaces" | trans }}</a><span class="navigationSpacer"></span>
+<a class="navigationItem" href="{{ url('logout') }}">{{ "logout" | trans }}</a><span class="navigationSpacer"></span>
 
 <span class="navigationSpacer"></span>
 <span class="navigationSpacer"></span>
